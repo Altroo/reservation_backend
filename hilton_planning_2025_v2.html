@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hilton City Center — Gestion 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --gold:#D4AF6E;--gold2:#E8C980;--gold3:#A07C3E;
+  --dark:#0A0A0A;--dark2:#111;--dark3:#181818;--dark4:#202020;--dark5:#2A2A2A;--dark6:#333;
+  --text:#EDE6DA;--text2:#9A9080;--text3:#5A5248;
+  --border:rgba(212,175,110,.12);--border2:rgba(212,175,110,.06);
+  --booking:#3D9B7A;--cash:#8B7340;--airbnb:#C4415A;--bank:#3D6B9B;
+  --red:#C45A5A;--green:#5AC47A;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* SIDEBAR */
+#sidebar{position:fixed;top:0;left:0;width:256px;height:100vh;background:var(--dark2);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:200;overflow-y:auto}
+.logo-zone{padding:26px 22px 18px;border-bottom:1px solid var(--border2)}
+.logo-badge{display:inline-block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold3);background:rgba(212,175,110,.07);border:1px solid var(--border);border-radius:3px;padding:3px 8px;margin-bottom:10px}
+.logo-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);line-height:1.3}
+.logo-sub{font-size:11px;color:var(--text3);margin-top:2px;letter-spacing:.06em}
+.nav-section{padding:14px 10px 4px}
+.nav-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);padding:0 8px;margin-bottom:5px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:7px;cursor:pointer;font-size:13px;color:var(--text2);transition:all .15s;margin-bottom:1px;border:none;background:none;width:100%;text-align:left;font-family:'Outfit',sans-serif;letter-spacing:.01em}
+.nav-btn:hover{background:var(--dark4);color:var(--text)}
+.nav-btn.active{background:rgba(212,175,110,.1);color:var(--gold);border-left:2px solid var(--gold);padding-left:10px}
+.nav-btn .ni{width:16px;font-size:12px;opacity:.6;flex-shrink:0;text-align:center}
+.nav-btn.active .ni{opacity:1}
+.month-list{padding:0 10px 4px}
+.month-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px;color:var(--text3);transition:all .12s;margin-bottom:1px}
+.month-item:hover{background:var(--dark4);color:var(--text2)}
+.month-item.am{color:var(--gold);background:rgba(212,175,110,.07)}
+.mv{font-size:10px;color:var(--text3)}
+.sidebar-foot{margin-top:auto;padding:12px;border-top:1px solid var(--border2)}
+.total-box{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.total-box-lbl{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+.total-box-val{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);margin-top:2px}
+.total-box-sub{font-size:10px;color:var(--text3);margin-top:1px}
+
+/* MAIN */
+#main{margin-left:256px;min-height:100vh}
+.page{display:none;padding:28px 32px;animation:fi .2s ease}
+.page.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:14px;flex-wrap:wrap}
+.page-head h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:400}
+.page-head p{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* KPI */
+.kpi-row{display:grid;gap:12px;margin-bottom:20px}
+.kpi-4{grid-template-columns:repeat(4,1fr)}
+.kpi-3{grid-template-columns:repeat(3,1fr)}
+.kpi{background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(to bottom,var(--gold),transparent)}
+.kpi-l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);margin-bottom:5px}
+.kpi-v{font-family:'Playfair Display',serif;font-size:22px;color:var(--text)}
+.kpi-s{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* CHARTS */
+.chart-grid-2{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:16px}
+.chart-card{background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:14px}
+.chart-card h3{font-family:'Playfair Display',serif;font-size:15px;font-weight:400;margin-bottom:16px;color:var(--text2)}
+canvas{max-height:240px}
+
+/* CONTROLS */
+.controls{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.select-field{background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:7px;font-size:13px;font-family:'Outfit',sans-serif;cursor:pointer}
+.select-field option{background:var(--dark3)}
+.search-input{background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:8px 13px;border-radius:7px;font-size:13px;font-family:'Outfit',sans-serif;width:240px;transition:border .15s}
+.search-input:focus{outline:none;border-color:var(--gold3)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+.plan-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.plan-tbl th{background:var(--dark3);padding:10px 12px;text-align:left;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);white-space:nowrap;font-weight:500}
+.plan-tbl td{padding:6px 10px;border-bottom:1px solid var(--border2);vertical-align:top}
+.plan-tbl tr:last-child td{border-bottom:none}
+.plan-tbl tr:hover td{background:rgba(255,255,255,.02)}
+.cell-date{color:var(--text2);font-size:11px;white-space:nowrap;min-width:90px}
+.cell-total{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);white-space:nowrap;min-width:90px}
+
+/* ROOM PILLS */
+.room-pill{border-radius:5px;padding:5px 8px;margin:1px 0;cursor:pointer;transition:opacity .12s;position:relative;display:block}
+.room-pill:hover{opacity:.8}
+.room-pill.booking{background:rgba(61,155,122,.18);border-left:2px solid var(--booking)}
+.room-pill.cash{background:rgba(139,115,64,.18);border-left:2px solid var(--cash)}
+.room-pill.airbnb{background:rgba(196,65,90,.18);border-left:2px solid var(--airbnb)}
+.room-pill.bank{background:rgba(61,107,155,.18);border-left:2px solid var(--bank)}
+.room-pill.unknown{background:rgba(80,80,80,.2);border-left:2px solid #555}
+.room-pill.empty{background:transparent;border:1px dashed var(--dark6);cursor:pointer;color:var(--text3);font-size:11px;text-align:center;padding:7px 0;border-radius:5px}
+.room-pill.empty:hover{border-color:var(--gold3);color:var(--gold3);background:rgba(212,175,110,.04)}
+.rp-name{font-size:11px;color:var(--text);line-height:1.2}
+.rp-amt{font-size:10px;color:var(--gold3);margin-top:1px}
+.rp-pay{font-size:9px;color:var(--text3)}
+
+/* OCCUPANCY */
+.occ-apt{background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px}
+.occ-apt-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.occ-apt-name{font-size:13px;font-weight:500;color:var(--text)}
+.occ-stats{display:flex;gap:14px;font-size:11px;color:var(--text2)}
+.occ-days{display:flex;gap:2px;flex-wrap:wrap}
+.day-sq{width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(255,255,255,.5);cursor:pointer;transition:transform .1s;position:relative}
+.day-sq:hover{transform:scale(1.3);z-index:5}
+.day-sq.bk{background:rgba(61,155,122,.65)}
+.day-sq.ca{background:rgba(139,115,64,.65)}
+.day-sq.ab{background:rgba(196,65,90,.65)}
+.day-sq.bn{background:rgba(61,107,155,.65)}
+.day-sq.vt{background:var(--dark5);color:var(--text3)}
+
+/* DATA TABLE */
+.data-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.data-tbl th{padding:10px 13px;text-align:left;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);font-weight:500}
+.data-tbl td{padding:10px 13px;border-bottom:1px solid var(--border2)}
+.data-tbl tr:hover td{background:rgba(255,255,255,.02)}
+.data-tbl tr:last-child td{border-bottom:none}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px}
+.b-air{background:rgba(196,65,90,.2);color:#E07090}
+.b-book{background:rgba(61,155,122,.2);color:#6DCFAE}
+.b-cash{background:rgba(139,115,64,.2);color:#C4A870}
+.b-bank{background:rgba(61,107,155,.2);color:#7AAAE0}
+.b-rest{background:rgba(120,120,120,.2);color:#999}
+
+/* FILTERS */
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.filter-tag{padding:5px 13px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);transition:all .12s;font-family:'Outfit',sans-serif}
+.filter-tag:hover{border-color:var(--gold3);color:var(--text)}
+.filter-tag.on{background:rgba(212,175,110,.1);border-color:var(--gold);color:var(--gold)}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:7px;cursor:pointer;font-size:13px;font-family:'Outfit',sans-serif;transition:all .15s;border:1px solid transparent;line-height:1}
+.btn-primary{background:rgba(212,175,110,.14);border-color:var(--gold);color:var(--gold)}
+.btn-primary:hover{background:rgba(212,175,110,.24)}
+.btn-ghost{background:var(--dark3);border-color:var(--border);color:var(--text2)}
+.btn-ghost:hover{background:var(--dark4);color:var(--text)}
+.btn-danger{background:rgba(196,90,90,.12);border-color:var(--red);color:var(--red)}
+.btn-danger:hover{background:rgba(196,90,90,.22)}
+.btn-sm{padding:5px 11px;font-size:12px}
+
+/* LEGEND */
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.leg-dot{width:9px;height:9px;border-radius:2px}
+.leg-dot.booking{background:var(--booking)}
+.leg-dot.cash{background:var(--cash)}
+.leg-dot.airbnb{background:var(--airbnb)}
+.leg-dot.bank{background:var(--bank)}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .18s;backdrop-filter:blur(3px)}
+.overlay.show{opacity:1;pointer-events:all}
+.modal{background:var(--dark2);border:1px solid var(--border);border-radius:12px;width:500px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.6);transform:scale(.95);transition:transform .18s}
+.overlay.show .modal{transform:scale(1)}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border2)}
+.modal-hdr h2{font-family:'Playfair Display',serif;font-size:19px;font-weight:400}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:3px;transition:color .12s;line-height:1}
+.modal-close:hover{color:var(--text)}
+.modal-body{padding:22px 24px}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 24px 20px;border-top:1px solid var(--border2)}
+
+/* FORM */
+.form-row{margin-bottom:16px}
+.form-row label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.form-input,.form-select{width:100%;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:7px;font-size:13px;font-family:'Outfit',sans-serif;transition:border .15s}
+.form-input:focus,.form-select:focus{outline:none;border-color:var(--gold3)}
+.form-select option{background:var(--dark3)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-info{background:var(--dark3);border-radius:7px;padding:12px;font-size:12px;color:var(--text2);border:1px solid var(--border2);margin-bottom:14px;line-height:1.6}
+.form-info strong{color:var(--gold)}
+
+/* NOTIFICATION */
+.notif{position:fixed;bottom:22px;right:22px;background:var(--dark2);border:1px solid var(--border);border-radius:8px;padding:11px 16px;font-size:13px;z-index:3000;transform:translateY(70px);opacity:0;transition:all .25s;display:flex;align-items:center;gap:8px;max-width:300px;box-shadow:0 8px 28px rgba(0,0,0,.4)}
+.notif.show{transform:translateY(0);opacity:1}
+.notif.success{border-color:var(--green);color:var(--green)}
+.notif.error{border-color:var(--red);color:var(--red)}
+
+/* TOOLTIP */
+.tip{position:fixed;background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:9px 12px;font-size:12px;pointer-events:none;z-index:500;display:none;box-shadow:0 6px 20px rgba(0,0,0,.5);max-width:190px}
+.tip-name{font-weight:500;color:var(--text);margin-bottom:2px}
+.tip-amt{color:var(--gold);font-family:'Playfair Display',serif;font-size:13px}
+.tip-pay{color:var(--text2);font-size:10px;margin-top:1px}
+
+/* GAIN */
+.gain-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.gain-month{background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.gain-m-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--gold)}
+.gain-m-info{font-size:11px;color:var(--text3);padding-bottom:10px;border-bottom:1px solid var(--border2);margin-bottom:10px;margin-top:2px}
+.gain-apt-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2);font-size:12px}
+.gain-apt-row:last-child{border:none;padding-bottom:0}
+.gain-apt-lbl{color:var(--text2)}
+.gain-apt-val{font-family:'Playfair Display',serif;font-size:14px}
+.bar-wrap{height:2px;background:var(--dark5);border-radius:2px;margin-top:2px;width:80px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold));border-radius:2px}
+
+/* RESERVATION FORM */
+.res-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+.res-card h2{font-family:'Playfair Display',serif;font-size:19px;font-weight:400;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border2)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:var(--dark5);border-radius:2px}
+
+@media(max-width:1100px){.kpi-4{grid-template-columns:repeat(2,1fr)}.chart-grid-2{grid-template-columns:1fr}.gain-grid{grid-template-columns:1fr}}
+@media(max-width:768px){#main{margin-left:0}#sidebar{display:none}}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="logo-zone">
+    <div class="logo-badge">Nectar Immobilière</div>
+    <div class="logo-title">Hilton<br>City Center</div>
+    <div class="logo-sub">Planning & Réservations 2025</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Navigation</div>
+    <button class="nav-btn active" onclick="goPage('dashboard')"><span class="ni">◈</span> Dashboard</button>
+    <button class="nav-btn" onclick="goPage('reservations')"><span class="ni">✦</span> Nouvelle réservation</button>
+    <button class="nav-btn" onclick="goPage('planning')"><span class="ni">▦</span> Planning mensuel</button>
+    <button class="nav-btn" onclick="goPage('occupancy')"><span class="ni">◉</span> Taux d'occupation</button>
+    <button class="nav-btn" onclick="goPage('balance')"><span class="ni">◎</span> Balance / Airbnb</button>
+    <button class="nav-btn" onclick="goPage('gain')"><span class="ni">◆</span> Gains & Revenus</button>
+  </div>
+  <div class="month-list nav-section" id="month-nav"><div class="nav-label">Mois</div></div>
+  <div class="sidebar-foot">
+    <div class="total-box">
+      <div class="total-box-lbl">Revenu total 2025</div>
+      <div class="total-box-val" id="sb-total">—</div>
+      <div class="total-box-sub" id="sb-occ">—</div>
+    </div>
+  </div>
+</nav>
+
+<div id="main">
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="topbar"><div class="page-head"><h1>Dashboard</h1><p>Vue d'ensemble — Hilton City Center 2025</p></div></div>
+  <div class="kpi-row kpi-4">
+    <div class="kpi"><div class="kpi-l">Revenu annuel</div><div class="kpi-v" id="kv-total">—</div><div class="kpi-s">Tous appartements</div></div>
+    <div class="kpi"><div class="kpi-l">Meilleur mois</div><div class="kpi-v" id="kv-bm">—</div><div class="kpi-s" id="kv-bm-s">—</div></div>
+    <div class="kpi"><div class="kpi-l">Taux d'occupation</div><div class="kpi-v" id="kv-occ">—</div><div class="kpi-s">Sur l'année entière</div></div>
+    <div class="kpi"><div class="kpi-l">Réservations totales</div><div class="kpi-v" id="kv-res">—</div><div class="kpi-s">Toutes périodes</div></div>
+  </div>
+  <div class="chart-grid-2">
+    <div class="chart-card"><h3>Revenus mensuels par appartement</h3><canvas id="ch-monthly"></canvas></div>
+    <div class="chart-card"><h3>Modes de paiement</h3><canvas id="ch-pay"></canvas></div>
+  </div>
+  <div class="chart-card"><h3>Revenus journaliers — courbe annuelle</h3><canvas id="ch-daily" style="max-height:160px"></canvas></div>
+  <div class="chart-card"><h3>Cumul revenus par appartement</h3><canvas id="ch-apt"></canvas></div>
+</div>
+
+<!-- RESERVATION -->
+<div class="page" id="page-reservations">
+  <div class="topbar"><div class="page-head"><h1>Nouvelle Réservation</h1><p>Enregistrer un séjour pour un ou plusieurs appartements</p></div></div>
+  <div class="res-card">
+    <h2>Paramètres du séjour</h2>
+    <div class="form-grid">
+      <div class="form-row"><label>Date d'arrivée</label><input type="date" id="f-checkin" class="form-input" onchange="updatePreview()"></div>
+      <div class="form-row"><label>Date de départ</label><input type="date" id="f-checkout" class="form-input" onchange="updatePreview()"></div>
+      <div class="form-row"><label>Appartement</label>
+        <select id="f-apt" class="form-select">
+          <option value="">— Sélectionner —</option>
+          <option>City Center 5B</option>
+          <option>HP 10TH N°11 - 1 ROOM</option>
+          <option>HR 10TH N°13 - 2 ROOM</option>
+          <option>HR 12TH N°11 - 1 ROOM</option>
+          <option>HR 09TH N°05 - 2 ROOM</option>
+          <option>HR 09TH N°08 - 1ROOM</option>
+        </select>
+      </div>
+      <div class="form-row"><label>Nom du client</label>
+        <input type="text" id="f-guest" class="form-input" placeholder="Nom complet" list="guest-datalist">
+        <datalist id="guest-datalist"></datalist>
+      </div>
+      <div class="form-row"><label>Montant / nuit (MAD)</label><input type="number" id="f-amount" class="form-input" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="form-row"><label>Mode de paiement</label>
+        <select id="f-payment" class="form-select">
+          <option value="Booking">Booking</option>
+          <option value="Cash">Cash</option>
+          <option value="Airbnb">Airbnb</option>
+          <option value="Bank transfer">Virement bancaire</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-info" id="sejour-preview" style="display:none"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="submitReservation()">✦ Enregistrer le séjour</button>
+      <button class="btn btn-ghost" onclick="clearForm()">Effacer</button>
+    </div>
+  </div>
+  <div class="res-card">
+    <h2>Réservations enregistrées <span id="res-cnt" style="font-size:12px;color:var(--text3);font-family:Outfit,sans-serif;font-weight:400"></span></h2>
+    <div class="controls">
+      <input type="text" class="search-input" id="res-search" placeholder="Rechercher client, appartement..." oninput="renderResList()">
+      <select class="select-field" id="res-apt-filter" onchange="renderResList()">
+        <option value="">Tous appartements</option>
+        <option>City Center 5B</option>
+        <option>HP 10TH N°11 - 1 ROOM</option>
+        <option>HR 10TH N°13 - 2 ROOM</option>
+        <option>HR 12TH N°11 - 1 ROOM</option>
+        <option>HR 09TH N°05 - 2 ROOM</option>
+        <option>HR 09TH N°08 - 1ROOM</option>
+      </select>
+      <button class="btn btn-danger btn-sm" onclick="if(confirm('Effacer toutes les réservations manuelles ?')){clearManual()}">Tout effacer</button>
+    </div>
+    <div class="table-wrap">
+      <table class="data-tbl">
+        <thead><tr><th>Client</th><th>Appartement</th><th>Arrivée</th><th>Départ</th><th>Nuits</th><th>Total (MAD)</th><th>Paiement</th><th></th></tr></thead>
+        <tbody id="res-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PLANNING -->
+<div class="page" id="page-planning">
+  <div class="topbar">
+    <div class="page-head"><h1>Planning Mensuel</h1><p>Cliquez sur une cellule pour modifier ou ajouter une réservation</p></div>
+    <select class="select-field" id="plan-month" onchange="renderPlanning()">
+      <option value="January">Janvier</option><option value="February">Février</option>
+      <option value="March">Mars</option><option value="April">Avril</option>
+      <option value="May">Mai</option><option value="June">Juin</option>
+      <option value="July">Juillet</option><option value="August">Août</option>
+      <option value="Septembre">Septembre</option><option value="October">Octobre</option>
+      <option value="Novembre">Novembre</option><option value="December">Décembre</option>
+    </select>
+  </div>
+  <div id="plan-kpis" class="kpi-row kpi-4" style="margin-bottom:16px"></div>
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot booking"></div>Booking</div>
+    <div class="leg-item"><div class="leg-dot cash"></div>Cash</div>
+    <div class="leg-item"><div class="leg-dot airbnb"></div>Airbnb</div>
+    <div class="leg-item"><div class="leg-dot bank"></div>Virement</div>
+  </div>
+  <div class="table-wrap">
+    <table class="plan-tbl">
+      <thead><tr>
+        <th>Date</th>
+        <th style="min-width:120px">City Center 5B</th>
+        <th style="min-width:120px">HP N°11</th>
+        <th style="min-width:120px">HR N°13</th>
+        <th style="min-width:120px">HR N°11</th>
+        <th style="min-width:120px">HR N°05</th>
+        <th style="min-width:120px">HR N°08</th>
+        <th>Total</th>
+      </tr></thead>
+      <tbody id="plan-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- OCCUPATION -->
+<div class="page" id="page-occupancy">
+  <div class="topbar">
+    <div class="page-head"><h1>Taux d'Occupation</h1><p>Vue calendrier par appartement</p></div>
+    <select class="select-field" id="occ-month" onchange="renderOcc()">
+      <option value="January">Janvier</option><option value="February">Février</option>
+      <option value="March">Mars</option><option value="April">Avril</option>
+      <option value="May">Mai</option><option value="June">Juin</option>
+      <option value="July">Juillet</option><option value="August">Août</option>
+      <option value="Septembre">Septembre</option><option value="October">Octobre</option>
+      <option value="Novembre">Novembre</option><option value="December">Décembre</option>
+    </select>
+  </div>
+  <div id="occ-kpis" class="kpi-row kpi-4" style="margin-bottom:16px"></div>
+  <div class="legend"><div class="leg-item"><div class="leg-dot booking"></div>Booking</div><div class="leg-item"><div class="leg-dot cash"></div>Cash</div><div class="leg-item"><div class="leg-dot airbnb"></div>Airbnb</div><div class="leg-item"><div class="leg-dot bank"></div>Virement</div></div>
+  <div id="occ-grid"></div>
+</div>
+
+<!-- BALANCE -->
+<div class="page" id="page-balance">
+  <div class="topbar">
+    <div class="page-head"><h1>Balance & Airbnb</h1><p>Suivi des paiements et encaissements</p></div>
+    <input type="text" class="search-input" id="bal-search" placeholder="Rechercher..." oninput="renderBalance()">
+  </div>
+  <div class="kpi-row kpi-3">
+    <div class="kpi"><div class="kpi-l">Total encaissé</div><div class="kpi-v" id="bkv-total">—</div></div>
+    <div class="kpi"><div class="kpi-l">Via Airbnb</div><div class="kpi-v" id="bkv-air">—</div></div>
+    <div class="kpi"><div class="kpi-l">Transactions</div><div class="kpi-v" id="bkv-count">—</div></div>
+  </div>
+  <div class="filters" id="bal-filters">
+    <button class="filter-tag on" onclick="setBalFilter('all',this)">Tous</button>
+    <button class="filter-tag" onclick="setBalFilter('Airbnb',this)">Airbnb</button>
+    <button class="filter-tag" onclick="setBalFilter('Bank',this)">Virement</button>
+    <button class="filter-tag" onclick="setBalFilter('Cash',this)">Cash</button>
+  </div>
+  <div class="chart-card">
+    <table class="data-tbl"><thead><tr><th>Date</th><th>Client</th><th>Montant (MAD)</th><th>Type</th><th>Remboursé</th></tr></thead>
+    <tbody id="bal-tbody"></tbody></table>
+  </div>
+</div>
+
+<!-- GAIN -->
+<div class="page" id="page-gain">
+  <div class="topbar"><div class="page-head"><h1>Gains & Revenus</h1><p>Analyse mensuelle par appartement</p></div></div>
+  <div class="kpi-row kpi-4">
+    <div class="kpi"><div class="kpi-l">Gain total renseigné</div><div class="kpi-v" id="gkv-total">—</div></div>
+    <div class="kpi"><div class="kpi-l">Meilleur appartement</div><div class="kpi-v" id="gkv-apt" style="font-size:15px">—</div><div class="kpi-s" id="gkv-apts">—</div></div>
+    <div class="kpi"><div class="kpi-l">Coût mensuel location</div><div class="kpi-v">93 000</div><div class="kpi-s">MAD / mois</div></div>
+    <div class="kpi"><div class="kpi-l">Meilleur mois</div><div class="kpi-v" id="gkv-bm">—</div></div>
+  </div>
+  <div class="chart-card"><h3>Gains par appartement</h3><canvas id="ch-gain"></canvas></div>
+  <div class="gain-grid" id="gain-grid"></div>
+</div>
+
+</div><!-- /main -->
+
+<!-- MODALS -->
+<div class="overlay" id="edit-overlay">
+  <div class="modal">
+    <div class="modal-hdr"><h2 id="edit-title">Modifier la réservation</h2><button class="modal-close" onclick="closeOverlay('edit-overlay')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-date"><input type="hidden" id="edit-apt">
+      <div class="form-info" id="edit-info"></div>
+      <div class="form-row"><label>Client</label><input type="text" id="edit-guest" class="form-input"></div>
+      <div class="form-grid">
+        <div class="form-row"><label>Montant / nuit (MAD)</label><input type="number" id="edit-amount" class="form-input" step="0.01" min="0"></div>
+        <div class="form-row"><label>Mode de paiement</label>
+          <select id="edit-payment" class="form-select">
+            <option>Booking</option><option>Cash</option><option>Airbnb</option><option value="Bank transfer">Virement bancaire</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger" onclick="deleteEntry()">Supprimer</button>
+      <button class="btn btn-ghost" onclick="closeOverlay('edit-overlay')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveEdit()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="add-overlay">
+  <div class="modal">
+    <div class="modal-hdr"><h2 id="add-title">Ajouter une réservation</h2><button class="modal-close" onclick="closeOverlay('add-overlay')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="add-date"><input type="hidden" id="add-apt">
+      <div class="form-info" id="add-info"></div>
+      <div class="form-row"><label>Client</label><input type="text" id="add-guest" class="form-input" placeholder="Nom du client"></div>
+      <div class="form-grid">
+        <div class="form-row"><label>Montant / nuit (MAD)</label><input type="number" id="add-amount" class="form-input" step="0.01" min="0"></div>
+        <div class="form-row"><label>Mode de paiement</label>
+          <select id="add-payment" class="form-select">
+            <option>Cash</option><option>Booking</option><option>Airbnb</option><option value="Bank transfer">Virement bancaire</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeOverlay('add-overlay')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveAdd()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<div class="tip" id="tooltip"><div class="tip-name" id="tip-name"></div><div class="tip-amt" id="tip-amt"></div><div class="tip-pay" id="tip-pay"></div></div>
+<div class="notif" id="notif"></div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const SEED = {"planning":{"January":[{"date":"2025-01-01","rooms":[{"apartment":"City Center 5B","guest":"Oemar Dilmahomed","amount":1309.0,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"KHALID ALQAHTANI","amount":1440.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Christiane","amount":1275.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Ibrahim mo","amount":1400.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":6811.804878},{"date":"2025-01-02","rooms":[{"apartment":"City Center 5B","guest":"Oemar Dilmahomed","amount":1309.0,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"KHALID ALQAHTANI","amount":1305.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Christiane","amount":1275.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":5276.804878},{"date":"2025-01-03","rooms":[{"apartment":"City Center 5B","guest":"Oemar Dilmahomed","amount":1309.0,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Christiane","amount":1275.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":3971.804878},{"date":"2025-01-04","rooms":[{"apartment":"City Center 5B","guest":"Oemar Dilmahomed","amount":1309.0,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"MED ABDAL RAHMEN","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"EL ouakili Abdelilah","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":5096.804878},{"date":"2025-01-05","rooms":[{"apartment":"City Center 5B","guest":"Oemar Dilmahomed","amount":1309.0,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"MED ABDAL RAHMEN","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"EL ouakili Abdelilah","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":5096.804878},{"date":"2025-01-06","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"MED ABDAL RAHMEN","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":2487.804878},{"date":"2025-01-07","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"MED ABDAL RAHMEN","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":2487.804878},{"date":"2025-01-08","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":1387.804878},{"date":"2025-01-09","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-10","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-11","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-12","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-13","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-14","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-15","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-16","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-17","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-18","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Qirtas abdulaziz","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":2387.804878},{"date":"2025-01-19","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Qirtas abdulaziz","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Nouhila elouahidi","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":3687.804878},{"date":"2025-01-20","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Qirtas abdulaziz","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Nouhila elouahidi","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":3687.804878},{"date":"2025-01-21","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":1387.804878},{"date":"2025-01-22","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":1387.804878},{"date":"2025-01-23","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-24","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-25","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":487.804878},{"date":"2025-01-26","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Jason philip","amount":1285.25,"payment":"Airbnb"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":1773.054878},{"date":"2025-01-27","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Aicha Zeroual","amount":1080.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Jason philip","amount":1285.25,"payment":"Airbnb"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":2853.054878},{"date":"2025-01-28","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Aicha Zeroual","amount":1080.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Hasna","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Musaed khaled","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":3867.804878},{"date":"2025-01-29","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"BRAHIM","amount":1000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Aicha Zeroual","amount":1080.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Hasna","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Musaed khaled","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":4867.804878},{"date":"2025-01-30","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"BRAHIM","amount":1000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Aicha Zeroual","amount":1080.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Hasna","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Musaed khaled","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":4867.804878},{"date":"2025-01-31","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"BRAHIM","amount":1000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Aicha Zeroual","amount":1080.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Musaed khaled","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":487.804878,"payment":"Bank transfer"}],"total":4767.804878}],"February":[{"date":"2025-02-01","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Saloua Rahou","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Musaed khaled","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":444.44,"payment":"Bank transfer"}],"total":3904.44},{"date":"2025-02-02","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Saloua Rahou","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":445.0,"payment":"Bank transfer"}],"total":2605.0},{"date":"2025-02-03","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Saloua Rahou","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hajar","amount":445.0,"payment":"Bank transfer"}],"total":5105.0},{"date":"2025-02-04","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Saloua Rahou","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"}],"total":4660.0},{"date":"2025-02-05","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Saloua Rahou","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Soukaina","amount":1100.0,"payment":"Cash"}],"total":5760.0},{"date":"2025-02-06","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Saloua Rahou","amount":1260.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Soukaina","amount":1100.0,"payment":"Cash"}],"total":5760.0},{"date":"2025-02-07","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Asmaa Ouahid","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abusaoud","amount":1500.0,"payment":"Cash"}],"total":6160.0},{"date":"2025-02-08","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Asmaa Ouahid","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abusaoud","amount":1500.0,"payment":"Cash"}],"total":6160.0},{"date":"2025-02-09","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":900.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abusaoud","amount":1500.0,"payment":"Cash"}],"total":6160.0},{"date":"2025-02-10","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"}],"total":3760.0},{"date":"2025-02-11","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"}],"total":3760.0},{"date":"2025-02-12","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"}],"total":2500.0},{"date":"2025-02-13","rooms":[{"apartment":"City Center 5B","guest":"Emlio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"}],"total":2500.0},{"date":"2025-02-14","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Bank transfer"}],"total":900.0},{"date":"2025-02-15","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rachid Zaazaa","amount":1190.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"}],"total":1890.0},{"date":"2025-02-16","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rachid Zaazaa","amount":1190.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"}],"total":1890.0},{"date":"2025-02-17","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rachid Zaazaa","amount":1190.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"}],"total":1890.0},{"date":"2025-02-18","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rachid Zaazaa","amount":1190.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"}],"total":1890.0},{"date":"2025-02-19","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rachid Zaazaa","amount":1190.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"}],"total":1890.0},{"date":"2025-02-20","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rachid Zaazaa","amount":1190.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"}],"total":1890.0},{"date":"2025-02-21","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rachid Zaazaa","amount":1190.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"}],"total":1890.0},{"date":"2025-02-22","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"seddik boutahar","amount":1260.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Sahraoui","amount":1400.0,"payment":"Cash"}],"total":3360.0},{"date":"2025-02-23","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"seddik boutahar","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Harald Dick","amount":850.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Sahraoui","amount":1400.0,"payment":"Cash"}],"total":4210.0},{"date":"2025-02-24","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"seddik boutahar","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Harald Dick","amount":850.0,"payment":"Booking"}],"total":2810.0},{"date":"2025-02-25","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"seddik boutahar","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Harald Dick","amount":850.0,"payment":"Booking"}],"total":2810.0},{"date":"2025-02-26","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"seddik boutahar","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Harald Dick","amount":850.0,"payment":"Booking"}],"total":2810.0},{"date":"2025-02-27","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"seddik boutahar","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Harald Dick","amount":850.0,"payment":"Booking"}],"total":2810.0},{"date":"2025-02-28","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":700.0,"payment":"Bank transfer"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"seddik boutahar","amount":1260.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Harald Dick","amount":850.0,"payment":"Booking"}],"total":2810.0}],"March":[{"date":"2025-03-01","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":800.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Harald Dick","amount":850.0,"payment":"Booking"}],"total":1650.0},{"date":"2025-03-02","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":800.0,"payment":"Cash"}],"total":800.0},{"date":"2025-03-03","rooms":[],"total":0},{"date":"2025-03-04","rooms":[],"total":0},{"date":"2025-03-05","rooms":[],"total":0},{"date":"2025-03-06","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"}],"total":1309.0},{"date":"2025-03-07","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"}],"total":1309.0},{"date":"2025-03-08","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"}],"total":1309.0},{"date":"2025-03-09","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"}],"total":1309.0},{"date":"2025-03-10","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"}],"total":1309.0},{"date":"2025-03-11","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"}],"total":1309.0},{"date":"2025-03-12","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"}],"total":1309.0},{"date":"2025-03-13","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"}],"total":1309.0},{"date":"2025-03-14","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mila Haider","amount":1190.0,"payment":"Booking"}],"total":2499.0},{"date":"2025-03-15","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mila Haider","amount":1190.0,"payment":"Booking"}],"total":2499.0},{"date":"2025-03-16","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mila Haider","amount":1190.0,"payment":"Booking"}],"total":2499.0},{"date":"2025-03-17","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mila Haider","amount":1190.0,"payment":"Booking"}],"total":2499.0},{"date":"2025-03-18","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mila Haider","amount":1190.0,"payment":"Booking"}],"total":2499.0},{"date":"2025-03-19","rooms":[{"apartment":"City Center 5B","guest":"Maryam Shirafkan","amount":1309.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mila Haider","amount":1190.0,"payment":"Booking"}],"total":2499.0},{"date":"2025-03-20","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mila Haider","amount":1190.0,"payment":"Booking"}],"total":1190.0},{"date":"2025-03-21","rooms":[],"total":0},{"date":"2025-03-22","rooms":[],"total":0},{"date":"2025-03-23","rooms":[],"total":0},{"date":"2025-03-24","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdulkader","amount":1000.0,"payment":""}],"total":1000.0},{"date":"2025-03-25","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdulkader","amount":1000.0,"payment":""}],"total":1000.0},{"date":"2025-03-26","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdulkader","amount":1000.0,"payment":""}],"total":1000.0},{"date":"2025-03-27","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdulkader","amount":1000.0,"payment":""}],"total":1000.0},{"date":"2025-03-28","rooms":[],"total":0},{"date":"2025-03-29","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Laraqui Ahmed","amount":1400.0,"payment":"Cash"}],"total":1400.0},{"date":"2025-03-30","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Laraqui Ahmed","amount":1400.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":2400.0},{"date":"2025-03-31","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Laraqui Ahmed","amount":1400.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":2400.0}],"April":[{"date":"2025-04-01","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Ahmed alsaeedi","amount":1042.75,"payment":"Airbnb"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Laraqui Ahmed","amount":1400.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":3442.75},{"date":"2025-04-02","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Ahmed alsaeedi","amount":1042.75,"payment":"Airbnb"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Laraqui Ahmed","amount":1400.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":3442.75},{"date":"2025-04-03","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Ahmed alsaeedi","amount":1050.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1500.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed Bhatti","amount":1413.1,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":4963.1},{"date":"2025-04-04","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Ahmed alsaeedi","amount":1050.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1500.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed Bhatti","amount":1413.1,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":4963.1},{"date":"2025-04-05","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1500.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed Bhatti","amount":1413.1,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":3913.1},{"date":"2025-04-06","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1500.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":2500.0},{"date":"2025-04-07","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1500.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":2500.0},{"date":"2025-04-08","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1500.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":2500.0},{"date":"2025-04-09","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":1000.0},{"date":"2025-04-10","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":1000.0},{"date":"2025-04-11","rooms":[{"apartment":"City Center 5B","guest":"Karim","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nassim Moussaoui","amount":1300.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdulaziz","amount":1000.0,"payment":"Cash"}],"total":3800.5},{"date":"2025-04-12","rooms":[{"apartment":"City Center 5B","guest":"Karim","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nassim Moussaoui","amount":1300.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Alotaibi Mohammed","amount":1500.0,"payment":"Cash"}],"total":4300.5},{"date":"2025-04-13","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nassim Moussaoui","amount":1300.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Alotaibi Mohammed","amount":1500.0,"payment":"Cash"}],"total":2800.5},{"date":"2025-04-14","rooms":[{"apartment":"City Center 5B","guest":"Mohammed Shuayb Ashraf","amount":1530.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nassim Moussaoui","amount":1300.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Alotaibi Mohammed","amount":1500.0,"payment":"Cash"}],"total":4330.5},{"date":"2025-04-15","rooms":[{"apartment":"City Center 5B","guest":"Mohammed Shuayb Ashraf","amount":1530.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nassim Moussaoui","amount":1300.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Amir","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Alotaibi Mohammed","amount":1500.0,"payment":"Cash"}],"total":5530.5},{"date":"2025-04-16","rooms":[{"apartment":"City Center 5B","guest":"Mohammed Shuayb Ashraf","amount":1530.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nassim Moussaoui","amount":1300.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Amir","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Javier Rodriguez Miguez","amount":1413.1,"payment":"Booking"}],"total":5443.6},{"date":"2025-04-17","rooms":[{"apartment":"City Center 5B","guest":"Mohammed Shuayb Ashraf","amount":1530.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nassim Moussaoui","amount":1300.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Amir","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Javier Rodriguez Miguez","amount":1413.1,"payment":"Booking"}],"total":5443.6},{"date":"2025-04-18","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Javier Rodriguez Miguez","amount":1413.1,"payment":"Booking"}],"total":1413.1},{"date":"2025-04-19","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Javier Rodriguez Miguez","amount":1413.1,"payment":"Booking"}],"total":1413.1},{"date":"2025-04-20","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Javier Rodriguez Miguez","amount":1413.1,"payment":"Booking"}],"total":1413.1},{"date":"2025-04-21","rooms":[],"total":0},{"date":"2025-04-22","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Othmane","amount":1100.0,"payment":"Bank transfer"}],"total":1100.0},{"date":"2025-04-23","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Othmane","amount":1100.0,"payment":"Bank transfer"}],"total":1100.0},{"date":"2025-04-24","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Najeebhollah Rashed","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Othmane","amount":1100.0,"payment":"Bank transfer"}],"total":2477.0},{"date":"2025-04-25","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Hasna chaibi","amount":1100.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Najeebhollah Rashed","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Othmane","amount":1100.0,"payment":"Bank transfer"}],"total":3577.0},{"date":"2025-04-26","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Hasna chaibi","amount":1100.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Najeebhollah Rashed","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Othmane","amount":1100.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Fahad","amount":1100.0,"payment":"Cash"}],"total":4677.0},{"date":"2025-04-27","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Julian Rameder","amount":1170.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Najeebhollah Rashed","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Othmane","amount":1100.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Farissi Brahim","amount":1496.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Fahad","amount":1100.0,"payment":"Cash"}],"total":6243.5},{"date":"2025-04-28","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Julian Rameder","amount":1170.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Najeebhollah Rashed","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Othmane","amount":1100.0,"payment":"Bank transfer"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Farissi Brahim","amount":1496.5,"payment":"Booking"}],"total":5143.5},{"date":"2025-04-29","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Julian Rameder","amount":1170.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Najeebhollah Rashed","amount":1377.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Farissi Brahim","amount":1496.5,"payment":"Booking"}],"total":4043.5},{"date":"2025-04-30","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Farissi Brahim","amount":1496.5,"payment":"Booking"}],"total":1496.5}],"May":[{"date":"2025-05-01","rooms":[{"apartment":"City Center 5B","guest":"Rafik bensalah","amount":1681.33,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rajaa Massaoudi","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Mohamed atteiah lah","amount":1150.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Farissi Brahim","amount":1496.5,"payment":"Booking"}],"total":6964.83},{"date":"2025-05-02","rooms":[{"apartment":"City Center 5B","guest":"Rafik bensalah","amount":1681.33,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rajaa Massaoudi","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Mohamed atteiah lah","amount":1150.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Farissi Brahim","amount":1496.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelattef","amount":1100.0,"payment":"Cash"}],"total":8064.83},{"date":"2025-05-03","rooms":[{"apartment":"City Center 5B","guest":"Rafik bensalah","amount":1681.33,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1200.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Denis Wauthier","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Mohamed atteiah lah","amount":1100.0,"payment":"Cash"}],"total":5358.33},{"date":"2025-05-04","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1200.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Denis Wauthier","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Mohamed atteiah lah","amount":1100.0,"payment":"Cash"}],"total":3677.0},{"date":"2025-05-05","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1200.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Sameer Shetewi","amount":1377.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1500.0,"payment":"Cash"}],"total":4077.0},{"date":"2025-05-06","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1200.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Sameer Shetewi","amount":1377.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1500.0,"payment":"Cash"}],"total":4077.0},{"date":"2025-05-07","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1200.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Sameer Shetewi","amount":1377.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1500.0,"payment":"Cash"}],"total":4077.0},{"date":"2025-05-08","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Yohan Paumier","amount":3717.9,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Ahmed Ouali","amount":1134.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1500.0,"payment":"Cash"}],"total":6351.9},{"date":"2025-05-09","rooms":[{"apartment":"City Center 5B","guest":"Walid","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"nabil boucetta","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Ahmed Ouali","amount":1134.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1600.0,"payment":"Cash"}],"total":5594.0},{"date":"2025-05-10","rooms":[{"apartment":"City Center 5B","guest":"Walid","amount":1600.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"nabil boucetta","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Naoufal assim","amount":1600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Ahmed Ouali","amount":1134.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1600.0,"payment":"Cash"}],"total":7194.0},{"date":"2025-05-11","rooms":[{"apartment":"City Center 5B","guest":"Walid","amount":1600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Naoufal assim","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Mohamed atteiah lah","amount":1200.0,"payment":"Cash"}],"total":4400.0},{"date":"2025-05-12","rooms":[{"apartment":"City Center 5B","guest":"Walid","amount":1600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"M.amin","amount":1500.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Mohamed atteiah lah","amount":1200.0,"payment":"Cash"}],"total":5300.0},{"date":"2025-05-13","rooms":[{"apartment":"City Center 5B","guest":"Walid","amount":1600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"M.amin","amount":1500.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Mohamed atteiah lah","amount":1200.0,"payment":"Cash"}],"total":5300.0},{"date":"2025-05-14","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"M.amin","amount":1500.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1600.0,"payment":"Cash"}],"total":4100.0},{"date":"2025-05-15","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"M.amin","amount":1500.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1600.0,"payment":"Cash"}],"total":4100.0},{"date":"2025-05-16","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"M.amin","amount":1500.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1600.0,"payment":"Cash"}],"total":4100.0},{"date":"2025-05-17","rooms":[{"apartment":"City Center 5B","guest":"Alabbad montadar","amount":1700.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Al hamad yousef","amount":1000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Almohsen ibrahim","amount":1000.0,"payment":"Cash"}],"total":6300.0},{"date":"2025-05-18","rooms":[{"apartment":"City Center 5B","guest":"Alabbad montadar","amount":1700.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Al hamad yousef","amount":1000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Almohsen ibrahim","amount":1000.0,"payment":"Cash"}],"total":6300.0},{"date":"2025-05-19","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Al hamad yousef","amount":1000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Nawaf","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed atteiah lah","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Almohsen ibrahim","amount":1000.0,"payment":"Cash"}],"total":4800.0},{"date":"2025-05-20","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Al hamad yousef","amount":1000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mostafa Gour","amount":1453.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Nawaf","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Almohsen ibrahim","amount":1000.0,"payment":"Cash"}],"total":4653.5},{"date":"2025-05-21","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Al hamad yousef","amount":1000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mostafa Gour","amount":1453.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Almohsen ibrahim","amount":1000.0,"payment":"Cash"}],"total":4453.5},{"date":"2025-05-22","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Al hamad yousef","amount":1000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Mostafa Gour","amount":1453.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Almohsen ibrahim","amount":1000.0,"payment":"Cash"}],"total":4453.5},{"date":"2025-05-23","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Al hamad yousef","amount":1000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Almohsen ibrahim","amount":1000.0,"payment":"Cash"}],"total":3000.0},{"date":"2025-05-24","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Al hamad yousef","amount":1000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fui Yok Goh","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Almohsen ibrahim","amount":1000.0,"payment":"Cash"}],"total":4377.0},{"date":"2025-05-25","rooms":[{"apartment":"City Center 5B","guest":"Nourdin Boudhan","amount":1472.63,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fui Yok Goh","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"}],"total":3849.63},{"date":"2025-05-26","rooms":[{"apartment":"City Center 5B","guest":"Nourdin Boudhan","amount":1472.63,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdullah alsuwailem","amount":1600.0,"payment":"Cash"}],"total":4072.63},{"date":"2025-05-27","rooms":[{"apartment":"City Center 5B","guest":"Nourdin Boudhan","amount":1472.63,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdullah alsuwailem","amount":1600.0,"payment":"Cash"}],"total":4072.63},{"date":"2025-05-28","rooms":[{"apartment":"City Center 5B","guest":"Nourdin Boudhan","amount":1472.63,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Chourouk Sahnoun","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdullah alsuwailem","amount":1600.0,"payment":"Cash"}],"total":5449.63},{"date":"2025-05-29","rooms":[{"apartment":"City Center 5B","guest":"Nourdin Boudhan","amount":1472.63,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Chourouk Sahnoun","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdullah alsuwailem","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"}],"total":6449.63},{"date":"2025-05-30","rooms":[{"apartment":"City Center 5B","guest":"Nourdin Boudhan","amount":1472.63,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Chourouk Sahnoun","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Abdullah alsuwailem","amount":1500.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"}],"total":6349.63},{"date":"2025-05-31","rooms":[{"apartment":"City Center 5B","guest":"Nourdin Boudhan","amount":1472.63,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Chourouk Sahnoun","amount":1377.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"}],"total":4849.63}],"June":[{"date":"2025-06-01","rooms":[{"apartment":"City Center 5B","guest":"Nourdin Boudhan","amount":1472.63,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"}],"total":3472.63},{"date":"2025-06-02","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"}],"total":2000.0},{"date":"2025-06-03","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Hassan thabit","amount":1600.0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"}],"total":3600.0},{"date":"2025-06-04","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Hassan thabit","amount":1600.0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1000.0,"payment":"Cash"}],"total":3600.0},{"date":"2025-06-05","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Hassan thabit","amount":1600.0,"payment":""}],"total":2600.0},{"date":"2025-06-06","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1700.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Hassan thabit","amount":1600.0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelaziz","amount":1000.0,"payment":"Cash"}],"total":5300.0},{"date":"2025-06-07","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1700.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelaziz","amount":1000.0,"payment":"Cash"}],"total":3700.0},{"date":"2025-06-08","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1700.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelaziz","amount":1000.0,"payment":"Cash"}],"total":3700.0},{"date":"2025-06-09","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1200.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1700.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelaziz","amount":1000.0,"payment":"Cash"}],"total":4900.0},{"date":"2025-06-10","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1200.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1700.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelaziz","amount":1000.0,"payment":"Cash"}],"total":4900.0},{"date":"2025-06-11","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"salah abdulkareem","amount":1200.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1700.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelaziz","amount":1000.0,"payment":"Cash"}],"total":4900.0},{"date":"2025-06-12","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"M.amin","amount":0,"payment":""},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1700.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelaziz","amount":1000.0,"payment":"Cash"}],"total":3700.0},{"date":"2025-06-13","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"M.amin","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Abdelaziz","amount":1000.0,"payment":"Cash"}],"total":2000.0},{"date":"2025-06-14","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"M.amin","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"}],"total":1000.0},{"date":"2025-06-15","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"}],"total":2600.0},{"date":"2025-06-16","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"}],"total":2600.0},{"date":"2025-06-17","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"}],"total":2600.0},{"date":"2025-06-18","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"}],"total":2600.0},{"date":"2025-06-19","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":4800.0},{"date":"2025-06-20","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":4800.0},{"date":"2025-06-21","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":4800.0},{"date":"2025-06-22","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":3700.0},{"date":"2025-06-23","rooms":[{"apartment":"City Center 5B","guest":"Faleh","amount":2000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":5700.0},{"date":"2025-06-24","rooms":[{"apartment":"City Center 5B","guest":"Faleh","amount":2000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":5700.0},{"date":"2025-06-25","rooms":[{"apartment":"City Center 5B","guest":"Faleh","amount":2000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Daoud","amount":1600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Emilio","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":7200.0},{"date":"2025-06-26","rooms":[{"apartment":"City Center 5B","guest":"Faleh","amount":2000.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Daoud","amount":1600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":4500.0},{"date":"2025-06-27","rooms":[{"apartment":"City Center 5B","guest":"Faleh","amount":2000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":4000.0},{"date":"2025-06-28","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1100.0,"payment":"Cash"}],"total":2000.0},{"date":"2025-06-29","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-06-30","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0}],"July":[{"date":"2025-07-01","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-07-02","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"M.amin","amount":0,"payment":""}],"total":900.0},{"date":"2025-07-03","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"M.amin","amount":0,"payment":""}],"total":900.0},{"date":"2025-07-04","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-07-05","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-07-06","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-07-07","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-07-08","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-07-09","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-07-10","rooms":[{"apartment":"City Center 5B","guest":"Shawk ibrahim","amount":2600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":3500.0},{"date":"2025-07-11","rooms":[{"apartment":"City Center 5B","guest":"Shawk ibrahim","amount":2600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":3500.0},{"date":"2025-07-12","rooms":[{"apartment":"City Center 5B","guest":"Shawk ibrahim","amount":2600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Ismail","amount":2000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1300.0,"payment":"Cash"}],"total":6800.0},{"date":"2025-07-13","rooms":[{"apartment":"City Center 5B","guest":"Shawk ibrahim","amount":2600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Ismail","amount":2000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1300.0,"payment":"Cash"}],"total":6800.0},{"date":"2025-07-14","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1300.0,"payment":"Cash"}],"total":2200.0},{"date":"2025-07-15","rooms":[{"apartment":"City Center 5B","guest":"Rfaei abdu yahya","amount":2600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1300.0,"payment":"Cash"}],"total":4800.0},{"date":"2025-07-16","rooms":[{"apartment":"City Center 5B","guest":"Rfaei abdu yahya","amount":2600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Sultan","amount":2100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1300.0,"payment":"Cash"}],"total":6900.0},{"date":"2025-07-17","rooms":[{"apartment":"City Center 5B","guest":"Rfaei abdu yahya","amount":2600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Sultan","amount":2100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1300.0,"payment":"Cash"}],"total":6900.0},{"date":"2025-07-18","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Sultan","amount":2100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Daoud","amount":1300.0,"payment":"Cash"}],"total":4300.0},{"date":"2025-07-19","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rhariba Tlaqui","amount":1822.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Sultan","amount":2100.0,"payment":"Cash"}],"total":4822.5},{"date":"2025-07-20","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"M.amin","amount":0,"payment":""},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rhariba Tlaqui","amount":1822.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Sultan","amount":2100.0,"payment":"Cash"}],"total":4822.5},{"date":"2025-07-21","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rhariba Tlaqui","amount":1822.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":2722.5},{"date":"2025-07-22","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rhariba Tlaqui","amount":1822.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Muhammed saghir khan","amount":1400.0,"payment":"Cash"}],"total":5622.5},{"date":"2025-07-23","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Rhariba Tlaqui","amount":1822.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Rachid zaazaa","amount":2200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Muhammed saghir khan","amount":1400.0,"payment":"Cash"}],"total":7822.5},{"date":"2025-07-24","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Khalid Ouchane","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Rachid zaazaa","amount":2200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Muhammed saghir khan","amount":1400.0,"payment":"Cash"}],"total":7944.0},{"date":"2025-07-25","rooms":[{"apartment":"City Center 5B","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Khalid Ouchane","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Korkanc Osman","amount":1397.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Rachid zaazaa","amount":2200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hicham Bellahsni","amount":1850.0,"payment":"Booking"}],"total":9791.0},{"date":"2025-07-26","rooms":[{"apartment":"City Center 5B","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Korkanc Osman","amount":1397.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Rachid zaazaa","amount":2200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hicham Bellahsni","amount":1850.0,"payment":"Booking"}],"total":7847.0},{"date":"2025-07-27","rooms":[{"apartment":"City Center 5B","guest":"Chaibia hasnan","amount":1665.16,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Rachid zaazaa","amount":2200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hicham Bellahsni","amount":1850.0,"payment":"Booking"}],"total":9893.81},{"date":"2025-07-28","rooms":[{"apartment":"City Center 5B","guest":"Chaibia hasnan","amount":1665.16,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Rachid zaazaa","amount":2200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hicham Bellahsni","amount":1850.0,"payment":"Booking"}],"total":9893.81},{"date":"2025-07-29","rooms":[{"apartment":"City Center 5B","guest":"Chaibia hasnan","amount":1665.16,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Nasreddine Kaddouri","amount":1923.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hicham Bellahsni","amount":1850.0,"payment":"Cash"}],"total":9617.61},{"date":"2025-07-30","rooms":[{"apartment":"City Center 5B","guest":"Chaibia hasnan","amount":1665.16,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Nasreddine Kaddouri","amount":1923.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hicham Bellahsni","amount":1850.0,"payment":"Cash"}],"total":9617.61},{"date":"2025-07-31","rooms":[{"apartment":"City Center 5B","guest":"Chaibia hasnan","amount":1665.16,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Hicham Bellahsni","amount":1850.0,"payment":"Cash"}],"total":7693.8099999999995}],"August":[{"date":"2025-08-01","rooms":[{"apartment":"City Center 5B","guest":"Chaibia hasnan","amount":1665.17,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Asmae","amount":1500.0,"payment":"Cash"}],"total":7343.82},{"date":"2025-08-02","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Asmae","amount":1500.0,"payment":"Cash"}],"total":5678.65},{"date":"2025-08-03","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"}],"total":4178.65},{"date":"2025-08-04","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Wessam jamjoom","amount":1500.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"aakaf sajid","amount":2052.0,"payment":"Booking"}],"total":6230.65},{"date":"2025-08-05","rooms":[{"apartment":"City Center 5B","guest":"fouad sibari","amount":2217.6,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Fouzia MADOUNI","amount":1778.65,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Alessandro Margoni","amount":1498.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"aakaf sajid","amount":2052.0,"payment":"Booking"}],"total":7546.75},{"date":"2025-08-06","rooms":[{"apartment":"City Center 5B","guest":"fouad sibari","amount":2217.6,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"R\u00e9gine Dahmani","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Alessandro Margoni","amount":1498.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"aakaf sajid","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"bader lamrini","amount":1794.5,"payment":"Airbnb"}],"total":11079.1},{"date":"2025-08-07","rooms":[{"apartment":"City Center 5B","guest":"fouad sibari","amount":2217.6,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"R\u00e9gine Dahmani","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Alessandro Margoni","amount":1498.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"aakaf sajid","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"bader lamrini","amount":1794.5,"payment":"Airbnb"}],"total":11079.1},{"date":"2025-08-08","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"R\u00e9gine Dahmani","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Ilyas El Harrouti","amount":1498.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"aakaf sajid","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"alsuraybi abdulrahman","amount":1500.0,"payment":"Cash"}],"total":8567.0},{"date":"2025-08-09","rooms":[{"apartment":"City Center 5B","guest":"alvin gnahoua","amount":3117.85,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Khadija Ait Lahcen","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Ilyas El Harrouti","amount":1498.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"aakaf sajid","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"alsuraybi abdulrahman","amount":1500.0,"payment":"Cash"}],"total":11684.85},{"date":"2025-08-10","rooms":[{"apartment":"City Center 5B","guest":"alvin gnahoua","amount":3117.85,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Khadija Ait Lahcen","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Abdelilah Choukoud","amount":1415.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"aakaf sajid","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Ilyas El Harrouti","amount":1500.0,"payment":"Cash"}],"total":11601.650000000001},{"date":"2025-08-11","rooms":[{"apartment":"City Center 5B","guest":"alvin gnahoua","amount":3117.86,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Abdelilah Choukoud","amount":1415.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Wafae El Bouhali","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Ilyas El Harrouti","amount":1500.0,"payment":"Cash"}],"total":11493.66},{"date":"2025-08-12","rooms":[{"apartment":"City Center 5B","guest":"alvin gnahoua","amount":3117.86,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Abdelilah Choukoud","amount":1415.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Wafae El Bouhali","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Ilyas El Harrouti","amount":1500.0,"payment":"Cash"}],"total":11493.66},{"date":"2025-08-13","rooms":[{"apartment":"City Center 5B","guest":"alvin gnahoua","amount":3117.86,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Abdelilah Choukoud","amount":1415.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Wafae El Bouhali","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"alshahrani Abdullah","amount":1600.0,"payment":"Cash"}],"total":11593.66},{"date":"2025-08-14","rooms":[{"apartment":"City Center 5B","guest":"alvin gnahoua","amount":3117.86,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Abdelilah Choukoud","amount":1415.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Wafae El Bouhali","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"alshahrani Abdullah","amount":1600.0,"payment":"Cash"}],"total":11593.66},{"date":"2025-08-15","rooms":[{"apartment":"City Center 5B","guest":"alvin gnahoua","amount":3117.86,"payment":"Airbnb"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Abdelilah Choukoud","amount":1415.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Wafae El Bouhali","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"alshahrani Abdullah","amount":1600.0,"payment":"Cash"}],"total":11593.66},{"date":"2025-08-16","rooms":[{"apartment":"City Center 5B","guest":"AHMED ALABSI","amount":2217.6,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Naif Al Saab","amount":1572.5,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Abdelilah Choukoud","amount":1415.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Wafae El Bouhali","amount":2052.0,"payment":"Booking"}],"total":9093.400000000001},{"date":"2025-08-17","rooms":[{"apartment":"City Center 5B","guest":"AHMED ALABSI","amount":2217.6,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Wafae El Bouhali","amount":2052.0,"payment":"Booking"}],"total":6105.6},{"date":"2025-08-18","rooms":[{"apartment":"City Center 5B","guest":"AHMED ALABSI","amount":2217.6,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"sami","amount":1600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Wafae El Bouhali","amount":2052.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"rahman imraan","amount":1600.0,"payment":"Cash"}],"total":9305.6},{"date":"2025-08-19","rooms":[{"apartment":"City Center 5B","guest":"AHMED ALABSI","amount":2217.6,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"sami","amount":1600.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Adil EZZAIM","amount":1836.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Youssef Hammou","amount":1498.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"rahman imraan","amount":1600.0,"payment":"Cash"}],"total":8752.1},{"date":"2025-08-20","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"sami","amount":1600.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Youssef Hammou","amount":1498.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Asmaa Ouahid","amount":2000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"rahman imraan","amount":1600.0,"payment":"Cash"}],"total":6698.5},{"date":"2025-08-21","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"elhassane lamchichi","amount":1818.75,"payment":"Airbnb"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Youssef Hammou","amount":1498.5,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Asmaa Ouahid","amount":2000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"rahman imraan","amount":1600.0,"payment":"Cash"}],"total":6917.25},{"date":"2025-08-22","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"elhassane lamchichi","amount":1818.75,"payment":"Airbnb"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Meriem Bouyahia","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Hamza Djad","amount":1665.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed Ahallafi Boulfirass","amount":2052.0,"payment":"Booking"}],"total":7479.75},{"date":"2025-08-23","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Meriem Bouyahia","amount":1944.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Hamza Djad","amount":1665.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed Ahallafi Boulfirass","amount":2052.0,"payment":"Booking"}],"total":5661.0},{"date":"2025-08-24","rooms":[],"total":0},{"date":"2025-08-25","rooms":[],"total":0},{"date":"2025-08-26","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"mohamed alkhalifa","amount":1700.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"rashed alhomayden","amount":2000.0,"payment":"Cash"}],"total":3700.0},{"date":"2025-08-27","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"mohamed alkhalifa","amount":1700.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"rashed alhomayden","amount":2000.0,"payment":"Cash"}],"total":3700.0},{"date":"2025-08-28","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"mohamed alkhalifa","amount":1700.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"rashed alhomayden","amount":2000.0,"payment":"Cash"}],"total":3700.0},{"date":"2025-08-29","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"mohamed alkhalifa","amount":1700.0,"payment":"Cash"}],"total":1700.0},{"date":"2025-08-30","rooms":[],"total":0},{"date":"2025-08-31","rooms":[],"total":0}],"Septembre":[{"date":"2025-09-01","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Badreddin Atik","amount":1260.0,"payment":"Booking"}],"total":1260.0},{"date":"2025-09-02","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Badreddin Atik","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Roberto Fiorello","amount":1496.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":1100.0,"payment":"Cash"}],"total":3856.3},{"date":"2025-09-03","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Badreddin Atik","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Roberto Fiorello","amount":1496.3,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"alotaibi ahmed hamoud","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":1100.0,"payment":"Cash"}],"total":5156.3},{"date":"2025-09-04","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Badreddin Atik","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Roberto Fiorello","amount":1496.3,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"alotaibi ahmed hamoud","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":1100.0,"payment":"Cash"}],"total":5156.3},{"date":"2025-09-05","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Badreddin Atik","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"chihab","amount":2000.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Mochtar Asri Aghmuni","amount":1134.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"chihab","amount":1700.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":1100.0,"payment":"Cash"}],"total":7194.0},{"date":"2025-09-06","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Badreddin Atik","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Mochtar Asri Aghmuni","amount":1134.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"chihab","amount":1700.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":1100.0,"payment":"Cash"}],"total":5194.0},{"date":"2025-09-07","rooms":[{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"chihab","amount":1700.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":1100.0,"payment":"Cash"}],"total":2800.0},{"date":"2025-09-08","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Battah Soulyman","amount":1417.15,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":1000.0,"payment":"Cash"}],"total":2417.15},{"date":"2025-09-09","rooms":[{"apartment":"City Center 5B","guest":"ghosini mohammed ali","amount":1800.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Battah Soulyman","amount":1417.15,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":1000.0,"payment":"Cash"}],"total":4217.15},{"date":"2025-09-10","rooms":[{"apartment":"City Center 5B","guest":"ghosini mohammed ali","amount":1800.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Battah Soulyman","amount":1417.15,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Al qazlan ali mohammed","amount":1358.0,"payment":"Airbnb"}],"total":5575.15},{"date":"2025-09-11","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Al qazlan ali mohammed","amount":1358.0,"payment":"Airbnb"}],"total":2358.0},{"date":"2025-09-12","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":1850.0},{"date":"2025-09-13","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Erol Varli","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":1000.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"alkahtani fahad","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":4710.0},{"date":"2025-09-14","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Erol Varli","amount":1260.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"alkahtani fahad","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":3710.0},{"date":"2025-09-15","rooms":[{"apartment":"City Center 5B","guest":"Ismael Adda","amount":1386.0,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Erol Varli","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"al luhaybi ayman","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"alkahtani fahad","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":6296.0},{"date":"2025-09-16","rooms":[{"apartment":"City Center 5B","guest":"Ismael Adda","amount":1386.0,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Erol Varli","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"al luhaybi ayman","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":4696.0},{"date":"2025-09-17","rooms":[{"apartment":"City Center 5B","guest":"Ismael Adda","amount":1386.0,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Erol Varli","amount":1260.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"al luhaybi ayman","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":4696.0},{"date":"2025-09-18","rooms":[{"apartment":"City Center 5B","guest":"Ismael Adda","amount":1400.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"m.amine","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"al luhaybi ayman","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":3450.0},{"date":"2025-09-19","rooms":[{"apartment":"City Center 5B","guest":"Ismael Adda","amount":1400.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"m.amine","amount":0,"payment":""},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1338.8,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"al luhaybi ayman","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":4788.8},{"date":"2025-09-20","rooms":[{"apartment":"City Center 5B","guest":"Ismael Adda","amount":1400.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1338.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Samira Kadi","amount":1496.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":5085.1},{"date":"2025-09-21","rooms":[{"apartment":"City Center 5B","guest":"Ismael Adda","amount":1400.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1338.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Samira Kadi","amount":1496.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":5085.1},{"date":"2025-09-22","rooms":[{"apartment":"City Center 5B","guest":"Ismael Adda","amount":1400.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"SLINKARD BRADLEY","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1338.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":4848.8},{"date":"2025-09-23","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"SLINKARD BRADLEY","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1338.8,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"al jamel abdullah","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"alhamzah rida","amount":1700.0,"payment":"Cash"}],"total":5398.8},{"date":"2025-09-24","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"SLINKARD BRADLEY","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1338.8,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"al jamel abdullah","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"alhamzah rida","amount":1700.0,"payment":"Cash"}],"total":5398.8},{"date":"2025-09-25","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"SLINKARD BRADLEY","amount":1260.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Vierindhre Ramsoedh","amount":1338.8,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"al jamel abdullah","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"alhamzah rida","amount":1700.0,"payment":"Cash"}],"total":5398.8},{"date":"2025-09-26","rooms":[{"apartment":"City Center 5B","guest":"Amancio Guerero Rodriguez","amount":1972.33,"payment":"Airbnb"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadim Ahmed","amount":1417.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"imam hussam abdurrahim","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Nadim Ahmed","amount":1496.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":7036.13},{"date":"2025-09-27","rooms":[{"apartment":"City Center 5B","guest":"Amancio Guerero Rodriguez","amount":1972.33,"payment":"Airbnb"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadim Ahmed","amount":1417.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"imam hussam abdurrahim","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Nadim Ahmed","amount":1496.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":7036.13},{"date":"2025-09-28","rooms":[{"apartment":"City Center 5B","guest":"Amancio Guerero Rodriguez","amount":1972.34,"payment":"Airbnb"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadim Ahmed","amount":1417.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"imam hussam abdurrahim","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Nadim Ahmed","amount":1496.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":7036.14},{"date":"2025-09-29","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadim Ahmed","amount":1417.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"imam hussam abdurrahim","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Nadim Ahmed","amount":1496.3,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":5063.8},{"date":"2025-09-30","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"imam hussam abdurrahim","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":2150.0}],"October":[{"date":"2025-10-01","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"m.amine","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"imam hussam abdurrahim","amount":1200.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":2150.0},{"date":"2025-10-02","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":950.0},{"date":"2025-10-03","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":931.5,"payment":"Cash"}],"total":931.5},{"date":"2025-10-04","rooms":[{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":931.5,"payment":"Cash"}],"total":931.5},{"date":"2025-10-05","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"meryem","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"meryim","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":4150.0},{"date":"2025-10-06","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"meryem","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"meryim","amount":1600.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"abdulaziz","amount":950.0,"payment":"Cash"}],"total":4150.0},{"date":"2025-10-07","rooms":[],"total":0},{"date":"2025-10-08","rooms":[],"total":0},{"date":"2025-10-09","rooms":[],"total":0},{"date":"2025-10-10","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1260.0,"payment":"Booking"}],"total":1260.0},{"date":"2025-10-11","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1260.0,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"al mehthel yaqoub","amount":950.0,"payment":"Cash"}],"total":2210.0},{"date":"2025-10-12","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1250.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"al mehthel yaqoub","amount":950.0,"payment":"Cash"}],"total":2200.0},{"date":"2025-10-13","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1250.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"al mehthel yaqoub","amount":950.0,"payment":"Cash"}],"total":2200.0},{"date":"2025-10-14","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1250.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"nasser alhammadi","amount":1068.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"al mehthel yaqoub","amount":950.0,"payment":"Cash"}],"total":3268.8},{"date":"2025-10-15","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1250.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"nasser alhammadi","amount":1068.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"al mehthel yaqoub","amount":950.0,"payment":"Cash"}],"total":4168.8},{"date":"2025-10-16","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1250.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadia Houka","amount":1200.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"nasser alhammadi","amount":1068.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"al mehthel yaqoub","amount":950.0,"payment":"Cash"}],"total":5368.8},{"date":"2025-10-17","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1250.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadia Houka","amount":1338.8,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"nasser alhammadi","amount":1068.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"al mehthel yaqoub","amount":950.0,"payment":"Cash"}],"total":5507.6},{"date":"2025-10-18","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Khalfan Alghfeli","amount":1250.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadia Houka","amount":1338.8,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"el ouakili","amount":900.0,"payment":"Cash"}],"total":3488.8},{"date":"2025-10-19","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadia Houka","amount":1338.8,"payment":"Booking"}],"total":1338.8},{"date":"2025-10-20","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"meryim","amount":1100.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadia Houka","amount":1338.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"mohamed al oliwy","amount":1500.0,"payment":"Cash"}],"total":3938.8},{"date":"2025-10-21","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"meryim","amount":1100.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadia Houka","amount":1338.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"mohamed al oliwy","amount":1500.0,"payment":"Cash"}],"total":3938.8},{"date":"2025-10-22","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"meryim","amount":1100.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadia Houka","amount":1338.8,"payment":"Booking"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"mohamed al oliwy","amount":1500.0,"payment":"Cash"}],"total":3938.8},{"date":"2025-10-23","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Nadia Houka","amount":1338.8,"payment":"Booking"}],"total":1338.8},{"date":"2025-10-24","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"tajdin ismaili alaoui","amount":1300.0,"payment":"Cash"}],"total":1300.0},{"date":"2025-10-25","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"tajdin ismaili alaoui","amount":1300.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Fayez","amount":1000.0,"payment":"Cash"}],"total":2300.0},{"date":"2025-10-26","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"tajdin ismaili alaoui","amount":1300.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"Fayez","amount":1000.0,"payment":"Cash"}],"total":2300.0},{"date":"2025-10-27","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Daoud","amount":850.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"tajdin ismaili alaoui","amount":1300.0,"payment":"Cash"}],"total":2150.0},{"date":"2025-10-28","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"tajdin ismaili alaoui","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":2150.0},{"date":"2025-10-29","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"tajdin ismaili alaoui","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":2150.0},{"date":"2025-10-30","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"tajdin","amount":1100.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"tajdin ismaili alaoui","amount":1300.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":3250.0},{"date":"2025-10-31","rooms":[{"apartment":"City Center 5B","guest":"Abdel wahed","amount":1700.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"tajdin","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":3650.0}],"Novembre":[{"date":"2025-11-01","rooms":[{"apartment":"City Center 5B","guest":"abdelwahed","amount":1700.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"tajdin","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":3650.0},{"date":"2025-11-02","rooms":[{"apartment":"City Center 5B","guest":"abdelwahed","amount":1700.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"tajdin","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":3650.0},{"date":"2025-11-03","rooms":[{"apartment":"City Center 5B","guest":"abdelwahed","amount":1700.0,"payment":"Cash"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"tajdin","amount":1100.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"daoud","amount":850.0,"payment":"Cash"}],"total":3650.0},{"date":"2025-11-04","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"tajdin","amount":1100.0,"payment":"Cash"}],"total":1100.0},{"date":"2025-11-05","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-11-06","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"yasmina","amount":1012.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":1912.5},{"date":"2025-11-07","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"yasmina","amount":1012.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":1912.5},{"date":"2025-11-08","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"youssef","amount":1100.0,"payment":"Cash"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"yasmina","amount":1012.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"youssef","amount":1100.0,"payment":"Cash"}],"total":4112.5},{"date":"2025-11-09","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"youssef","amount":1100.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2000.0},{"date":"2025-11-10","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed alkhalifa","amount":1875.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Mohamed alkhalifa","amount":1375.0,"payment":"Cash"}],"total":4150.0},{"date":"2025-11-11","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed alkhalifa","amount":1875.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Mohamed alkhalifa","amount":1375.0,"payment":"Cash"}],"total":4150.0},{"date":"2025-11-12","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed alkhalifa","amount":1875.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Mohamed alkhalifa","amount":1375.0,"payment":"Cash"}],"total":4150.0},{"date":"2025-11-13","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Ramoedh","amount":1012.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Mohamed alkhalifa","amount":1875.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Mohamed alkhalifa","amount":1375.0,"payment":"Cash"}],"total":5162.5},{"date":"2025-11-14","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Ramoedh","amount":1012.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":1912.5},{"date":"2025-11-15","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Ramoedh","amount":1012.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":850.0,"payment":"Cash"}],"total":1862.5},{"date":"2025-11-16","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Ramoedh","amount":1012.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":1912.5},{"date":"2025-11-17","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Ramoedh","amount":1012.5,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":1912.5},{"date":"2025-11-18","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-11-19","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-11-20","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-11-21","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-11-22","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Rad althbiti","amount":1782.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2682.0},{"date":"2025-11-23","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Rad althbiti","amount":1782.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2682.0},{"date":"2025-11-24","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Rad althbiti","amount":1782.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2682.0},{"date":"2025-11-25","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Rad althbiti","amount":1782.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2682.0},{"date":"2025-11-26","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Rad althbiti","amount":1782.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2682.0},{"date":"2025-11-27","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Rad althbiti","amount":1782.0,"payment":"Booking"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2682.0},{"date":"2025-11-28","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-11-29","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-11-30","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0}],"December":[{"date":"2025-12-01","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-12-02","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-12-03","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"fahad almutari","amount":1300.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2200.0},{"date":"2025-12-04","rooms":[{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"fahad almutari","amount":1300.0,"payment":"Cash"},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":2200.0},{"date":"2025-12-05","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-12-06","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-12-07","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-12-08","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-12-09","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-12-10","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"}],"total":900.0},{"date":"2025-12-11","rooms":[{"apartment":"City Center 5B","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Morad Belkhir","amount":0,"payment":""}],"total":900.0},{"date":"2025-12-12","rooms":[{"apartment":"City Center 5B","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Morad Belkhir","amount":0,"payment":""}],"total":900.0},{"date":"2025-12-13","rooms":[{"apartment":"City Center 5B","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Morad Belkhir","amount":0,"payment":""}],"total":900.0},{"date":"2025-12-14","rooms":[{"apartment":"City Center 5B","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Morad Belkhir","amount":0,"payment":""}],"total":900.0},{"date":"2025-12-15","rooms":[{"apartment":"City Center 5B","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Morad Belkhir","amount":0,"payment":""}],"total":900.0},{"date":"2025-12-16","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b005 - 2 ROOM","guest":"Morad Belkhir","amount":0,"payment":""},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Morad Belkhir","amount":0,"payment":""}],"total":900.0},{"date":"2025-12-17","rooms":[{"apartment":"HR 12TH N\u00b011 - 1 ROOM","guest":"khaled","amount":900.0,"payment":"Cash"},{"apartment":"HR 09TH N\u00b008 - 1ROOM","guest":"Morad Belkhir","amount":0,"payment":""}],"total":900.0},{"date":"2025-12-18","rooms":[],"total":0},{"date":"2025-12-19","rooms":[],"total":0},{"date":"2025-12-20","rooms":[],"total":0},{"date":"2025-12-21","rooms":[],"total":0},{"date":"2025-12-22","rooms":[],"total":0},{"date":"2025-12-23","rooms":[],"total":0},{"date":"2025-12-24","rooms":[],"total":0},{"date":"2025-12-25","rooms":[],"total":0},{"date":"2025-12-26","rooms":[],"total":0},{"date":"2025-12-27","rooms":[],"total":0},{"date":"2025-12-28","rooms":[],"total":0},{"date":"2025-12-29","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Hussein El Arousi","amount":1215.0,"payment":"Booking"}],"total":1215.0},{"date":"2025-12-30","rooms":[{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Hussein El Arousi","amount":1215.0,"payment":"Booking"}],"total":1215.0},{"date":"2025-12-31","rooms":[{"apartment":"City Center 5B","guest":"Mohamed Massaad","amount":1316.7,"payment":"Booking"},{"apartment":"HP 10TH N\u00b011 - 1 ROOM","guest":"Ben Smires","amount":1080.0,"payment":"Booking"},{"apartment":"HR 10TH N\u00b013 - 2 ROOM","guest":"Hussein El Arousi","amount":1215.0,"payment":"Booking"}],"total":3611.7}]},"balance":[{"date":"2026-01-11","name":"Le reste","amount":423.49,"type":"Reste","back":"No"},{"date":"2025-09-26","name":"Amancio Guerero Rodriguez","amount":5917.0,"type":"Airbnb","back":"No"},{"date":"2025-09-10","name":"Al qazlan ali mohammed","amount":2716.0,"type":"Airbnb","back":"No"},{"date":"2025-08-22","name":"elhassane lamchichi","amount":3637.5,"type":"Airbnb","back":"No"},{"date":"2025-08-16","name":"alvin gnahoua","amount":21825.0,"type":"Airbnb","back":"No"},{"date":"2025-08-07","name":"bader lamrini","amount":3589.0,"type":"Airbnb","back":"No"},{"date":"2025-08-01","name":"Chaibia hasnan","amount":9990.96,"type":"Airbnb","back":"No"},{"date":"2025-05-13","name":"Saud alhabawdal","amount":4850.0,"type":"Airbnb","back":"No"},{"date":"2025-05-04","name":"Rafik bensalah","amount":5044.0,"type":"Airbnb","back":"No"},{"date":"2025-04-25","name":"Othmane","amount":7700.0,"type":"Bank transfer","back":"No"},{"date":"2025-04-02","name":"Ahmed alsaeedi","amount":2085.5,"type":"Airbnb","back":"No"},{"date":"2025-02-19","name":"khaled","amount":9800.0,"type":"Bank transfer","back":"No"},{"date":"2025-02-12","name":"khaled","amount":4500.0,"type":"Bank transfer","back":"No"},{"date":"2025-02-02","name":"Khalid","amount":9000.0,"type":"Bank transfer","back":"No"},{"date":"2025-01-24","name":"HAJAR-SISTER","amount":20000.0,"type":"Bank transfer","back":"No"},{"date":"2024-11-10","name":"Ahmed","amount":4000.0,"type":"Bank transfer","back":"No"},{"date":"2024-10-22","name":"Arnaud charamond","amount":7081.0,"type":"Airbnb","back":"No"},{"date":"2024-10-19","name":"Ahmad Mohamad","amount":2279.5,"type":"Airbnb","back":"No"},{"date":"2024-10-06","name":"Malika Mangouchi","amount":4607.5,"type":"airbnb","back":"No"},{"date":"2024-09-07","name":"Naual hamed","amount":3880.0,"type":"Airbnb","back":"No"},{"date":"2024-08-13","name":"Amr zohny","amount":11523.6,"type":"Airbnb","back":"No"},{"date":"2024-08-04","name":"Danni redroguez","amount":3201.0,"type":"Airbnb","back":"Yes"},{"date":"2024-08-02","name":"Ilias ramdani","amount":8536.0,"type":"Airbnb","back":"Yes"},{"date":"2024-08-01","name":"Mehdi belkhadim","amount":4801.5,"type":"Airbnb","back":"Yes"},{"date":"2024-07-25","name":"Louis asaidi","amount":8536.0,"type":"Airbnb","back":"Yes"},{"date":"2024-07-20","name":"Khalid","amount":4800.0,"type":"Bank transfer","back":"Yes"},{"date":"2024-07-16","name":"Khalid","amount":3000.0,"type":"Bank transfer","back":"Yes"},{"date":"2024-07-15","name":"Rashid Aarab","amount":8250.0,"type":"Bank transfer","back":"Yes"},{"date":"2024-07-14","name":"Khalid","amount":3000.0,"type":"Bank transfer","back":"Yes"},{"date":"2024-07-11","name":"Saleh abujaid","amount":7200.0,"type":"Bank transfer","back":"Yes"},{"date":"2024-07-11","name":"Khalid","amount":3000.0,"type":"Bank transfer","back":"Yes"},{"date":"2024-07-10","name":"Khalid","amount":3000.0,"type":"Bank transfer","back":"Yes"},{"date":"2024-07-05","name":"Khalid","amount":3610.33,"type":"Bank transfer","back":"Yes"},{"date":"2024-07-01","name":"Khalid","amount":6007.52,"type":"Bank transfer","back":"Yes"},{"date":"2024-06-22","name":"Alalyani jaber","amount":2804.8,"type":"Bank transfer","back":"Yes"},{"date":"2024-06-19","name":"Khalid","amount":13004.97,"type":"Bank transfer","back":"Yes"},{"date":"2024-06-13","name":"Mubarak salem","amount":6002.66,"type":"Bank transfer","back":"Yes"},{"date":"2024-05-13","name":"Badr almuhanna","amount":2425.0,"type":"Airbnb","back":"Yes"},{"date":"2024-05-06","name":"Abdulaziz naser","amount":3637.5,"type":"Airbnb","back":"Yes"},{"date":"2024-05-02","name":"Fahed alhammadi","amount":2425.0,"type":"Airbnb","back":"Yes"},{"date":"2024-04-17","name":"Meriem abourafiq","amount":5917.0,"type":"Airbnb","back":"Yes"},{"date":"2024-03-04","name":"Khalid","amount":2550.0,"type":"Bank transfer","back":"Yes"},{"date":"2024-02-23","name":"Khalid","amount":8540.58,"type":"Bank transfer","back":"Yes"},{"date":"2023-11-29","name":"Khalid","amount":2700.0,"type":"Bank transfer","back":"Yes"},{"date":"2023-11-20","name":"Khalid","amount":9025.0,"type":"Bank transfer","back":"Yes"},{"date":"2023-11-06","name":"Jaber albishi","amount":1988.5,"type":"Airbnb","back":"Yes"},{"date":"2023-11-03","name":"Abla","amount":12144.4,"type":"Airbnb","back":"Yes"},{"date":"2023-11-02","name":"Saeed","amount":3855.75,"type":"Airbnb","back":"Yes"},{"date":"2023-10-29","name":"Karim Farahat","amount":7081.0,"type":"Airbnb","back":"Yes"},{"date":"2023-10-08","name":"El Yazid Sabih","amount":9263.5,"type":"Airbnb","back":"Yes"},{"date":"2023-10-02","name":"Naji","amount":4753.0,"type":"Airbnb","back":"Yes"},{"date":"2023-09-15","name":"Mohnad almasoud","amount":6693.0,"type":"Airbnb","back":"Yes"},{"date":"2023-09-10","name":"Hussam Ali","amount":7372.0,"type":"Airbnb","back":"Yes"},{"date":"2023-08-27","name":"Toufik farah","amount":8245.0,"type":"Airbnb","back":"Yes"},{"date":"2023-08-21","name":"Fatma","amount":12571.2,"type":"Airbnb","back":"Yes"},{"date":"2023-08-20","name":"hanane el khoroto","amount":10476.0,"type":"Airbnb","back":"Yes"},{"date":"2023-08-16","name":"Moumen El Hajji","amount":8633.0,"type":"Airbnb","back":"Yes"},{"date":"2023-08-13","name":"Yousra Tazur","amount":9428.4,"type":"Airbnb","back":"Yes"},{"date":"2023-08-12","name":"Hakim ais","amount":10282.0,"type":"Airbnb","back":"Yes"},{"date":"2023-08-11","name":"Yassin araychi","amount":9700.0,"type":"Airbnb","back":"Yes"},{"date":"2023-08-04","name":"Hicham El maghnouji","amount":18721.0,"type":"Airbnb","back":"Yes"},{"date":"2023-08-02","name":"Yassine","amount":12920.4,"type":"airbnb","back":"Yes"},{"date":"2023-08-01","name":"Fatima Ketmi","amount":3637.5,"type":"airbnb","back":"Yes"},{"date":"2023-07-31","name":"Rayan Ben Berkane","amount":9069.5,"type":"Airbnb","back":"Yes"},{"date":"2023-07-29","name":"Morad","amount":4850.0,"type":"Airbnb","back":"Yes"},{"date":"2023-07-08","name":"KHALID","amount":13004.0,"type":"Bank transfer","back":"Yes"},{"date":"2023-07-07","name":"Alamri saad ali","amount":5432.0,"type":"Bank transfer","back":"Yes"},{"date":"2023-07-04","name":"Khalid","amount":13004.0,"type":"Bank transfer","back":"Yes"},{"date":"2023-06-26","name":"Khalid","amount":12616.76,"type":"Bank transfer","back":"Yes"},{"date":"2023-06-07","name":"Bader Humaid","amount":12577.94,"type":"Bank transfer","back":"Yes"},{"date":"2023-05-31","name":"Spence Shum","amount":6914.16,"type":"Airbnb","back":"Yes"},{"date":"2023-05-26","name":"Youssef Q","amount":4345.6,"type":"Airbnb","back":"Yes"},{"date":"2023-05-07","name":"Steph","amount":3589.0,"type":"Airbnb","back":"Yes"},{"date":"2023-05-06","name":"Aleksandr Bobylev","amount":2473.5,"type":"Airbnb","back":"Yes"},{"date":"2023-05-03","name":"Mhamed Talal","amount":2619.0,"type":"Airbnb","back":"Yes"},{"date":"2023-05-02","name":"Oumeyma Hamoud","amount":8827.0,"type":"Airbnb","back":"Yes"},{"date":"2023-05-02","name":"Anas Kasmi","amount":1697.5,"type":"Airbnb","back":"Yes"},{"date":"2023-05-01","name":"Ghizlane Mi","amount":3589.0,"type":"Airbnb","back":"Yes"},{"date":"2023-05-01","name":"El Mehdi Lahbib","amount":1358.0,"type":"Airbnb","back":"Yes"},{"date":"2023-04-30","name":"Amine Roki Chaoui","amount":2260.1,"type":"Airbnb","back":"Yes"},{"date":"2023-04-24","name":"Khaled Alqahtani","amount":2376.5,"type":"Airbnb","back":"Yes"},{"date":"2023-03-25","name":"Wissam","amount":873.0,"type":"Airbnb","back":"Yes"},{"date":"2023-03-24","name":"You Spt","amount":1697.5,"type":"Airbnb","back":"Yes"},{"date":"2023-03-18","name":"Mohamed Bounasser","amount":1697.5,"type":"Airbnb","back":"Yes"},{"date":"2023-03-17","name":"Oumaima Rjf","amount":2279.5,"type":"Airbnb","back":"Yes"},{"date":"2023-03-04","name":"Jassim Albader","amount":1680.0,"type":"Airbnb","back":"Yes"},{"date":"2023-02-25","name":"Giancarlo","amount":4454.24,"type":"Airbnb","back":"Yes"},{"date":"2023-02-11","name":"Abo Mohamed","amount":4850.0,"type":"Bank transfer","back":"Yes"},{"date":"2023-02-06","name":"Lucas","amount":1794.5,"type":"Airbnb","back":"Yes"},{"date":"2023-01-28","name":"Riham Hafiz","amount":8827.0,"type":"Airbnb","back":"Yes"},{"date":"2023-01-23","name":"Abo Mohamed","amount":13200.0,"type":"Bank transfer","back":"Yes"},{"date":"2023-01-12","name":"Aziz Alghamdi","amount":3589.0,"type":"Airbnb","back":"Yes"},{"date":"2023-01-01","name":"Billy B","amount":1988.5,"type":"Airbnb","back":"Yes"},{"date":"2022-12-30","name":"Nazzam Z","amount":2842.1,"type":"Airbnb","back":"Yes"},{"date":"2022-12-19","name":"Djamel","amount":2430.16,"type":"Airbnb","back":"Yes"},{"date":"2022-12-18","name":"Djamel","amount":5000.0,"type":"Airbnb","back":"Yes"},{"date":"2022-12-13","name":"Amen Alnajim","amount":4442.58,"type":"Airbnb","back":"Yes"},{"date":"2022-12-03","name":"Bader Humaid","amount":5823.12,"type":"Bank transfer","back":"Yes"},{"date":"2022-12-01","name":"Bader Humaid","amount":2182.5,"type":"Airbnb","back":"Yes"},{"date":"2022-11-17","name":"joe Blinder","amount":2570.5,"type":"airbnb","back":"Yes"},{"date":"2022-11-06","name":"Mehdi Benaissa","amount":6400.2,"type":"Airbnb","back":"Yes"},{"date":"2022-11-01","name":"KAMAL APRT","amount":10000.0,"type":"Bank transfer","back":"Yes"},{"date":"2022-10-29","name":"Mohsen Shoar","amount":3006.9900000000002,"type":"airbnb","back":"Yes"},{"date":"2022-10-28","name":"francisco sanchez","amount":5335.0,"type":"airbnb","back":"Yes"},{"date":"2022-10-23","name":"Melodie dore","amount":3588.99,"type":"airbnb","back":"Yes"},{"date":"2022-10-01","name":"KAMAL APRT","amount":10000.0,"type":"Bank transfer","back":"Yes"}],"gain":[{"month":"January","apartment":"City Center 5B","gain":6545.0,"total":71080.62195,"location":93000.0},{"month":"January","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":14700.0,"total":71080.62195,"location":93000.0},{"month":"January","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":8145.0,"total":71080.62195,"location":93000.0},{"month":"January","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":15125.0,"total":71080.62195,"location":93000.0},{"month":"January","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":14370.5,"total":71080.62195,"location":93000.0},{"month":"January","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":12195.121950000006,"total":71080.62195,"location":93000.0},{"month":"February","apartment":"City Center 5B","gain":17600.0,"total":94544.44,"location":93000.0},{"month":"February","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":11200.0,"total":94544.44,"location":93000.0},{"month":"February","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":31010.0,"total":94544.44,"location":93000.0},{"month":"February","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":22600.0,"total":94544.44,"location":93000.0},{"month":"February","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":8600.0,"total":94544.44,"location":93000.0},{"month":"February","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":3534.44,"total":94544.44,"location":93000.0},{"month":"March","apartment":"City Center 5B","gain":18326.0,"total":39306.0,"location":93000.0},{"month":"March","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":1600.0,"total":39306.0,"location":93000.0},{"month":"March","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":8330.0,"total":39306.0,"location":93000.0},{"month":"March","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":850.0,"total":39306.0,"location":93000.0},{"month":"March","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":8200.0,"total":39306.0,"location":93000.0},{"month":"March","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":2000.0,"total":39306.0,"location":93000.0},{"month":"April","apartment":"City Center 5B","gain":9120.0,"total":95971.8,"location":93000.0},{"month":"April","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":9895.5,"total":95971.8,"location":93000.0},{"month":"April","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":26365.5,"total":95971.8,"location":93000.0},{"month":"April","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":11300.0,"total":95971.8,"location":93000.0},{"month":"April","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":26090.8,"total":95971.8,"location":93000.0},{"month":"April","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":13200.0,"total":95971.8,"location":93000.0},{"month":"May","apartment":"City Center 5B","gain":26752.400000000005,"total":156166.80000000002,"location":93000.0},{"month":"May","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":19040.0,"total":156166.80000000002,"location":93000.0},{"month":"May","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":36679.4,"total":156166.80000000002,"location":93000.0},{"month":"May","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":28302.0,"total":156166.80000000002,"location":93000.0},{"month":"May","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":29693.0,"total":156166.80000000002,"location":93000.0},{"month":"May","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":15700.0,"total":156166.80000000002,"location":93000.0},{"month":"June","apartment":"City Center 5B","gain":0,"total":0,"location":93000.0},{"month":"June","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"June","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"June","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"June","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"June","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":0,"total":0,"location":93000.0},{"month":"July","apartment":"City Center 5B","gain":0,"total":0,"location":93000.0},{"month":"July","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"July","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"July","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"July","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"July","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":0,"total":0,"location":93000.0},{"month":"August","apartment":"City Center 5B","gain":0,"total":0,"location":93000.0},{"month":"August","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"August","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"August","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"August","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"August","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":0,"total":0,"location":93000.0},{"month":"September","apartment":"City Center 5B","gain":0,"total":0,"location":93000.0},{"month":"September","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"September","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"September","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"September","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"September","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":0,"total":0,"location":93000.0},{"month":"October","apartment":"City Center 5B","gain":0,"total":0,"location":93000.0},{"month":"October","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"October","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"October","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"October","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"October","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":0,"total":0,"location":93000.0},{"month":"November","apartment":"City Center 5B","gain":0,"total":0,"location":93000.0},{"month":"November","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"November","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"November","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"November","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"November","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":0,"total":0,"location":93000.0},{"month":"December","apartment":"City Center 5B","gain":0,"total":0,"location":93000.0},{"month":"December","apartment":"HP 10TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"December","apartment":"HR 10TH N\u00b013 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"December","apartment":"HR 12TH N\u00b011 - 1 ROOM","gain":0,"total":0,"location":93000.0},{"month":"December","apartment":"HR 09TH N\u00b005 - 2 ROOM","gain":0,"total":0,"location":93000.0},{"month":"December","apartment":"HR 09TH N\u00b008 - 1ROOM","gain":0,"total":0,"location":93000.0}]}
+;
+
+const APTS = [
+  'City Center 5B',
+  'HP 10TH N°11 - 1 ROOM',
+  'HR 10TH N°13 - 2 ROOM',
+  'HR 12TH N°11 - 1 ROOM',
+  'HR 09TH N°05 - 2 ROOM',
+  'HR 09TH N°08 - 1ROOM'
+];
+const APT_COLS = ['City Center 5B','HP 10TH N°11 - 1 ROOM','HR 10TH N°13 - 2 ROOM','HR 12TH N°11 - 1 ROOM','HR 09TH N°05 - 2 ROOM','HR 09TH N°08 - 1ROOM'];
+const MONTHS = ['January','February','March','April','May','June','July','August','Septembre','October','Novembre','December'];
+const MONTHS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const APT_COLORS = ['#D4AF6E','#7EC8A0','#8AA8E0','#E09E78','#B07EC8','#E0D278'];
+
+// Deep clone seed data to allow mutations
+let planningData = JSON.parse(JSON.stringify(SEED.planning));
+let balanceData = JSON.parse(JSON.stringify(SEED.balance));
+let gainData = JSON.parse(JSON.stringify(SEED.gain));
+
+// Manual reservations storage (localStorage)
+const LS_KEY = 'hilton_manual_res';
+let manualRes = [];
+
+function loadFromStorage(){
+  try{ manualRes = JSON.parse(localStorage.getItem(LS_KEY)||'[]'); } catch(e){manualRes=[];}
+  // Merge manual into planningData
+  applyManualToPlanningData();
+}
+
+function saveToStorage(){
+  localStorage.setItem(LS_KEY, JSON.stringify(manualRes));
+}
+
+function applyManualToPlanningData(){
+  // Reset planningData to seed
+  planningData = JSON.parse(JSON.stringify(SEED.planning));
+  // Apply manual entries
+  manualRes.forEach(r => {
+    const checkin = new Date(r.checkin);
+    const checkout = new Date(r.checkout);
+    for(let d = new Date(checkin); d < checkout; d.setDate(d.getDate()+1)){
+      const dStr = d.toISOString().split('T')[0];
+      const month = getMonthForDate(dStr);
+      if(!month) continue;
+      if(!planningData[month]) planningData[month] = [];
+      let dayEntry = planningData[month].find(x => x.date === dStr);
+      if(!dayEntry){
+        dayEntry = {date:dStr, rooms:[], total:0};
+        planningData[month].push(dayEntry);
+        planningData[month].sort((a,b) => a.date.localeCompare(b.date));
+      }
+      // Check if apt already has entry for this day (don't duplicate)
+      const existing = dayEntry.rooms.find(x => x.apartment === r.apartment && x._manualId === r.id);
+      if(!existing){
+        dayEntry.rooms.push({apartment:r.apartment, guest:r.guest, amount:r.amount, payment:r.payment, _manualId:r.id, _manual:true});
+      }
+      // Recompute total
+      dayEntry.total = dayEntry.rooms.reduce((s,x)=>s+(x.amount||0),0);
+    }
+  });
+}
+
+function getMonthForDate(dStr){
+  const d = new Date(dStr);
+  const m = d.getMonth(); // 0-based
+  return MONTHS[m] || null;
+}
+
+// Edits to seed data (cell edits)
+const LS_EDITS = 'hilton_cell_edits';
+let cellEdits = {};
+
+function loadEdits(){
+  try{ cellEdits = JSON.parse(localStorage.getItem(LS_EDITS)||'{}'); } catch(e){cellEdits={};}
+  applyEdits();
+}
+
+function saveEdits(){ localStorage.setItem(LS_EDITS, JSON.stringify(cellEdits)); }
+
+function applyEdits(){
+  // cellEdits: { 'date|apt': {guest, amount, payment, deleted} }
+  // We need to re-apply after seed is loaded
+  // This is handled in applyManualToPlanningData then calling applyEdits
+  Object.entries(cellEdits).forEach(([key, edit]) => {
+    const [date, apt] = key.split('|');
+    const month = getMonthForDate(date);
+    if(!month || !planningData[month]) return;
+    const dayEntry = planningData[month].find(x => x.date === date);
+    if(!dayEntry) return;
+    const idx = dayEntry.rooms.findIndex(x => x.apartment === apt && !x._manual);
+    if(edit.deleted && idx !== -1){
+      dayEntry.rooms.splice(idx, 1);
+    } else if(!edit.deleted && idx !== -1){
+      dayEntry.rooms[idx].guest = edit.guest;
+      dayEntry.rooms[idx].amount = edit.amount;
+      dayEntry.rooms[idx].payment = edit.payment;
+    }
+    dayEntry.total = dayEntry.rooms.reduce((s,x)=>s+(x.amount||0),0);
+  });
+}
+
+function fullReload(){
+  planningData = JSON.parse(JSON.stringify(SEED.planning));
+  applyManualToPlanningData();
+  applyEdits();
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+const fmt = n => Number(n||0).toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:0}) + ' MAD';
+const fmtK = n => { if(n>=1000000) return (n/1000000).toFixed(1)+'M'; if(n>=1000) return (n/1000).toFixed(0)+'K'; return Math.round(n)+''; };
+const payClass = p => ({'Booking':'booking','Cash':'cash','Airbnb':'airbnb','airbnb':'airbnb','Bank transfer':'bank','':'unknown'}[p]||'unknown');
+const payBadge = p => ({'Booking':'b-book','Cash':'b-cash','Airbnb':'b-air','airbnb':'b-air','Bank transfer':'b-bank','Reste':'b-rest'}[p]||'b-rest');
+
+function notify(msg, type='success'){
+  const n = document.getElementById('notif');
+  n.textContent = (type==='success'?'✓ ':'✕ ') + msg;
+  n.className = 'notif show '+type;
+  setTimeout(()=>n.className='notif', 2800);
+}
+
+function closeOverlay(id){ document.getElementById(id).classList.remove('show'); }
+
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>{if(b.onclick&&b.onclick.toString().includes(id))b.classList.add('active')});
+  if(id==='planning') renderPlanning();
+  if(id==='occupancy') renderOcc();
+  if(id==='balance') renderBalance();
+  if(id==='gain') renderGain();
+  if(id==='reservations'){ renderResList(); updateGuestSuggestions(); }
+}
+
+// ============================================================
+// COMPUTE STATS
+// ============================================================
+function computeMonthlyRevenue(){
+  return MONTHS.map(m => {
+    const days = planningData[m]||[];
+    return days.reduce((s,d)=>s+d.total,0);
+  });
+}
+
+function computeAptRevenue(){
+  const rev = {};
+  APTS.forEach(a=>rev[a]=0);
+  MONTHS.forEach(m=>{
+    (planningData[m]||[]).forEach(d=>{
+      d.rooms.forEach(r=>{ if(rev[r.apartment]!==undefined) rev[r.apartment]+=(r.amount||0); });
+    });
+  });
+  return rev;
+}
+
+function computePayBreakdown(){
+  const b = {Booking:0,Cash:0,Airbnb:0,'Bank transfer':0,Other:0};
+  MONTHS.forEach(m=>{
+    (planningData[m]||[]).forEach(d=>{
+      d.rooms.forEach(r=>{
+        const k = ['Booking','Cash','Airbnb','Bank transfer'].includes(r.payment)?r.payment:'Other';
+        b[k]+=(r.amount||0);
+      });
+    });
+  });
+  return b;
+}
+
+function computeOccRate(){
+  let occ=0, total=0;
+  MONTHS.forEach(m=>{
+    const days = planningData[m]||[];
+    days.forEach(d=>{
+      APTS.forEach(a=>{
+        total++;
+        if(d.rooms.find(r=>r.apartment===a && (r.amount>0||r.guest))) occ++;
+      });
+    });
+  });
+  return total>0?Math.round(occ/total*100):0;
+}
+
+function countReservations(){
+  let n=0;
+  MONTHS.forEach(m=>{ (planningData[m]||[]).forEach(d=>n+=d.rooms.length); });
+  return n;
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+let charts = {};
+function destroyChart(id){ if(charts[id]){charts[id].destroy();delete charts[id];} }
+
+function initDashboard(){
+  const monthly = computeMonthlyRevenue();
+  const total = monthly.reduce((s,v)=>s+v,0);
+  const bestMonthIdx = monthly.indexOf(Math.max(...monthly));
+  const occ = computeOccRate();
+  const resCount = countReservations();
+  const aptRev = computeAptRevenue();
+
+  document.getElementById('kv-total').textContent = fmtK(total)+' MAD';
+  document.getElementById('kv-bm').textContent = MONTHS_FR[bestMonthIdx];
+  document.getElementById('kv-bm-s').textContent = fmtK(monthly[bestMonthIdx])+' MAD';
+  document.getElementById('kv-occ').textContent = occ+'%';
+  document.getElementById('kv-res').textContent = resCount;
+
+  document.getElementById('sb-total').textContent = fmtK(total)+' MAD';
+  document.getElementById('sb-occ').textContent = occ+'% occupation · '+resCount+' nuits';
+
+  // Monthly stacked bar
+  destroyChart('monthly');
+  const ctx1 = document.getElementById('ch-monthly').getContext('2d');
+  const aptDatasets = APTS.map((a,i)=>({
+    label: a.replace('- 1 ROOM','').replace('- 2 ROOM','').trim(),
+    data: MONTHS.map(m=>{
+      const days = planningData[m]||[];
+      return days.reduce((s,d)=>s+(d.rooms.find(r=>r.apartment===a)?.amount||0),0);
+    }),
+    backgroundColor: APT_COLORS[i]+'99',
+    borderColor: APT_COLORS[i],
+    borderWidth:1
+  }));
+  charts['monthly'] = new Chart(ctx1,{type:'bar',data:{labels:MONTHS_FR,datasets:aptDatasets},options:{responsive:true,plugins:{legend:{labels:{color:'#9A9080',boxWidth:12,font:{size:10}}}},scales:{x:{stacked:true,ticks:{color:'#5A5248'},grid:{color:'rgba(255,255,255,.04)'}},y:{stacked:true,ticks:{color:'#5A5248',callback:v=>fmtK(v)},grid:{color:'rgba(255,255,255,.04)'}}}}});
+
+  // Payment donut
+  destroyChart('pay');
+  const payData = computePayBreakdown();
+  const ctx2 = document.getElementById('ch-pay').getContext('2d');
+  charts['pay'] = new Chart(ctx2,{type:'doughnut',data:{labels:Object.keys(payData),datasets:[{data:Object.values(payData),backgroundColor:['#3D9B7A','#8B7340','#C4415A','#3D6B9B','#555'],borderWidth:1,borderColor:'#111'}]},options:{responsive:true,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:'#9A9080',boxWidth:10,font:{size:10}}}}}});
+
+  // Daily line
+  destroyChart('daily');
+  const dailyLabels=[], dailyVals=[];
+  MONTHS.forEach(m=>{
+    (planningData[m]||[]).forEach(d=>{
+      dailyLabels.push(d.date.slice(5));
+      dailyVals.push(d.total);
+    });
+  });
+  const ctx3 = document.getElementById('ch-daily').getContext('2d');
+  charts['daily'] = new Chart(ctx3,{type:'line',data:{labels:dailyLabels,datasets:[{data:dailyVals,borderColor:'#D4AF6E',backgroundColor:'rgba(212,175,110,.08)',tension:.3,pointRadius:0,borderWidth:1.5,fill:true}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#5A5248',maxTicksLimit:20,font:{size:9}},grid:{color:'rgba(255,255,255,.03)'}},y:{ticks:{color:'#5A5248',callback:v=>fmtK(v)},grid:{color:'rgba(255,255,255,.04)'}}}}});
+
+  // Apt horizontal bar
+  destroyChart('apt');
+  const ctx4 = document.getElementById('ch-apt').getContext('2d');
+  const aptLabels = APTS.map(a=>a.replace('- 1 ROOM','').replace('- 2 ROOM','').trim());
+  const aptVals = APTS.map(a=>aptRev[a]);
+  charts['apt'] = new Chart(ctx4,{type:'bar',data:{labels:aptLabels,datasets:[{data:aptVals,backgroundColor:APT_COLORS.map(c=>c+'AA'),borderColor:APT_COLORS,borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#5A5248',callback:v=>fmtK(v)},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#9A9080',font:{size:11}},grid:{color:'rgba(255,255,255,.02)'}}}}});
+}
+
+// ============================================================
+// SIDEBAR MONTHS
+// ============================================================
+function buildMonthNav(){
+  const container = document.getElementById('month-nav');
+  container.innerHTML = '<div class="nav-label">Mois</div>';
+  const monthly = computeMonthlyRevenue();
+  MONTHS.forEach((m,i)=>{
+    const el = document.createElement('div');
+    el.className = 'month-item';
+    el.dataset.m = m;
+    el.innerHTML = `<span>${MONTHS_FR[i]}</span><span class="mv">${fmtK(monthly[i])}</span>`;
+    el.onclick = ()=>{
+      document.querySelectorAll('.month-item').forEach(x=>x.classList.remove('am'));
+      el.classList.add('am');
+      document.getElementById('plan-month').value = m;
+      document.getElementById('occ-month').value = m;
+      goPage('planning');
+      renderPlanning();
+    };
+    container.appendChild(el);
+  });
+}
+
+// ============================================================
+// PLANNING
+// ============================================================
+function renderPlanning(){
+  const month = document.getElementById('plan-month').value;
+  const days = (planningData[month]||[]).filter(d=>!d.date.includes('Total'));
+  const tbody = document.getElementById('plan-tbody');
+  tbody.innerHTML = '';
+
+  // KPIs
+  const total = days.reduce((s,d)=>s+d.total,0);
+  let occ=0,resCount=0;
+  days.forEach(d=>{ APTS.forEach(a=>{ if(d.rooms.find(r=>r.apartment===a&&r.amount>0)) occ++; }); resCount+=d.rooms.length; });
+  const totalSlots = days.length*APTS.length;
+  const kpiEl = document.getElementById('plan-kpis');
+  kpiEl.innerHTML = `
+    <div class="kpi"><div class="kpi-l">Revenus du mois</div><div class="kpi-v">${fmtK(total)} MAD</div></div>
+    <div class="kpi"><div class="kpi-l">Nuitées</div><div class="kpi-v">${resCount}</div></div>
+    <div class="kpi"><div class="kpi-l">Occupation</div><div class="kpi-v">${totalSlots?Math.round(occ/totalSlots*100):0}%</div></div>
+    <div class="kpi"><div class="kpi-l">Jours enregistrés</div><div class="kpi-v">${days.length}</div></div>
+  `;
+
+  days.forEach(d => {
+    const tr = document.createElement('tr');
+    const dateLabel = new Date(d.date).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    let cells = `<td class="cell-date">${dateLabel}</td>`;
+    APT_COLS.forEach(apt => {
+      const room = d.rooms.find(r => r.apartment === apt);
+      if(room && room.guest){
+        const pc = payClass(room.payment);
+        cells += `<td><div class="room-pill ${pc}" onclick="openEdit('${d.date}','${apt.replace(/'/g,"\'")}')">
+          <div class="rp-name">${room.guest}</div>
+          <div class="rp-amt">${room.amount>0?Math.round(room.amount)+' MAD':''}</div>
+          <div class="rp-pay">${room.payment||''}</div>
+        </div></td>`;
+      } else {
+        cells += `<td><div class="room-pill empty" onclick="openAdd('${d.date}','${apt.replace(/'/g,"\'")}')">+ Ajouter</div></td>`;
+      }
+    });
+    cells += `<td class="cell-total">${d.total>0?Math.round(d.total).toLocaleString('fr-FR'):''}</td>`;
+    tr.innerHTML = cells;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================================
+// EDIT MODAL
+// ============================================================
+function openEdit(date, apt){
+  const month = getMonthForDate(date);
+  const dayEntry = (planningData[month]||[]).find(d=>d.date===date);
+  const room = dayEntry?.rooms.find(r=>r.apartment===apt);
+  if(!room) return;
+  document.getElementById('edit-date').value = date;
+  document.getElementById('edit-apt').value = apt;
+  document.getElementById('edit-title').textContent = 'Modifier — '+apt;
+  document.getElementById('edit-info').innerHTML = `<strong>${new Date(date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</strong> · ${apt}`;
+  document.getElementById('edit-guest').value = room.guest||'';
+  document.getElementById('edit-amount').value = room.amount||'';
+  document.getElementById('edit-payment').value = room.payment||'Cash';
+  document.getElementById('edit-overlay').classList.add('show');
+}
+
+function saveEdit(){
+  const date = document.getElementById('edit-date').value;
+  const apt = document.getElementById('edit-apt').value;
+  const guest = document.getElementById('edit-guest').value.trim();
+  const amount = parseFloat(document.getElementById('edit-amount').value)||0;
+  const payment = document.getElementById('edit-payment').value;
+
+  const month = getMonthForDate(date);
+  if(!month) return;
+  const dayEntry = (planningData[month]||[]).find(d=>d.date===date);
+  if(!dayEntry) return;
+  const room = dayEntry.rooms.find(r=>r.apartment===apt);
+  if(!room) return;
+
+  // Check if manual
+  if(room._manual){
+    const mr = manualRes.find(r=>r.id===room._manualId);
+    if(mr){ mr.guest=guest; mr.amount=amount; mr.payment=payment; saveToStorage(); }
+  } else {
+    const key = `${date}|${apt}`;
+    cellEdits[key] = {guest,amount,payment};
+    saveEdits();
+  }
+
+  fullReload();
+  closeOverlay('edit-overlay');
+  renderPlanning();
+  initDashboard();
+  buildMonthNav();
+  notify('Réservation modifiée');
+}
+
+function deleteEntry(){
+  const date = document.getElementById('edit-date').value;
+  const apt = document.getElementById('edit-apt').value;
+  const month = getMonthForDate(date);
+  const dayEntry = (planningData[month]||[]).find(d=>d.date===date);
+  const room = dayEntry?.rooms.find(r=>r.apartment===apt);
+  if(!room) return;
+
+  if(room._manual){
+    manualRes = manualRes.filter(r=>r.id!==room._manualId);
+    saveToStorage();
+  } else {
+    const key = `${date}|${apt}`;
+    cellEdits[key] = {deleted:true};
+    saveEdits();
+  }
+
+  fullReload();
+  closeOverlay('edit-overlay');
+  renderPlanning();
+  initDashboard();
+  buildMonthNav();
+  notify('Réservation supprimée','success');
+}
+
+// ============================================================
+// ADD MODAL (empty cell)
+// ============================================================
+function openAdd(date, apt){
+  document.getElementById('add-date').value = date;
+  document.getElementById('add-apt').value = apt;
+  document.getElementById('add-title').textContent = 'Ajouter — '+apt;
+  document.getElementById('add-info').innerHTML = `<strong>${new Date(date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</strong> · ${apt}`;
+  document.getElementById('add-guest').value = '';
+  document.getElementById('add-amount').value = '';
+  document.getElementById('add-overlay').classList.add('show');
+}
+
+function saveAdd(){
+  const date = document.getElementById('add-date').value;
+  const apt = document.getElementById('add-apt').value;
+  const guest = document.getElementById('add-guest').value.trim();
+  const amount = parseFloat(document.getElementById('add-amount').value)||0;
+  const payment = document.getElementById('add-payment').value;
+  if(!guest){ notify('Veuillez saisir un nom de client','error'); return; }
+
+  // Single day reservation
+  const id = Date.now()+'_'+Math.random().toString(36).slice(2,7);
+  const checkout = new Date(date);
+  checkout.setDate(checkout.getDate()+1);
+  manualRes.push({id, apartment:apt, guest, amount, payment, checkin:date, checkout:checkout.toISOString().split('T')[0]});
+  saveToStorage();
+  fullReload();
+  closeOverlay('add-overlay');
+  renderPlanning();
+  initDashboard();
+  buildMonthNav();
+  notify('Réservation ajoutée');
+}
+
+// ============================================================
+// NEW RESERVATION FORM (multi-day)
+// ============================================================
+function updatePreview(){
+  const ci = document.getElementById('f-checkin').value;
+  const co = document.getElementById('f-checkout').value;
+  const prev = document.getElementById('sejour-preview');
+  if(!ci||!co){prev.style.display='none';return;}
+  const d1=new Date(ci),d2=new Date(co);
+  const nights = Math.round((d2-d1)/(1000*60*60*24));
+  if(nights<=0){prev.style.display='none';return;}
+  const amt = parseFloat(document.getElementById('f-amount').value)||0;
+  prev.style.display='block';
+  prev.innerHTML = `Séjour de <strong>${nights} nuit${nights>1?'s':''}</strong> · Du <strong>${d1.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</strong> au <strong>${d2.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</strong>${amt>0?' · Total estimé : <strong>'+(amt*nights).toLocaleString('fr-FR')+' MAD</strong>':''}`;
+}
+
+function submitReservation(){
+  const apt = document.getElementById('f-apt').value;
+  const guest = document.getElementById('f-guest').value.trim();
+  const checkin = document.getElementById('f-checkin').value;
+  const checkout = document.getElementById('f-checkout').value;
+  const amount = parseFloat(document.getElementById('f-amount').value)||0;
+  const payment = document.getElementById('f-payment').value;
+  if(!apt){ notify('Veuillez choisir un appartement','error'); return; }
+  if(!guest){ notify('Veuillez saisir le nom du client','error'); return; }
+  if(!checkin||!checkout){ notify('Veuillez saisir les dates','error'); return; }
+  const d1=new Date(checkin),d2=new Date(checkout);
+  if(d2<=d1){ notify('Date de départ invalide','error'); return; }
+  const nights = Math.round((d2-d1)/(1000*60*60*24));
+  const id = Date.now()+'_'+Math.random().toString(36).slice(2,7);
+  manualRes.push({id, apartment:apt, guest, amount, payment, checkin, checkout});
+  saveToStorage();
+  fullReload();
+  clearForm();
+  renderResList();
+  initDashboard();
+  buildMonthNav();
+  notify(`${guest} — ${nights} nuit${nights>1?'s':''} enregistrées ✦`);
+}
+
+function clearForm(){
+  ['f-apt','f-guest','f-amount','f-checkin','f-checkout'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el.tagName==='SELECT') el.value=''; else el.value='';
+  });
+  document.getElementById('sejour-preview').style.display='none';
+}
+
+function clearManual(){
+  manualRes = [];
+  cellEdits = {};
+  saveToStorage();
+  saveEdits();
+  fullReload();
+  renderResList();
+  initDashboard();
+  buildMonthNav();
+  notify('Réservations manuelles effacées');
+}
+
+function renderResList(){
+  const search = document.getElementById('res-search').value.toLowerCase();
+  const aptFilter = document.getElementById('res-apt-filter').value;
+  let list = [...manualRes].reverse();
+  if(search) list = list.filter(r=>r.guest.toLowerCase().includes(search)||r.apartment.toLowerCase().includes(search));
+  if(aptFilter) list = list.filter(r=>r.apartment===aptFilter);
+
+  document.getElementById('res-cnt').textContent = '('+manualRes.length+')';
+  const tbody = document.getElementById('res-tbody');
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px">Aucune réservation enregistrée</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(r=>{
+    const d1=new Date(r.checkin),d2=new Date(r.checkout);
+    const nights=Math.round((d2-d1)/(1000*60*60*24));
+    const total=r.amount*nights;
+    const bclass = payBadge(r.payment);
+    return `<tr>
+      <td style="font-weight:500">${r.guest}</td>
+      <td style="color:var(--text2);font-size:12px">${r.apartment}</td>
+      <td>${d1.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})}</td>
+      <td>${d2.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})}</td>
+      <td style="text-align:center">${nights}</td>
+      <td style="font-family:'Playfair Display',serif;color:var(--gold)">${total>0?total.toLocaleString('fr-FR'):'-'}</td>
+      <td><span class="badge ${bclass}">${r.payment}</span></td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteManual('${r.id}')">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function deleteManual(id){
+  manualRes = manualRes.filter(r=>r.id!==id);
+  saveToStorage();
+  fullReload();
+  renderResList();
+  initDashboard();
+  buildMonthNav();
+  notify('Réservation supprimée');
+}
+
+function updateGuestSuggestions(){
+  const names = new Set();
+  MONTHS.forEach(m=>{ (planningData[m]||[]).forEach(d=>d.rooms.forEach(r=>{ if(r.guest) names.add(r.guest); })); });
+  const dl = document.getElementById('guest-datalist');
+  dl.innerHTML = [...names].sort().map(n=>`<option value="${n}">`).join('');
+}
+
+// ============================================================
+// OCCUPANCY
+// ============================================================
+function renderOcc(){
+  const month = document.getElementById('occ-month').value;
+  const days = (planningData[month]||[]).filter(d=>!d.date.includes('Total'));
+
+  let totalOcc=0, totalSlots=days.length*APTS.length, totalRev=0;
+  APTS.forEach(a=>{ days.forEach(d=>{ if(d.rooms.find(r=>r.apartment===a&&r.amount>0)) totalOcc++; }); });
+  days.forEach(d=>totalRev+=d.total);
+
+  const mi = MONTHS.indexOf(month);
+  document.getElementById('occ-kpis').innerHTML = `
+    <div class="kpi"><div class="kpi-l">Occupation globale</div><div class="kpi-v">${totalSlots?Math.round(totalOcc/totalSlots*100):0}%</div></div>
+    <div class="kpi"><div class="kpi-l">Revenus du mois</div><div class="kpi-v">${fmtK(totalRev)} MAD</div></div>
+    <div class="kpi"><div class="kpi-l">Nuits occupées</div><div class="kpi-v">${totalOcc}</div></div>
+    <div class="kpi"><div class="kpi-l">Nuits disponibles</div><div class="kpi-v">${totalSlots-totalOcc}</div></div>
+  `;
+
+  const grid = document.getElementById('occ-grid');
+  grid.innerHTML = '';
+  APTS.forEach(apt=>{
+    let aptOcc=0, aptRev=0;
+    const aptDays = days.map(d=>{
+      const r = d.rooms.find(x=>x.apartment===apt);
+      if(r&&r.amount>0){ aptOcc++; aptRev+=r.amount; return {day:new Date(d.date).getDate(),room:r}; }
+      return {day:new Date(d.date).getDate(),room:null};
+    });
+    const el = document.createElement('div');
+    el.className = 'occ-apt';
+    el.innerHTML = `
+      <div class="occ-apt-hdr">
+        <div class="occ-apt-name">${apt}</div>
+        <div class="occ-stats"><span>${Math.round(aptOcc/days.length*100)}% occ.</span><span>${fmtK(aptRev)} MAD</span></div>
+      </div>
+      <div class="occ-days">
+        ${aptDays.map(x=>{
+          const cls = x.room ? payClass(x.room.payment) : 'vt';
+          const shortCls = {booking:'bk',cash:'ca',airbnb:'ab',bank:'bn',unknown:'vt',vt:'vt'}[cls]||'vt';
+          const tip = x.room ? `onmouseenter="showTip(event,'${(x.room.guest||'').replace(/'/g,"\'")}','${Math.round(x.room.amount||0)} MAD','${x.room.payment||''}')" onmouseleave="hideTip()"` : '';
+          return `<div class="day-sq ${shortCls}" ${tip}>${x.day}</div>`;
+        }).join('')}
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+
+// ============================================================
+// BALANCE
+// ============================================================
+let balFilter = 'all';
+function setBalFilter(f, el){
+  balFilter = f;
+  document.querySelectorAll('.filter-tag').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  renderBalance();
+}
+
+function renderBalance(){
+  const search = (document.getElementById('bal-search').value||'').toLowerCase();
+  let list = [...balanceData];
+  if(search) list = list.filter(b=>b.name.toLowerCase().includes(search));
+  if(balFilter!=='all') list = list.filter(b=>b.type.toLowerCase().includes(balFilter.toLowerCase()));
+
+  const total = balanceData.reduce((s,b)=>s+b.amount,0);
+  const airTotal = balanceData.filter(b=>b.type.toLowerCase().includes('airbnb')).reduce((s,b)=>s+b.amount,0);
+  document.getElementById('bkv-total').textContent = fmtK(total)+' MAD';
+  document.getElementById('bkv-air').textContent = fmtK(airTotal)+' MAD';
+  document.getElementById('bkv-count').textContent = balanceData.length;
+
+  const tbody = document.getElementById('bal-tbody');
+  tbody.innerHTML = list.map(b=>{
+    const bc = payBadge(b.type);
+    return `<tr>
+      <td style="color:var(--text2)">${new Date(b.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}</td>
+      <td style="font-weight:500">${b.name}</td>
+      <td style="font-family:'Playfair Display',serif;color:var(--gold)">${b.amount.toLocaleString('fr-FR')}</td>
+      <td><span class="badge ${bc}">${b.type}</span></td>
+      <td style="color:${b.back==='Yes'?'var(--green)':'var(--text3)'};font-size:12px">${b.back==='Yes'?'✓ Oui':'Non'}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:20px">Aucun résultat</td></tr>';
+}
+
+// ============================================================
+// GAIN
+// ============================================================
+function renderGain(){
+  const byMonth = {};
+  MONTHS.forEach(m=>byMonth[m]={total:0,apts:{}});
+  gainData.forEach(g=>{
+    if(byMonth[g.month]){
+      byMonth[g.month].total = g.total;
+      byMonth[g.month].apts[g.apartment] = g.gain;
+    }
+  });
+
+  let grandTotal = 0, aptTotals = {};
+  APTS.forEach(a=>aptTotals[a]=0);
+  MONTHS.forEach(m=>{
+    const d = byMonth[m];
+    grandTotal += d.total;
+    APTS.forEach(a=>{ aptTotals[a]+=(d.apts[a]||0); });
+  });
+
+  const bestApt = Object.entries(aptTotals).sort((a,b)=>b[1]-a[1])[0];
+  const bestMonth = MONTHS.reduce((bm,m)=>byMonth[m].total>byMonth[bm].total?m:bm, MONTHS[0]);
+
+  document.getElementById('gkv-total').textContent = fmtK(grandTotal)+' MAD';
+  document.getElementById('gkv-apt').textContent = bestApt?bestApt[0].replace('- 1 ROOM','').replace('- 2 ROOM','').trim():'—';
+  document.getElementById('gkv-apts').textContent = bestApt?fmtK(bestApt[1])+' MAD':'—';
+  document.getElementById('gkv-bm').textContent = MONTHS_FR[MONTHS.indexOf(bestMonth)]||'—';
+
+  // Chart
+  destroyChart('gain');
+  const ctx = document.getElementById('ch-gain').getContext('2d');
+  const gainMonths = MONTHS.filter(m=>byMonth[m].total>0);
+  charts['gain'] = new Chart(ctx,{type:'bar',data:{
+    labels:gainMonths.map(m=>MONTHS_FR[MONTHS.indexOf(m)]),
+    datasets:APTS.map((a,i)=>({
+      label:a.replace('- 1 ROOM','').replace('- 2 ROOM','').trim(),
+      data:gainMonths.map(m=>byMonth[m].apts[a]||0),
+      backgroundColor:APT_COLORS[i]+'99',borderColor:APT_COLORS[i],borderWidth:1
+    }))
+  },options:{responsive:true,plugins:{legend:{labels:{color:'#9A9080',boxWidth:10,font:{size:10}}}},scales:{x:{stacked:true,ticks:{color:'#5A5248'},grid:{color:'rgba(255,255,255,.04)'}},y:{stacked:true,ticks:{color:'#5A5248',callback:v=>fmtK(v)},grid:{color:'rgba(255,255,255,.04)'}}}}});
+
+  // Month cards
+  const gridEl = document.getElementById('gain-grid');
+  gridEl.innerHTML = '';
+  const maxAptGain = Math.max(...APTS.map(a=>aptTotals[a]));
+  MONTHS.forEach((m,i)=>{
+    const d = byMonth[m];
+    if(!d.total) return;
+    const el = document.createElement('div');
+    el.className = 'gain-month';
+    el.innerHTML = `
+      <div class="gain-m-title">${MONTHS_FR[i]}</div>
+      <div class="gain-m-info">Total : ${d.total.toLocaleString('fr-FR')} MAD · Location : 93 000 MAD · Solde : <strong style="color:${d.total>=93000?'var(--green)':'var(--red)'}">${(d.total-93000).toLocaleString('fr-FR')} MAD</strong></div>
+      ${APTS.map(a=>{
+        const v = d.apts[a]||0;
+        if(!v) return '';
+        const pct = maxAptGain>0?Math.round(v/maxAptGain*100):0;
+        return `<div class="gain-apt-row">
+          <div class="gain-apt-lbl">${a.replace('- 1 ROOM','').replace('- 2 ROOM','').trim()}</div>
+          <div style="text-align:right">
+            <div class="gain-apt-val">${v.toLocaleString('fr-FR')}</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
+          </div>
+        </div>`;
+      }).join('')}`;
+    gridEl.appendChild(el);
+  });
+}
+
+// ============================================================
+// TOOLTIP
+// ============================================================
+function showTip(e, name, amt, pay){
+  const tip = document.getElementById('tooltip');
+  document.getElementById('tip-name').textContent = name;
+  document.getElementById('tip-amt').textContent = amt;
+  document.getElementById('tip-pay').textContent = pay;
+  tip.style.display='block';
+  tip.style.left=(e.clientX+12)+'px';
+  tip.style.top=(e.clientY-10)+'px';
+}
+function hideTip(){ document.getElementById('tooltip').style.display='none'; }
+
+// ============================================================
+// INIT
+// ============================================================
+function init(){
+  loadFromStorage();
+  loadEdits();
+  fullReload();
+  buildMonthNav();
+  initDashboard();
+  renderBalance();
+  
+  // Set current month default
+  const curMonth = MONTHS[new Date().getMonth()];
+  document.getElementById('plan-month').value = curMonth;
+  document.getElementById('occ-month').value = curMonth;
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

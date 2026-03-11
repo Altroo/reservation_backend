@@ -52,8 +52,13 @@ urlpatterns = [
     path("api/health/", health_check, name="health-check"),
     # Account
     path("api/account/", include("account.urls")),
+    # Reservation
+    path(
+        "api/reservation/",
+        include(("reservation.urls", "reservation"), namespace="reservation"),
+    ),
     # Admin panel (obscured path for security)
-    path("gestion-interne-gf62/", admin.site.urls),
+    path("gestion-interne-bp37/", admin.site.urls),
 ]
 
 # Always serve static/media — nginx proxies these to Django

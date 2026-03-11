@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "dj_rest_auth",
     "simple_history",
+    "django_filters",
     "account.apps.AccountConfig",
+    "reservation.apps.ReservationConfig",
     "axes",
 ]
 

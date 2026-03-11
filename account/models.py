@@ -106,6 +106,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         db_index=True,
         help_text="Indique si le mot de passe par défaut a été défini.",
     )
+    # Per-user permission flags (staff users bypass these checks)
+    can_view = models.BooleanField("Peut consulter", default=True)
+    can_create = models.BooleanField("Peut créer", default=False)
+    can_edit = models.BooleanField("Peut modifier", default=False)
+    can_delete = models.BooleanField("Peut supprimer", default=False)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

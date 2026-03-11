@@ -1,0 +1,31 @@
+from django.urls import path
+from .views import (
+    ApartmentListView,
+    ReservationListCreateView,
+    ReservationDetailEditDeleteView,
+    BulkDeleteReservationView,
+    DashboardStatsView,
+    PlanningMonthView,
+    BalanceView,
+)
+
+urlpatterns = [
+    # Apartments
+    path("apartments/", ApartmentListView.as_view(), name="apartment-list"),
+    # Reservations
+    path("", ReservationListCreateView.as_view(), name="reservation-list-create"),
+    path(
+        "<int:pk>/",
+        ReservationDetailEditDeleteView.as_view(),
+        name="reservation-detail",
+    ),
+    path(
+        "bulk-delete/",
+        BulkDeleteReservationView.as_view(),
+        name="reservation-bulk-delete",
+    ),
+    # Dashboard & analytics
+    path("dashboard/", DashboardStatsView.as_view(), name="dashboard-stats"),
+    path("planning/", PlanningMonthView.as_view(), name="planning-month"),
+    path("balance/", BalanceView.as_view(), name="balance"),
+]

@@ -293,7 +293,9 @@ class SendPasswordResetView(APIView):
                             user.task_id_password_reset = None
                             user.save(update_fields=["task_id_password_reset"])
 
-                        mail_subject = "Renouvellement du mot de passe - E.B.H Réservation"
+                        mail_subject = (
+                            "Renouvellement du mot de passe - E.B.H Réservation"
+                        )
                         mail_template = "password_reset.html"
                         code = self.generate_random_code()
                         message = render_to_string(

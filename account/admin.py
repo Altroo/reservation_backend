@@ -41,8 +41,20 @@ class CustomUserAdmin(UserAdmin):
                 )
             },
         ),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser")}),
-        ("Date d'activité", {"fields": ("date_joined", "date_updated", "last_login")}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "can_view",
+                    "can_create",
+                    "can_edit",
+                    "can_delete",
+                )
+            },
+        ),
     )
     add_fieldsets = (
         (

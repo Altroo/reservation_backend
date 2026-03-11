@@ -126,6 +126,10 @@ class CreateAccountSerializer(serializers.ModelSerializer):
             "is_staff",
             "is_active",
             "default_password_set",
+            "can_view",
+            "can_create",
+            "can_edit",
+            "can_delete",
         ]
         extra_kwargs = {
             "password": {"write_only": True},
@@ -217,6 +221,10 @@ class ProfileGETSerializer(serializers.ModelSerializer):
             "default_password_set",
             "date_joined",
             "last_login",
+            "can_view",
+            "can_create",
+            "can_edit",
+            "can_delete",
         ]
 
 
@@ -425,6 +433,10 @@ class UsersListSerializer(serializers.ModelSerializer):
             "date_joined",
             "date_updated",
             "last_login",
+            "can_view",
+            "can_create",
+            "can_edit",
+            "can_delete",
         ]
         read_only_fields = ("date_joined", "date_updated", "last_login")
 
@@ -455,6 +467,10 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "date_joined",
             "date_updated",
             "last_login",
+            "can_view",
+            "can_create",
+            "can_edit",
+            "can_delete",
         ]
         read_only_fields = ("id", "date_joined", "date_updated", "last_login")
 
@@ -469,6 +485,10 @@ class UserPatchSerializer(ProfilePutSerializer):
             "is_staff",
             "date_joined",
             "last_login",
+            "can_view",
+            "can_create",
+            "can_edit",
+            "can_delete",
         ]
         read_only_fields = ("id", "email", "date_joined", "last_login")
 
