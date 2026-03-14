@@ -7,37 +7,20 @@ from account.models import CustomUser
 class Apartment(models.Model):
     """Représente un appartement / unité louée."""
 
-    code = models.CharField(
-        max_length=20,
-        unique=True,
-        verbose_name="Code",
-        help_text="Identifiant court de l'appartement (ex: 5B)",
-    )
-    name = models.CharField(
+    nom = models.CharField(
         max_length=100,
-        verbose_name="Nom",
-        help_text="Nom complet de l'appartement",
-    )
-    monthly_cost = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        default=0,
-        verbose_name="Coût mensuel",
-        help_text="Coût mensuel de location de l'appartement (MAD)",
-    )
-    is_active = models.BooleanField(
-        default=True,
-        verbose_name="Actif",
-        db_index=True,
+        unique=True,
+        verbose_name="Nom de l'appartement",
+        help_text="Nom de l'appartement",
     )
 
     class Meta:
         verbose_name = "Appartement"
         verbose_name_plural = "Appartements"
-        ordering = ("code",)
+        ordering = ("nom",)
 
     def __str__(self) -> str:
-        return f"{self.code} — {self.name}"
+        return self.nom
 
 
 class Reservation(models.Model):

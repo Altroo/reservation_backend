@@ -26,7 +26,7 @@ class ApartmentListView(APIView):
 
     @staticmethod
     def get(request):
-        apartments = Apartment.objects.filter(is_active=True)
+        apartments = Apartment.objects.all()
         serializer = ApartmentSerializer(apartments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -35,10 +35,9 @@ class ApartmentListView(APIView):
         nom = request.data.get("nom", "").strip()
         if not nom:
             raise ValidationError({"nom": [_("Ce champ est requis.")]})
-        code = nom[:20]
-        if Apartment.objects.filter(code=code).exists():
-            raise ValidationError({"nom": [_("Un appartement avec ce code existe déjà.")]})
-        apartment = Apartment.objects.create(code=code, name=nom, is_active=True)
+        if Apartment.objects.filter(nom=nom).exists():
+            raise ValidationError({"nom": [_("Un appartement avec ce nom existe déjà.")]})
+        apartment = Apartment.objects.create(nom=nom)
         serializer = ApartmentSerializer(apartment)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -182,21 +181,21 @@ class DashboardStatsView(APIView):
 
         # Revenue per apartment
         by_apartment = (
-            qs.values("apartment__code", "apartment__name")
+            qs.values("apartment__nom")
             .annotate(total=Sum("amount"), count=Count("id"))
-            .order_by("apartment__code")
+            .order_by("apartment__nom")
         )
 
         # Occupancy: occupied days per apartment per month
         apartments = list(
-            Apartment.objects.filter(is_active=True).values("id", "code", "name")
+            Apartment.objects.all().values("id", "nom")
         )
         occupancy_by_apt = {}
         for apt in apartments:
             apt_qs = qs.filter(apartment_id=apt["id"])
             occupied_days = sum(r.nights for r in apt_qs) if apt_qs.exists() else 0
-            occupancy_by_apt[apt["code"]] = {
-                "name": apt["name"],
+            occupancy_by_apt[apt["nom"]] = {
+                "nom": apt["nom"],
                 "occupied_days": occupied_days,
                 "reservation_count": apt_qs.count(),
                 "revenue": float(apt_qs.aggregate(t=Sum("amount"))["t"] or 0),
@@ -230,8 +229,7 @@ class DashboardStatsView(APIView):
                 ],
                 "by_apartment": [
                     {
-                        "code": item["apartment__code"],
-                        "name": item["apartment__name"],
+                        "nom": item["apartment__nom"],
                         "total": float(item["total"] or 0),
                         "count": item["count"],
                     }
@@ -274,17 +272,17 @@ class PlanningMonthView(APIView):
                 check_out__gt=month_start,
             )
             .select_related("apartment")
-            .order_by("apartment__code", "check_in")
+            .order_by("apartment__nom", "check_in")
         )
 
-        apartments = list(Apartment.objects.filter(is_active=True).order_by("code"))
+        apartments = list(Apartment.objects.all().order_by("nom"))
 
         result = {}
         for apt in apartments:
             apt_reservations = [r for r in qs if r.apartment_id == apt.id]
-            result[apt.code] = {
+            result[apt.nom] = {
                 "id": apt.id,
-                "name": apt.name,
+                "nom": apt.nom,
                 "reservations": ReservationListSerializer(
                     apt_reservations, many=True
                 ).data,
@@ -321,7 +319,7 @@ class BalanceView(APIView):
             payment_source__in=balance_sources,
         ).select_related("apartment")
 
-        apartments = list(Apartment.objects.filter(is_active=True).order_by("code"))
+        apartments = list(Apartment.objects.all().order_by("nom"))
 
         # Build monthly matrix per apartment
         matrix = {}
@@ -333,8 +331,8 @@ class BalanceView(APIView):
                 monthly[m]["total"] += float(r.amount)
                 monthly[m]["count"] += 1
             year_total = sum(v["total"] for v in monthly.values())
-            matrix[apt.code] = {
-                "name": apt.name,
+            matrix[apt.nom] = {
+                "nom": apt.nom,
                 "monthly": monthly,
                 "year_total": year_total,
             }
@@ -343,16 +341,11 @@ class BalanceView(APIView):
         total_returned = sum(float(r.amount) for r in qs if r.amount_returned)
         total_not_returned = sum(float(r.amount) for r in qs if not r.amount_returned)
 
-        total_monthly_cost = sum(
-            float(apt.monthly_cost) for apt in apartments
-        )
-
         # Individual reservations for the detail table
         reservations = [
             {
                 "id": r.id,
-                "apartment_code": r.apartment.code,
-                "apartment_name": r.apartment.name,
+                "apartment_nom": r.apartment.nom,
                 "guest_name": r.guest_name,
                 "check_in": str(r.check_in),
                 "check_out": str(r.check_out),
@@ -360,7 +353,7 @@ class BalanceView(APIView):
                 "payment_source": r.payment_source,
                 "amount_returned": r.amount_returned,
             }
-            for r in qs.order_by("apartment__code", "check_in")
+            for r in qs.order_by("apartment__nom", "check_in")
         ]
 
         return Response(
@@ -369,7 +362,6 @@ class BalanceView(APIView):
                 "apartments": matrix,
                 "total_returned": total_returned,
                 "total_not_returned": total_not_returned,
-                "total_monthly_cost": total_monthly_cost,
                 "reservations": reservations,
             },
             status=status.HTTP_200_OK,

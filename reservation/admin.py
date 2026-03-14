@@ -5,10 +5,9 @@ from .models import Apartment, Reservation
 
 
 class ApartmentAdmin(admin.ModelAdmin):
-    list_display = ("id", "code", "name", "is_active")
-    list_filter = ("is_active",)
-    search_fields = ("code", "name")
-    ordering = ("code",)
+    list_display = ("id", "nom")
+    search_fields = ("nom",)
+    ordering = ("nom",)
 
 
 class ReservationAdmin(SimpleHistoryAdmin):

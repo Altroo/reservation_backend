@@ -6,13 +6,12 @@ from .models import Apartment, Reservation
 class ApartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Apartment
-        fields = ["id", "code", "name", "monthly_cost", "is_active"]
+        fields = ["id", "nom"]
         read_only_fields = ["id"]
 
 
 class ReservationListSerializer(serializers.ModelSerializer):
-    apartment_name = serializers.CharField(source="apartment.name", read_only=True)
-    apartment_code = serializers.CharField(source="apartment.code", read_only=True)
+    apartment_nom = serializers.CharField(source="apartment.nom", read_only=True)
     payment_source_display = serializers.CharField(
         source="get_payment_source_display", read_only=True
     )
@@ -35,8 +34,7 @@ class ReservationListSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "apartment",
-            "apartment_name",
-            "apartment_code",
+            "apartment_nom",
             "guest_name",
             "check_in",
             "check_out",
@@ -53,8 +51,7 @@ class ReservationListSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "id",
-            "apartment_name",
-            "apartment_code",
+            "apartment_nom",
             "payment_source_display",
             "created_by_user",
             "created_by_user_name",
