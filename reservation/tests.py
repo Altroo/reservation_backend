@@ -49,8 +49,8 @@ def make_readonly_user(email="readonly@test.com", password="securepass123"):
     return user, client
 
 
-def make_apartment(code="5B", name="Hilton City Center 5B", is_active=True):
-    return Apartment.objects.create(code=code, name=name, is_active=is_active)
+def make_apartment(nom="5B"):
+    return Apartment.objects.create(nom=nom)
 
 
 def make_reservation(apartment, created_by=None, **kwargs):
@@ -74,33 +74,25 @@ def make_reservation(apartment, created_by=None, **kwargs):
 
 class TestApartmentModel:
     def test_str(self):
-        apt = Apartment(code="5B", name="Hilton City Center 5B")
-        assert str(apt) == "5B — Hilton City Center 5B"
+        apt = Apartment(nom="5B")
+        assert str(apt) == "5B"
 
-    def test_unique_code(self):
+    def test_unique_nom(self):
         from django.db import IntegrityError
 
-        make_apartment(code="UNQ")
+        make_apartment(nom="UNQ")
         with pytest.raises(IntegrityError):
-            make_apartment(code="UNQ")
-    def test_monthly_cost_default_is_zero(self):
-        apt = make_apartment(code="MC")
-        assert apt.monthly_cost == 0
-
-    def test_monthly_cost_set(self):
-        apt = Apartment.objects.create(code="MC2", name="Test", monthly_cost="15500.00")
-        apt.refresh_from_db()
-        assert float(apt.monthly_cost) == 15500.0
+            make_apartment(nom="UNQ")
 
 class TestReservationModel:
     def test_str(self):
-        apt = make_apartment(code="5B")
+        apt = make_apartment(nom="5B")
         user, _ = make_staff_user()
         r = make_reservation(apt, created_by=user, guest_name="Bob")
         assert "5B" in str(r) and "Bob" in str(r)
 
     def test_nights_property(self):
-        apt = make_apartment(code="N1")
+        apt = make_apartment(nom="N1")
         r = make_reservation(
             apt,
             check_in=date(2025, 3, 1),
@@ -110,12 +102,12 @@ class TestReservationModel:
 
     def test_checkout_after_checkin_valid(self):
         # No error expected
-        apt = make_apartment(code="V1")
+        apt = make_apartment(nom="V1")
         r = make_reservation(apt, check_in=date(2025, 4, 1), check_out=date(2025, 4, 2))
         assert r.pk is not None
 
     def test_payment_source_choices(self):
-        apt = make_apartment(code="PS")
+        apt = make_apartment(nom="PS")
         for src in ("Booking", "Airbnb", "Cash", "Bank"):
             r = make_reservation(
                 apt,
@@ -136,28 +128,13 @@ class TestApartmentListView:
         self.anon_client = APIClient()
 
     def test_list_apartments_returns_200(self):
-        make_apartment(code="AP1")
-        make_apartment(code="AP2")
+        make_apartment(nom="AP1")
+        make_apartment(nom="AP2")
         response = self.staff_client.get(self.url)
         assert response.status_code == status.HTTP_200_OK
-        codes = [a["code"] for a in response.data]
-        assert "AP1" in codes
-        assert "AP2" in codes
-
-    def test_apartment_includes_monthly_cost(self):
-        Apartment.objects.create(code="MCT", name="Test", monthly_cost="15500.00")
-        response = self.staff_client.get(self.url)
-        apt = next(a for a in response.data if a["code"] == "MCT")
-        assert apt["monthly_cost"] == "15500.00"
-
-    def test_inactive_apartments_excluded(self):
-        make_apartment(code="ACT", is_active=True)
-        make_apartment(code="INA", is_active=False)
-        response = self.staff_client.get(self.url)
-        assert response.status_code == status.HTTP_200_OK
-        codes = [a["code"] for a in response.data]
-        assert "ACT" in codes
-        assert "INA" not in codes
+        noms = [a["nom"] for a in response.data]
+        assert "AP1" in noms
+        assert "AP2" in noms
 
     def test_unauthenticated_returns_401(self):
         response = self.anon_client.get(self.url)
@@ -173,7 +150,7 @@ class TestReservationListCreateView:
         self.staff_user, self.staff_client = make_staff_user()
         self.readonly_user, self.readonly_client = make_readonly_user()
         self.anon_client = APIClient()
-        self.apt = make_apartment(code="LC")
+        self.apt = make_apartment(nom="LC")
 
     def test_list_returns_200(self):
         make_reservation(self.apt, created_by=self.staff_user)
@@ -296,7 +273,7 @@ class TestReservationDetailEditDeleteView:
         self.staff_user, self.staff_client = make_staff_user()
         self.readonly_user, self.readonly_client = make_readonly_user()
         self.anon_client = APIClient()
-        self.apt = make_apartment(code="DED")
+        self.apt = make_apartment(nom="DED")
         self.reservation = make_reservation(self.apt, created_by=self.staff_user)
         self.url = reverse(
             "reservation:reservation-detail", kwargs={"pk": self.reservation.pk}
@@ -364,7 +341,7 @@ class TestBulkDeleteReservationView:
         self.url = reverse("reservation:reservation-bulk-delete")
         self.staff_user, self.staff_client = make_staff_user()
         self.readonly_user, self.readonly_client = make_readonly_user()
-        self.apt = make_apartment(code="BD")
+        self.apt = make_apartment(nom="BD")
 
     def test_bulk_delete_returns_204(self):
         r1 = make_reservation(
@@ -403,7 +380,7 @@ class TestDashboardStatsView:
         self.url = reverse("reservation:dashboard-stats")
         self.staff_user, self.staff_client = make_staff_user()
         self.anon_client = APIClient()
-        self.apt = make_apartment(code="DS")
+        self.apt = make_apartment(nom="DS")
         make_reservation(
             self.apt,
             created_by=self.staff_user,
@@ -472,7 +449,7 @@ class TestPlanningMonthView:
         self.url = reverse("reservation:planning-month")
         self.staff_user, self.staff_client = make_staff_user()
         self.anon_client = APIClient()
-        self.apt = make_apartment(code="PL")
+        self.apt = make_apartment(nom="PL")
 
     def test_returns_200_with_apartments_key(self):
         response = self.staff_client.get(self.url, {"year": 2025, "month": 6})
@@ -509,7 +486,7 @@ class TestBalanceView:
         self.url = reverse("reservation:balance")
         self.staff_user, self.staff_client = make_staff_user()
         self.anon_client = APIClient()
-        self.apt = make_apartment(code="BV")
+        self.apt = make_apartment(nom="BV")
 
     def test_returns_200(self):
         response = self.staff_client.get(self.url, {"year": 2025})
@@ -548,7 +525,7 @@ class TestBalanceView:
         reservations = response.data["reservations"]
         assert len(reservations) == 1
         assert reservations[0]["id"] == r.id
-        assert reservations[0]["apartment_code"] == "BV"
+        assert reservations[0]["apartment_nom"] == "BV"
         assert reservations[0]["guest_name"] == r.guest_name
         assert reservations[0]["amount"] == pytest.approx(500.0)
         assert reservations[0]["amount_returned"] is False
@@ -561,26 +538,12 @@ class TestBalanceView:
         response = self.staff_client.get(self.url, {"year": "bad"})
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_total_monthly_cost_in_response(self):
-        response = self.staff_client.get(self.url, {"year": 2025})
-        assert "total_monthly_cost" in response.data
-        assert response.data["total_monthly_cost"] == pytest.approx(0.0)
-
-    def test_total_monthly_cost_calculation(self):
-        self.apt.monthly_cost = "15500.00"
-        self.apt.save()
-        apt2 = make_apartment(code="BV2")
-        apt2.monthly_cost = "10000.00"
-        apt2.save()
-        response = self.staff_client.get(self.url, {"year": 2025})
-        assert response.data["total_monthly_cost"] == pytest.approx(25500.0)
-
 
 class TestToggleAmountReturnedView:
     def setup_method(self):
         self.staff_user, self.staff_client = make_staff_user()
         self.anon_client = APIClient()
-        self.apt = make_apartment(code="TG")
+        self.apt = make_apartment(nom="TG")
         self.reservation = make_reservation(
             self.apt,
             created_by=self.staff_user,
