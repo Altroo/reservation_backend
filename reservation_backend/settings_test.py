@@ -38,6 +38,15 @@ CHANNEL_LAYERS = {
     },
 }
 
+# Disable throttling in tests to avoid rate-limit flakiness
+REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = []  # noqa: F405
+REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {  # noqa: F405
+    "anon": "10000/minute",
+    "user": "10000/minute",
+    "login": "10000/minute",
+    "password_reset": "10000/minute",
+}
+
 # Static CORS for tests
 CORS_ORIGIN_WHITELIST = ("http://localhost:3002",)
 
