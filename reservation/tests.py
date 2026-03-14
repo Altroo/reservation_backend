@@ -520,6 +520,7 @@ class TestBalanceView:
         assert "apartments" in response.data
         assert "total_returned" in response.data
         assert "total_not_returned" in response.data
+        assert "reservations" in response.data
 
     def test_revenue_calculation(self):
         make_reservation(
@@ -533,6 +534,24 @@ class TestBalanceView:
         response = self.staff_client.get(self.url, {"year": 2025})
         apt_data = response.data["apartments"].get("BV")
         assert apt_data["monthly"][2]["total"] == pytest.approx(300.0)
+
+    def test_reservations_list_returned(self):
+        r = make_reservation(
+            self.apt,
+            created_by=self.staff_user,
+            check_in=date(2025, 3, 1),
+            check_out=date(2025, 3, 5),
+            amount="500.00",
+            payment_source="Airbnb",
+        )
+        response = self.staff_client.get(self.url, {"year": 2025})
+        reservations = response.data["reservations"]
+        assert len(reservations) == 1
+        assert reservations[0]["id"] == r.id
+        assert reservations[0]["apartment_code"] == "BV"
+        assert reservations[0]["guest_name"] == r.guest_name
+        assert reservations[0]["amount"] == pytest.approx(500.0)
+        assert reservations[0]["amount_returned"] is False
 
     def test_unauthenticated_returns_401(self):
         response = self.anon_client.get(self.url, {"year": 2025})
@@ -555,3 +574,65 @@ class TestBalanceView:
         apt2.save()
         response = self.staff_client.get(self.url, {"year": 2025})
         assert response.data["total_monthly_cost"] == pytest.approx(25500.0)
+
+
+class TestToggleAmountReturnedView:
+    def setup_method(self):
+        self.staff_user, self.staff_client = make_staff_user()
+        self.anon_client = APIClient()
+        self.apt = make_apartment(code="TG")
+        self.reservation = make_reservation(
+            self.apt,
+            created_by=self.staff_user,
+            check_in=date(2025, 4, 1),
+            check_out=date(2025, 4, 5),
+            amount="1000.00",
+            payment_source="Airbnb",
+        )
+        self.url = reverse(
+            "reservation:toggle-returned", kwargs={"pk": self.reservation.pk}
+        )
+
+    def test_toggle_to_true(self):
+        assert self.reservation.amount_returned is False
+        response = self.staff_client.patch(
+            self.url, {"amount_returned": True}, format="json"
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["amount_returned"] is True
+        self.reservation.refresh_from_db()
+        assert self.reservation.amount_returned is True
+
+    def test_toggle_to_false(self):
+        self.reservation.amount_returned = True
+        self.reservation.save()
+        response = self.staff_client.patch(
+            self.url, {"amount_returned": False}, format="json"
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["amount_returned"] is False
+        self.reservation.refresh_from_db()
+        assert self.reservation.amount_returned is False
+
+    def test_invalid_value_returns_400(self):
+        response = self.staff_client.patch(
+            self.url, {"amount_returned": "maybe"}, format="json"
+        )
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_missing_field_returns_400(self):
+        response = self.staff_client.patch(self.url, {}, format="json")
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_not_found_returns_404(self):
+        url = reverse("reservation:toggle-returned", kwargs={"pk": 99999})
+        response = self.staff_client.patch(
+            url, {"amount_returned": True}, format="json"
+        )
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_unauthenticated_returns_401(self):
+        response = self.anon_client.patch(
+            self.url, {"amount_returned": True}, format="json"
+        )
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED

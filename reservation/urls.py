@@ -7,6 +7,7 @@ from .views import (
     DashboardStatsView,
     PlanningMonthView,
     BalanceView,
+    ToggleAmountReturnedView,
     ReservationYearsView,
     OccupiedDatesView,
 )
@@ -30,6 +31,11 @@ urlpatterns = [
     path("dashboard/", DashboardStatsView.as_view(), name="dashboard-stats"),
     path("planning/", PlanningMonthView.as_view(), name="planning-month"),
     path("balance/", BalanceView.as_view(), name="balance"),
+    path(
+        "<int:pk>/toggle-returned/",
+        ToggleAmountReturnedView.as_view(),
+        name="toggle-returned",
+    ),
     path("years/", ReservationYearsView.as_view(), name="reservation-years"),
     path("occupied-dates/", OccupiedDatesView.as_view(), name="occupied-dates"),
 ]

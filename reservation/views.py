@@ -1,7 +1,6 @@
-from collections import defaultdict
 from datetime import date
 
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Count
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from rest_framework import permissions, status
@@ -18,8 +17,6 @@ from .serializers import (
     ReservationListSerializer,
     ReservationSerializer,
 )
-
-# ── Apartments ────────────────────────────────────────────────────────────────
 
 
 class ApartmentListView(APIView):
@@ -44,9 +41,6 @@ class ApartmentListView(APIView):
         apartment = Apartment.objects.create(code=code, name=nom, is_active=True)
         serializer = ApartmentSerializer(apartment)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-# ── Reservations ──────────────────────────────────────────────────────────────
 
 
 class ReservationListCreateView(APIView):
@@ -136,7 +130,8 @@ class BulkDeleteReservationView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def delete(self, request):
+    @staticmethod
+    def delete(request):
         if not can_delete(request.user):
             raise PermissionDenied(
                 _("Vous n'avez pas les droits pour supprimer des réservations.")
@@ -146,9 +141,6 @@ class BulkDeleteReservationView(APIView):
             raise ValidationError({"ids": _("Une liste d'identifiants est requise.")})
         Reservation.objects.filter(pk__in=ids).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-# ── Dashboard ─────────────────────────────────────────────────────────────────
 
 
 class DashboardStatsView(APIView):
@@ -355,6 +347,22 @@ class BalanceView(APIView):
             float(apt.monthly_cost) for apt in apartments
         )
 
+        # Individual reservations for the detail table
+        reservations = [
+            {
+                "id": r.id,
+                "apartment_code": r.apartment.code,
+                "apartment_name": r.apartment.name,
+                "guest_name": r.guest_name,
+                "check_in": str(r.check_in),
+                "check_out": str(r.check_out),
+                "amount": float(r.amount),
+                "payment_source": r.payment_source,
+                "amount_returned": r.amount_returned,
+            }
+            for r in qs.order_by("apartment__code", "check_in")
+        ]
+
         return Response(
             {
                 "year": year,
@@ -362,7 +370,34 @@ class BalanceView(APIView):
                 "total_returned": total_returned,
                 "total_not_returned": total_not_returned,
                 "total_monthly_cost": total_monthly_cost,
+                "reservations": reservations,
             },
+            status=status.HTTP_200_OK,
+        )
+
+
+class ToggleAmountReturnedView(APIView):
+    """Toggle the amount_returned flag on a reservation."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def patch(request, pk: int):
+        try:
+            reservation = Reservation.objects.get(pk=pk)
+        except Reservation.DoesNotExist:
+            raise Http404(_("Aucune réservation ne correspond à la requête."))
+
+        amount_returned = request.data.get("amount_returned")
+        if amount_returned is None or not isinstance(amount_returned, bool):
+            raise ValidationError(
+                {"amount_returned": _("Ce champ doit être un booléen (true/false).")}
+            )
+
+        reservation.amount_returned = amount_returned
+        reservation.save(update_fields=["amount_returned", "date_updated"])
+        return Response(
+            {"id": reservation.pk, "amount_returned": reservation.amount_returned},
             status=status.HTTP_200_OK,
         )
 
