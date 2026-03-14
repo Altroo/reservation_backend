@@ -310,7 +310,7 @@ class PlanningMonthView(APIView):
 
 
 class BalanceView(APIView):
-    """Monthly balance: revenue per apartment per month."""
+    """Balance page: revenue from Airbnb & Bank sources with returned/not-returned breakdown."""
 
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -322,7 +322,12 @@ class BalanceView(APIView):
         except (ValueError, TypeError):
             raise ValidationError({"year": _("year doit être un entier valide.")})
 
-        qs = Reservation.objects.filter(check_in__year=year).select_related("apartment")
+        # Only Airbnb & Bank (virement) sources
+        balance_sources = ["Airbnb", "Bank"]
+        qs = Reservation.objects.filter(
+            check_in__year=year,
+            payment_source__in=balance_sources,
+        ).select_related("apartment")
 
         apartments = list(Apartment.objects.filter(is_active=True).order_by("code"))
 
@@ -342,15 +347,9 @@ class BalanceView(APIView):
                 "year_total": year_total,
             }
 
-        # Airbnb vs non-Airbnb breakdown
-        airbnb_qs = qs.filter(payment_source="Airbnb")
-        non_airbnb_qs = qs.exclude(payment_source="Airbnb")
-        airbnb_monthly = {m: 0.0 for m in range(1, 13)}
-        non_airbnb_monthly = {m: 0.0 for m in range(1, 13)}
-        for r in airbnb_qs:
-            airbnb_monthly[r.check_in.month] += float(r.amount)
-        for r in non_airbnb_qs:
-            non_airbnb_monthly[r.check_in.month] += float(r.amount)
+        # Returned vs not-returned breakdown
+        total_returned = sum(float(r.amount) for r in qs if r.amount_returned)
+        total_not_returned = sum(float(r.amount) for r in qs if not r.amount_returned)
 
         total_monthly_cost = sum(
             float(apt.monthly_cost) for apt in apartments
@@ -360,9 +359,48 @@ class BalanceView(APIView):
             {
                 "year": year,
                 "apartments": matrix,
-                "airbnb_monthly": airbnb_monthly,
-                "non_airbnb_monthly": non_airbnb_monthly,
+                "total_returned": total_returned,
+                "total_not_returned": total_not_returned,
                 "total_monthly_cost": total_monthly_cost,
             },
             status=status.HTTP_200_OK,
         )
+
+
+class ReservationYearsView(APIView):
+    """Returns distinct years that have reservations."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        years = (
+            Reservation.objects.values_list("check_in__year", flat=True)
+            .distinct()
+            .order_by("-check_in__year")
+        )
+        current_year = date.today().year
+        year_list = sorted(set(years) | {current_year}, reverse=True)
+        return Response({"years": year_list}, status=status.HTTP_200_OK)
+
+
+class OccupiedDatesView(APIView):
+    """Return occupied date ranges for a given apartment."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        apartment_id = request.query_params.get("apartment")
+        if not apartment_id:
+            return Response([], status=status.HTTP_200_OK)
+        exclude_id = request.query_params.get("exclude")
+        qs = Reservation.objects.filter(apartment_id=apartment_id).values_list(
+            "check_in", "check_out"
+        )
+        if exclude_id:
+            qs = qs.exclude(pk=exclude_id)
+        ranges = [
+            {"check_in": str(ci), "check_out": str(co)} for ci, co in qs
+        ]
+        return Response(ranges, status=status.HTTP_200_OK)

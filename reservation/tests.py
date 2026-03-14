@@ -518,8 +518,8 @@ class TestBalanceView:
     def test_structure_has_apartments_key(self):
         response = self.staff_client.get(self.url, {"year": 2025})
         assert "apartments" in response.data
-        assert "airbnb_monthly" in response.data
-        assert "non_airbnb_monthly" in response.data
+        assert "total_returned" in response.data
+        assert "total_not_returned" in response.data
 
     def test_revenue_calculation(self):
         make_reservation(

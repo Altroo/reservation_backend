@@ -44,6 +44,7 @@ class ReservationListSerializer(serializers.ModelSerializer):
             "amount",
             "payment_source",
             "payment_source_display",
+            "amount_returned",
             "notes",
             "created_by_user",
             "created_by_user_name",
@@ -75,6 +76,7 @@ class ReservationSerializer(serializers.ModelSerializer):
             "check_out",
             "amount",
             "payment_source",
+            "amount_returned",
             "notes",
             "created_by_user",
             "date_created",
@@ -95,4 +97,27 @@ class ReservationSerializer(serializers.ModelSerializer):
                     "check_out": "La date de départ doit être postérieure à la date d'arrivée."
                 }
             )
+
+        apartment = attrs.get("apartment") or (
+            self.instance.apartment if self.instance else None
+        )
+        if apartment and check_in and check_out:
+            overlapping = Reservation.objects.filter(
+                apartment=apartment,
+                check_in__lt=check_out,
+                check_out__gt=check_in,
+            )
+            if self.instance:
+                overlapping = overlapping.exclude(pk=self.instance.pk)
+            overlap = overlapping.first()
+            if overlap:
+                raise serializers.ValidationError(
+                    {
+                        "check_in": (
+                            f"Cette réservation chevauche une réservation existante "
+                            f"({overlap.guest_name}: {overlap.check_in} — {overlap.check_out})."
+                        )
+                    }
+                )
+
         return attrs

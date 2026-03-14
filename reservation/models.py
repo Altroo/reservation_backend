@@ -74,6 +74,11 @@ class Reservation(models.Model):
         verbose_name="Source de paiement",
         db_index=True,
     )
+    amount_returned = models.BooleanField(
+        default=False,
+        verbose_name="Montant retourné",
+        help_text="Indique si le montant a été retourné",
+    )
     notes = models.TextField(
         blank=True,
         null=True,

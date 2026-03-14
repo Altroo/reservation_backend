@@ -7,6 +7,8 @@ from .views import (
     DashboardStatsView,
     PlanningMonthView,
     BalanceView,
+    ReservationYearsView,
+    OccupiedDatesView,
 )
 
 urlpatterns = [
@@ -28,4 +30,6 @@ urlpatterns = [
     path("dashboard/", DashboardStatsView.as_view(), name="dashboard-stats"),
     path("planning/", PlanningMonthView.as_view(), name="planning-month"),
     path("balance/", BalanceView.as_view(), name="balance"),
+    path("years/", ReservationYearsView.as_view(), name="reservation-years"),
+    path("occupied-dates/", OccupiedDatesView.as_view(), name="occupied-dates"),
 ]
