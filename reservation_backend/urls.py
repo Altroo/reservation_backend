@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
 from django.http import JsonResponse
+from ws.views import GetMaintenanceView
 
 
 def health_check(request):
@@ -57,6 +58,8 @@ urlpatterns = [
         "api/reservation/",
         include(("reservation.urls", "reservation"), namespace="reservation"),
     ),
+    # WS maintenance bootstrap
+    path("api/ws/maintenance/", GetMaintenanceView.as_view()),
     # Admin panel (obscured path for security)
     path("gestion-interne-bp37/", admin.site.urls),
 ]
@@ -66,3 +69,4 @@ urlpatterns += [
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 ]
+
