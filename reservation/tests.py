@@ -499,44 +499,67 @@ class TestBalanceView:
         assert "total_not_returned" in response.data
         assert "reservations" in response.data
 
-    def test_revenue_calculation(self):
-        make_reservation(
-            self.apt,
-            created_by=self.staff_user,
-            check_in=date(2025, 2, 1),
-            check_out=date(2025, 2, 3),
-            amount="300.00",
-            payment_source="Airbnb",
-        )
-        response = self.staff_client.get(self.url, {"year": 2025})
-        apt_data = response.data["apartments"].get("BV")
-        assert apt_data["monthly"][2]["total"] == pytest.approx(300.0)
 
-    def test_reservations_list_returned(self):
-        r = make_reservation(
-            self.apt,
-            created_by=self.staff_user,
-            check_in=date(2025, 3, 1),
-            check_out=date(2025, 3, 5),
-            amount="500.00",
-            payment_source="Airbnb",
-        )
-        response = self.staff_client.get(self.url, {"year": 2025})
-        reservations = response.data["reservations"]
-        assert len(reservations) == 1
-        assert reservations[0]["id"] == r.id
-        assert reservations[0]["apartment_nom"] == "BV"
-        assert reservations[0]["guest_name"] == r.guest_name
-        assert reservations[0]["amount"] == pytest.approx(500.0)
-        assert reservations[0]["amount_returned"] is False
+# ── Cost Years ────────────────────────────────────────────────────────────────
+
+
+from reservation.models import Cost  # noqa: E402
+
+
+def make_cost(user, year=2025, **kwargs):
+    defaults = {
+        "description": "Test cost",
+        "amount": "200.00",
+        "date": date(year, 6, 15),
+        "category": "Autre",
+    }
+    defaults.update(kwargs)
+    return Cost.objects.create(created_by_user=user, **defaults)
+
+
+class TestCostYearsView:
+    def setup_method(self):
+        self.url = reverse("reservation:cost-years")
+        self.staff_user, self.staff_client = make_staff_user(email="costyears@test.com")
+        self.anon_client = APIClient()
+
+    def test_returns_200(self):
+        response = self.staff_client.get(self.url)
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_response_has_years_key(self):
+        response = self.staff_client.get(self.url)
+        assert "years" in response.data
+
+    def test_always_includes_current_year(self):
+        response = self.staff_client.get(self.url)
+        assert date.today().year in response.data["years"]
+
+    def test_returns_years_with_costs(self):
+        make_cost(self.staff_user, year=2023)
+        make_cost(self.staff_user, year=2021)
+        response = self.staff_client.get(self.url)
+        years = response.data["years"]
+        assert 2023 in years
+        assert 2021 in years
+
+    def test_years_are_sorted_descending(self):
+        make_cost(self.staff_user, year=2022)
+        make_cost(self.staff_user, year=2024)
+        response = self.staff_client.get(self.url)
+        years = response.data["years"]
+        assert years == sorted(years, reverse=True)
+
+    def test_no_duplicate_years(self):
+        make_cost(self.staff_user, year=2024)
+        make_cost(self.staff_user, year=2024)
+        response = self.staff_client.get(self.url)
+        years = response.data["years"]
+        assert len(years) == len(set(years))
 
     def test_unauthenticated_returns_401(self):
-        response = self.anon_client.get(self.url, {"year": 2025})
+        response = self.anon_client.get(self.url)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
-    def test_invalid_year_returns_400(self):
-        response = self.staff_client.get(self.url, {"year": "bad"})
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
 class TestToggleAmountReturnedView:

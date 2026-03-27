@@ -495,3 +495,20 @@ class CostDetailView(APIView):
             raise PermissionDenied(_("Vous n'avez pas les droits pour supprimer ce coût."))
         self._get_cost(pk).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CostYearsView(APIView):
+    """Returns distinct years that have costs, always including the current year."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        years = (
+            Cost.objects.values_list("date__year", flat=True)
+            .distinct()
+            .order_by("-date__year")
+        )
+        current_year = date.today().year
+        year_list = sorted(set(years) | {current_year}, reverse=True)
+        return Response({"years": year_list}, status=status.HTTP_200_OK)
