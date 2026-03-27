@@ -1,7 +1,7 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
-from .models import Apartment, Reservation
+from .models import Apartment, Cost, Reservation
 
 
 class ApartmentAdmin(admin.ModelAdmin):
@@ -29,5 +29,15 @@ class ReservationAdmin(SimpleHistoryAdmin):
     readonly_fields = ("date_created", "date_updated")
 
 
+class CostAdmin(admin.ModelAdmin):
+    list_display = ("id", "description", "amount", "date", "category", "created_by_user", "date_created")
+    list_filter = ("category", "date")
+    search_fields = ("description",)
+    date_hierarchy = "date"
+    ordering = ("-date",)
+    readonly_fields = ("date_created", "date_updated")
+
+
 admin.site.register(Apartment, ApartmentAdmin)
 admin.site.register(Reservation, ReservationAdmin)
+admin.site.register(Cost, CostAdmin)

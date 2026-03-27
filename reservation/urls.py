@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import (
     ApartmentListView,
+    CostDetailView,
+    CostListCreateView,
     ReservationListCreateView,
     ReservationDetailEditDeleteView,
     BulkDeleteReservationView,
@@ -38,4 +40,7 @@ urlpatterns = [
     ),
     path("years/", ReservationYearsView.as_view(), name="reservation-years"),
     path("occupied-dates/", OccupiedDatesView.as_view(), name="occupied-dates"),
+    # Costs
+    path("costs/", CostListCreateView.as_view(), name="cost-list-create"),
+    path("costs/<int:pk>/", CostDetailView.as_view(), name="cost-detail"),
 ]

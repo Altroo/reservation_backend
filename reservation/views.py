@@ -11,9 +11,10 @@ from rest_framework.views import APIView
 from core.pagination import CustomPagination
 from core.permissions import can_create, can_update, can_delete
 from .filters import ReservationFilter
-from .models import Apartment, Reservation
+from .models import Apartment, Cost, Reservation
 from .serializers import (
     ApartmentSerializer,
+    CostSerializer,
     ReservationListSerializer,
     ReservationSerializer,
 )
@@ -212,10 +213,18 @@ class DashboardStatsView(APIView):
             for d in daily
         ]
 
+        # Costs and net profit
+        annual_costs = float(
+            Cost.objects.filter(date__year=year).aggregate(total=Sum("amount"))["total"] or 0
+        )
+        net_profit = float(total_revenue) - annual_costs
+
         return Response(
             {
                 "year": year,
                 "total_revenue": float(total_revenue),
+                "annual_costs": annual_costs,
+                "net_profit": net_profit,
                 "by_source": [
                     {
                         "source": item["payment_source"],
@@ -431,3 +440,58 @@ class OccupiedDatesView(APIView):
             {"check_in": str(ci), "check_out": str(co)} for ci, co in qs
         ]
         return Response(ranges, status=status.HTTP_200_OK)
+
+
+class CostListCreateView(APIView):
+    """GET all costs (optionally filtered by year), POST create a new cost."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        year = request.query_params.get("year")
+        qs = Cost.objects.select_related("created_by_user").all()
+        if year:
+            try:
+                qs = qs.filter(date__year=int(year))
+            except (ValueError, TypeError):
+                raise ValidationError({"year": _("year doit être un entier valide.")})
+        serializer = CostSerializer(qs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def post(request):
+        if not can_create(request.user):
+            raise PermissionDenied(_("Vous n'avez pas les droits pour créer un coût."))
+        serializer = CostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(created_by_user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class CostDetailView(APIView):
+    """PUT update or DELETE a single cost."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def _get_cost(pk: int) -> Cost:
+        try:
+            return Cost.objects.get(pk=pk)
+        except Cost.DoesNotExist:
+            raise Http404(_("Coût introuvable."))
+
+    def put(self, request, pk: int):
+        if not can_update(request.user):
+            raise PermissionDenied(_("Vous n'avez pas les droits pour modifier ce coût."))
+        cost = self._get_cost(pk)
+        serializer = CostSerializer(cost, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, pk: int):
+        if not can_delete(request.user):
+            raise PermissionDenied(_("Vous n'avez pas les droits pour supprimer ce coût."))
+        self._get_cost(pk).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

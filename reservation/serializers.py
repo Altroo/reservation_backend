@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Apartment, Reservation
+from .models import Apartment, Cost, Reservation
 
 
 class ApartmentSerializer(serializers.ModelSerializer):
@@ -118,3 +118,37 @@ class ReservationSerializer(serializers.ModelSerializer):
                 )
 
         return attrs
+
+
+class CostSerializer(serializers.ModelSerializer):
+    """Serializer for cost entries."""
+
+    created_by_user_name = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_created_by_user_name(obj):
+        if obj.created_by_user:
+            name = f"{obj.created_by_user.first_name} {obj.created_by_user.last_name}".strip()
+            return name or obj.created_by_user.email
+        return None
+
+    class Meta:
+        model = Cost
+        fields = [
+            "id",
+            "description",
+            "amount",
+            "date",
+            "category",
+            "created_by_user",
+            "created_by_user_name",
+            "date_created",
+            "date_updated",
+        ]
+        read_only_fields = [
+            "id",
+            "created_by_user",
+            "created_by_user_name",
+            "date_created",
+            "date_updated",
+        ]

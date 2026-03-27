@@ -16,6 +16,8 @@ class CreateAccountSerializer(serializers.ModelSerializer):
         required=False, allow_null=True, allow_blank=True
     )
     gender = serializers.CharField(required=False, allow_blank=True)
+    first_name = serializers.CharField(required=True, allow_blank=False, max_length=150)
+    last_name = serializers.CharField(required=True, allow_blank=False, max_length=150)
 
     @staticmethod
     def validate_gender(value):
@@ -212,6 +214,7 @@ class ProfileGETSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = [
             "id",
+            "email",
             "first_name",
             "last_name",
             "gender",

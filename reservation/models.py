@@ -103,3 +103,52 @@ class Reservation(models.Model):
     @property
     def nights(self) -> int:
         return (self.check_out - self.check_in).days
+
+
+class Cost(models.Model):
+    """Represents a cost entry (maintenance, charges, taxes, etc.)."""
+
+    CATEGORY_CHOICES = [
+        ("Entretien", "Entretien"),
+        ("Charges", "Charges"),
+        ("Assurance", "Assurance"),
+        ("Taxes", "Taxes"),
+        ("Autre", "Autre"),
+    ]
+
+    description = models.CharField(
+        max_length=300,
+        verbose_name="Description",
+        help_text="Description du coût",
+    )
+    amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        verbose_name="Montant (MAD)",
+    )
+    date = models.DateField(verbose_name="Date", db_index=True)
+    category = models.CharField(
+        max_length=50,
+        choices=CATEGORY_CHOICES,
+        default="Autre",
+        verbose_name="Catégorie",
+        db_index=True,
+    )
+    created_by_user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="costs_created",
+        verbose_name="Créé par",
+    )
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Date création")
+    date_updated = models.DateTimeField(auto_now=True, verbose_name="Date modification")
+
+    class Meta:
+        verbose_name = "Coût"
+        verbose_name_plural = "Coûts"
+        ordering = ("-date",)
+
+    def __str__(self) -> str:
+        return f"{self.description} — {self.amount} MAD ({self.date})"
