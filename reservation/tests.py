@@ -622,3 +622,149 @@ class TestToggleAmountReturnedView:
             self.url, {"amount_returned": True}, format="json"
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+# ── ReservationFilter — new filter params ─────────────────────────────────────
+
+
+@pytest.mark.django_db
+class TestReservationFilterSearch:
+    def setup_method(self):
+        self.url = reverse("reservation:reservation-list-create")
+        self.staff_user, self.staff_client = make_staff_user()
+        self.apt = make_apartment(nom="LC")
+
+    def test_search_returns_matching_guest(self):
+        make_reservation(
+            self.apt, created_by=self.staff_user, guest_name="Alice Martin",
+            check_in=date(2025, 1, 1), check_out=date(2025, 1, 3),
+        )
+        make_reservation(
+            self.apt, created_by=self.staff_user, guest_name="Bob Dupont",
+            check_in=date(2025, 2, 1), check_out=date(2025, 2, 3),
+        )
+        response = self.staff_client.get(self.url, {"search": "alice"})
+        assert response.status_code == status.HTTP_200_OK
+        assert all("alice" in r["guest_name"].lower() for r in response.data)
+
+    def test_search_case_insensitive(self):
+        make_reservation(
+            self.apt, created_by=self.staff_user, guest_name="Carlos Lopez",
+            check_in=date(2025, 3, 1), check_out=date(2025, 3, 4),
+        )
+        response = self.staff_client.get(self.url, {"search": "CARLOS"})
+        assert response.status_code == status.HTTP_200_OK
+        assert any("Carlos" in r["guest_name"] for r in response.data)
+
+    def test_search_no_match_returns_empty(self):
+        make_reservation(
+            self.apt, created_by=self.staff_user, guest_name="Diana Prince",
+            check_in=date(2025, 4, 1), check_out=date(2025, 4, 2),
+        )
+        response = self.staff_client.get(self.url, {"search": "zzznomatch"})
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 0
+
+
+@pytest.mark.django_db
+class TestReservationFilterAmount:
+    def setup_method(self):
+        self.url = reverse("reservation:reservation-list-create")
+        self.staff_user, self.staff_client = make_staff_user()
+        self.apt = make_apartment(nom="LC")
+        make_reservation(
+            self.apt, created_by=self.staff_user, amount=100,
+            check_in=date(2025, 1, 1), check_out=date(2025, 1, 2),
+        )
+        make_reservation(
+            self.apt, created_by=self.staff_user, amount=300,
+            check_in=date(2025, 2, 1), check_out=date(2025, 2, 2),
+        )
+        make_reservation(
+            self.apt, created_by=self.staff_user, amount=500,
+            check_in=date(2025, 3, 1), check_out=date(2025, 3, 2),
+        )
+
+    def test_amount_exact(self):
+        response = self.staff_client.get(self.url, {"amount": 300})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(float(r["amount"]) == 300 for r in response.data)
+
+    def test_amount_gt(self):
+        response = self.staff_client.get(self.url, {"amount__gt": 300})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(float(r["amount"]) > 300 for r in response.data)
+
+    def test_amount_gte(self):
+        response = self.staff_client.get(self.url, {"amount__gte": 300})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(float(r["amount"]) >= 300 for r in response.data)
+
+    def test_amount_lt(self):
+        response = self.staff_client.get(self.url, {"amount__lt": 300})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(float(r["amount"]) < 300 for r in response.data)
+
+    def test_amount_lte(self):
+        response = self.staff_client.get(self.url, {"amount__lte": 300})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(float(r["amount"]) <= 300 for r in response.data)
+
+    def test_amount_ne(self):
+        response = self.staff_client.get(self.url, {"amount__ne": 300})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(float(r["amount"]) != 300 for r in response.data)
+        assert len(response.data) == 2
+
+
+@pytest.mark.django_db
+class TestReservationFilterNights:
+    def setup_method(self):
+        self.url = reverse("reservation:reservation-list-create")
+        self.staff_user, self.staff_client = make_staff_user()
+        self.apt = make_apartment(nom="LC")
+        # 1 night
+        make_reservation(
+            self.apt, created_by=self.staff_user,
+            check_in=date(2025, 1, 1), check_out=date(2025, 1, 2),
+        )
+        # 3 nights
+        make_reservation(
+            self.apt, created_by=self.staff_user,
+            check_in=date(2025, 2, 1), check_out=date(2025, 2, 4),
+        )
+        # 7 nights
+        make_reservation(
+            self.apt, created_by=self.staff_user,
+            check_in=date(2025, 3, 1), check_out=date(2025, 3, 8),
+        )
+
+    def test_nights_exact(self):
+        response = self.staff_client.get(self.url, {"nights": 3})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(r["nights"] == 3 for r in response.data)
+        assert len(response.data) == 1
+
+    def test_nights_gt(self):
+        response = self.staff_client.get(self.url, {"nights__gt": 3})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(r["nights"] > 3 for r in response.data)
+        assert len(response.data) == 1
+
+    def test_nights_gte(self):
+        response = self.staff_client.get(self.url, {"nights__gte": 3})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(r["nights"] >= 3 for r in response.data)
+        assert len(response.data) == 2
+
+    def test_nights_lt(self):
+        response = self.staff_client.get(self.url, {"nights__lt": 3})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(r["nights"] < 3 for r in response.data)
+        assert len(response.data) == 1
+
+    def test_nights_lte(self):
+        response = self.staff_client.get(self.url, {"nights__lte": 3})
+        assert response.status_code == status.HTTP_200_OK
+        assert all(r["nights"] <= 3 for r in response.data)
+        assert len(response.data) == 2
