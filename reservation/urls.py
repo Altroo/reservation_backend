@@ -2,6 +2,7 @@ from django.urls import path
 from .views import (
     ApartmentListView,
     ApartmentDetailView,
+    BulkDeleteCostView,
     CostDetailView,
     CostListCreateView,
     CostYearsView,
@@ -51,6 +52,7 @@ urlpatterns = [
     path("occupied-dates/", OccupiedDatesView.as_view(), name="occupied-dates"),
     # Costs
     path("costs/years/", CostYearsView.as_view(), name="cost-years"),
+    path("costs/bulk-delete/", BulkDeleteCostView.as_view(), name="cost-bulk-delete"),
     path("costs/", CostListCreateView.as_view(), name="cost-list-create"),
     path("costs/<int:pk>/", CostDetailView.as_view(), name="cost-detail"),
     # Notifications

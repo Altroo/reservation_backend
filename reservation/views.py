@@ -575,6 +575,24 @@ class CostYearsView(APIView):
         return Response({"years": year_list}, status=status.HTTP_200_OK)
 
 
+class BulkDeleteCostView(APIView):
+    """DELETE multiple costs by id list."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def delete(request):
+        if not can_delete(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour supprimer des coûts.")
+            )
+        ids = request.data.get("ids", [])
+        if not ids or not isinstance(ids, list):
+            raise ValidationError({"ids": _("Une liste d'identifiants est requise.")})
+        Cost.objects.filter(pk__in=ids).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 # ── Notification views ───────────────────────────────────────────────────────
 
 
