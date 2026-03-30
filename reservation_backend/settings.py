@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_filters",
     "account.apps.AccountConfig",
     "reservation.apps.ReservationConfig",
+    "local.apps.LocalConfig",
     "axes",
 ]
 

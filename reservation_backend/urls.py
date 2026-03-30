@@ -58,6 +58,11 @@ urlpatterns = [
         "api/reservation/",
         include(("reservation.urls", "reservation"), namespace="reservation"),
     ),
+    # Local (property rental management)
+    path(
+        "api/local/",
+        include(("local.urls", "local"), namespace="local"),
+    ),
     # WS maintenance bootstrap
     path("api/ws/maintenance/", GetMaintenanceView.as_view()),
     # Admin panel (obscured path for security)
