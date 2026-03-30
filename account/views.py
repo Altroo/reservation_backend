@@ -208,7 +208,8 @@ class PasswordResetView(APIView):
             ):
                 if user.password_reset_code_created_at:
                     time_elapsed = (
-                        datetime.now(dt_timezone.utc) - user.password_reset_code_created_at
+                        datetime.now(dt_timezone.utc)
+                        - user.password_reset_code_created_at
                     )
                     if time_elapsed > timedelta(minutes=5):
                         raise ValidationError(
@@ -244,7 +245,8 @@ class PasswordResetView(APIView):
             ):
                 if user.password_reset_code_created_at:
                     time_elapsed = (
-                        datetime.now(dt_timezone.utc) - user.password_reset_code_created_at
+                        datetime.now(dt_timezone.utc)
+                        - user.password_reset_code_created_at
                     )
                     if time_elapsed > timedelta(minutes=5):
                         raise ValidationError(
@@ -486,7 +488,12 @@ class UsersListCreateView(APIView):
             mail_subject = "Invitation - Application de E.B.H Réservation"
             mail_template = "new_account.html"
             message = render_to_string(
-                mail_template, {"first_name": user.first_name, "password": password, "frontend_url": settings.FRONTEND_URL}
+                mail_template,
+                {
+                    "first_name": user.first_name,
+                    "password": password,
+                    "frontend_url": settings.FRONTEND_URL,
+                },
             )
             send_email.apply_async(
                 (user.pk, user.email, mail_subject, message),

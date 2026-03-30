@@ -11,10 +11,12 @@ from rest_framework.views import APIView
 from core.pagination import CustomPagination
 from core.permissions import can_create, can_update, can_delete
 from .filters import ReservationFilter
-from .models import Apartment, Cost, Reservation
+from .models import Apartment, Cost, Notification, NotificationPreference, Reservation
 from .serializers import (
     ApartmentSerializer,
     CostSerializer,
+    NotificationPreferenceSerializer,
+    NotificationSerializer,
     ReservationListSerializer,
     ReservationSerializer,
 )
@@ -37,10 +39,62 @@ class ApartmentListView(APIView):
         if not nom:
             raise ValidationError({"nom": [_("Ce champ est requis.")]})
         if Apartment.objects.filter(nom=nom).exists():
-            raise ValidationError({"nom": [_("Un appartement avec ce nom existe déjà.")]})
+            raise ValidationError(
+                {"nom": [_("Un appartement avec ce nom existe déjà.")]}
+            )
         apartment = Apartment.objects.create(nom=nom)
         serializer = ApartmentSerializer(apartment)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ApartmentDetailView(APIView):
+    """PUT rename, DELETE an apartment."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def _get_apartment(pk: int) -> Apartment:
+        try:
+            return Apartment.objects.get(pk=pk)
+        except Apartment.DoesNotExist:
+            raise Http404(_("Appartement introuvable."))
+
+    def put(self, request, pk: int):
+        if not can_update(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour modifier cet appartement.")
+            )
+        apartment = self._get_apartment(pk)
+        nom = request.data.get("nom", "").strip()
+        if not nom:
+            raise ValidationError({"nom": [_("Ce champ est requis.")]})
+        if Apartment.objects.filter(nom=nom).exclude(pk=pk).exists():
+            raise ValidationError(
+                {"nom": [_("Un appartement avec ce nom existe déjà.")]}
+            )
+        apartment.nom = nom
+        apartment.save()
+        return Response(ApartmentSerializer(apartment).data, status=status.HTTP_200_OK)
+
+    def delete(self, request, pk: int):
+        if not can_delete(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour supprimer cet appartement.")
+            )
+        apartment = self._get_apartment(pk)
+        if apartment.reservations.exists():
+            raise ValidationError(
+                {
+                    "detail": [
+                        _(
+                            "Impossible de supprimer cet appartement car il possède des réservations. "
+                            "Veuillez d'abord supprimer les réservations associées."
+                        )
+                    ]
+                }
+            )
+        apartment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ReservationListCreateView(APIView):
@@ -188,9 +242,7 @@ class DashboardStatsView(APIView):
         )
 
         # Occupancy: occupied days per apartment per month
-        apartments = list(
-            Apartment.objects.all().values("id", "nom")
-        )
+        apartments = list(Apartment.objects.all().values("id", "nom"))
         occupancy_by_apt = {}
         for apt in apartments:
             apt_qs = qs.filter(apartment_id=apt["id"])
@@ -203,19 +255,15 @@ class DashboardStatsView(APIView):
             }
 
         # Daily revenue (grouped by check_in date)
-        daily = (
-            qs.values("check_in")
-            .annotate(total=Sum("amount"))
-            .order_by("check_in")
-        )
+        daily = qs.values("check_in").annotate(total=Sum("amount")).order_by("check_in")
         daily_revenue = [
-            {"date": str(d["check_in"]), "total": float(d["total"] or 0)}
-            for d in daily
+            {"date": str(d["check_in"]), "total": float(d["total"] or 0)} for d in daily
         ]
 
         # Costs and net profit
         annual_costs = float(
-            Cost.objects.filter(date__year=year).aggregate(total=Sum("amount"))["total"] or 0
+            Cost.objects.filter(date__year=year).aggregate(total=Sum("amount"))["total"]
+            or 0
         )
         net_profit = float(total_revenue) - annual_costs
 
@@ -436,9 +484,7 @@ class OccupiedDatesView(APIView):
         )
         if exclude_id:
             qs = qs.exclude(pk=exclude_id)
-        ranges = [
-            {"check_in": str(ci), "check_out": str(co)} for ci, co in qs
-        ]
+        ranges = [{"check_in": str(ci), "check_out": str(co)} for ci, co in qs]
         return Response(ranges, status=status.HTTP_200_OK)
 
 
@@ -450,12 +496,23 @@ class CostListCreateView(APIView):
     @staticmethod
     def get(request):
         year = request.query_params.get("year")
+        month = request.query_params.get("month")
         qs = Cost.objects.select_related("created_by_user").all()
         if year:
             try:
                 qs = qs.filter(date__year=int(year))
             except (ValueError, TypeError):
                 raise ValidationError({"year": _("year doit être un entier valide.")})
+        if month:
+            try:
+                m = int(month)
+                if m < 1 or m > 12:
+                    raise ValueError
+                qs = qs.filter(date__month=m)
+            except (ValueError, TypeError):
+                raise ValidationError(
+                    {"month": _("month doit être un entier valide entre 1 et 12.")}
+                )
         serializer = CostSerializer(qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -483,7 +540,9 @@ class CostDetailView(APIView):
 
     def put(self, request, pk: int):
         if not can_update(request.user):
-            raise PermissionDenied(_("Vous n'avez pas les droits pour modifier ce coût."))
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour modifier ce coût.")
+            )
         cost = self._get_cost(pk)
         serializer = CostSerializer(cost, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -492,7 +551,9 @@ class CostDetailView(APIView):
 
     def delete(self, request, pk: int):
         if not can_delete(request.user):
-            raise PermissionDenied(_("Vous n'avez pas les droits pour supprimer ce coût."))
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour supprimer ce coût.")
+            )
         self._get_cost(pk).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -512,3 +573,67 @@ class CostYearsView(APIView):
         current_year = date.today().year
         year_list = sorted(set(years) | {current_year}, reverse=True)
         return Response({"years": year_list}, status=status.HTTP_200_OK)
+
+
+# ── Notification views ───────────────────────────────────────────────────────
+
+
+class NotificationPreferenceView(APIView):
+    """GET / PUT the authenticated user's notification preferences."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        pref, _ = NotificationPreference.objects.get_or_create(user=request.user)
+        return Response(
+            NotificationPreferenceSerializer(pref).data, status=status.HTTP_200_OK
+        )
+
+    def put(self, request):
+        pref, _ = NotificationPreference.objects.get_or_create(user=request.user)
+        serializer = NotificationPreferenceSerializer(
+            pref, data=request.data, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class NotificationListView(APIView):
+    """GET paginated list of notifications for the authenticated user."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        qs = Notification.objects.filter(user=request.user).select_related(
+            "reservation"
+        )
+        serializer = NotificationSerializer(qs[:50], many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class NotificationMarkReadView(APIView):
+    """POST mark one or all notifications as read."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def post(request):
+        ids = request.data.get("ids")
+        qs = Notification.objects.filter(user=request.user, is_read=False)
+        if ids:
+            qs = qs.filter(id__in=ids)
+        updated = qs.update(is_read=True)
+        return Response({"updated": updated}, status=status.HTTP_200_OK)
+
+
+class NotificationUnreadCountView(APIView):
+    """GET the count of unread notifications for the authenticated user."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        count = Notification.objects.filter(user=request.user, is_read=False).count()
+        return Response({"count": count}, status=status.HTTP_200_OK)

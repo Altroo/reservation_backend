@@ -84,6 +84,7 @@ class TestApartmentModel:
         with pytest.raises(IntegrityError):
             make_apartment(nom="UNQ")
 
+
 class TestReservationModel:
     def test_str(self):
         apt = make_apartment(nom="5B")
@@ -636,12 +637,18 @@ class TestReservationFilterSearch:
 
     def test_search_returns_matching_guest(self):
         make_reservation(
-            self.apt, created_by=self.staff_user, guest_name="Alice Martin",
-            check_in=date(2025, 1, 1), check_out=date(2025, 1, 3),
+            self.apt,
+            created_by=self.staff_user,
+            guest_name="Alice Martin",
+            check_in=date(2025, 1, 1),
+            check_out=date(2025, 1, 3),
         )
         make_reservation(
-            self.apt, created_by=self.staff_user, guest_name="Bob Dupont",
-            check_in=date(2025, 2, 1), check_out=date(2025, 2, 3),
+            self.apt,
+            created_by=self.staff_user,
+            guest_name="Bob Dupont",
+            check_in=date(2025, 2, 1),
+            check_out=date(2025, 2, 3),
         )
         response = self.staff_client.get(self.url, {"search": "alice"})
         assert response.status_code == status.HTTP_200_OK
@@ -649,8 +656,11 @@ class TestReservationFilterSearch:
 
     def test_search_case_insensitive(self):
         make_reservation(
-            self.apt, created_by=self.staff_user, guest_name="Carlos Lopez",
-            check_in=date(2025, 3, 1), check_out=date(2025, 3, 4),
+            self.apt,
+            created_by=self.staff_user,
+            guest_name="Carlos Lopez",
+            check_in=date(2025, 3, 1),
+            check_out=date(2025, 3, 4),
         )
         response = self.staff_client.get(self.url, {"search": "CARLOS"})
         assert response.status_code == status.HTTP_200_OK
@@ -658,8 +668,11 @@ class TestReservationFilterSearch:
 
     def test_search_no_match_returns_empty(self):
         make_reservation(
-            self.apt, created_by=self.staff_user, guest_name="Diana Prince",
-            check_in=date(2025, 4, 1), check_out=date(2025, 4, 2),
+            self.apt,
+            created_by=self.staff_user,
+            guest_name="Diana Prince",
+            check_in=date(2025, 4, 1),
+            check_out=date(2025, 4, 2),
         )
         response = self.staff_client.get(self.url, {"search": "zzznomatch"})
         assert response.status_code == status.HTTP_200_OK
@@ -673,16 +686,25 @@ class TestReservationFilterAmount:
         self.staff_user, self.staff_client = make_staff_user()
         self.apt = make_apartment(nom="LC")
         make_reservation(
-            self.apt, created_by=self.staff_user, amount=100,
-            check_in=date(2025, 1, 1), check_out=date(2025, 1, 2),
+            self.apt,
+            created_by=self.staff_user,
+            amount=100,
+            check_in=date(2025, 1, 1),
+            check_out=date(2025, 1, 2),
         )
         make_reservation(
-            self.apt, created_by=self.staff_user, amount=300,
-            check_in=date(2025, 2, 1), check_out=date(2025, 2, 2),
+            self.apt,
+            created_by=self.staff_user,
+            amount=300,
+            check_in=date(2025, 2, 1),
+            check_out=date(2025, 2, 2),
         )
         make_reservation(
-            self.apt, created_by=self.staff_user, amount=500,
-            check_in=date(2025, 3, 1), check_out=date(2025, 3, 2),
+            self.apt,
+            created_by=self.staff_user,
+            amount=500,
+            check_in=date(2025, 3, 1),
+            check_out=date(2025, 3, 2),
         )
 
     def test_amount_exact(self):
@@ -725,18 +747,24 @@ class TestReservationFilterNights:
         self.apt = make_apartment(nom="LC")
         # 1 night
         make_reservation(
-            self.apt, created_by=self.staff_user,
-            check_in=date(2025, 1, 1), check_out=date(2025, 1, 2),
+            self.apt,
+            created_by=self.staff_user,
+            check_in=date(2025, 1, 1),
+            check_out=date(2025, 1, 2),
         )
         # 3 nights
         make_reservation(
-            self.apt, created_by=self.staff_user,
-            check_in=date(2025, 2, 1), check_out=date(2025, 2, 4),
+            self.apt,
+            created_by=self.staff_user,
+            check_in=date(2025, 2, 1),
+            check_out=date(2025, 2, 4),
         )
         # 7 nights
         make_reservation(
-            self.apt, created_by=self.staff_user,
-            check_in=date(2025, 3, 1), check_out=date(2025, 3, 8),
+            self.apt,
+            created_by=self.staff_user,
+            check_in=date(2025, 3, 1),
+            check_out=date(2025, 3, 8),
         )
 
     def test_nights_exact(self):

@@ -130,7 +130,10 @@ class HistoricalCustomUserAdmin(admin.ModelAdmin):
     readonly_fields = [
         field.name
         for field in CustomUser._meta.get_fields()
-        if hasattr(field, "name") and not field.many_to_many and not field.one_to_many
+        if hasattr(field, "name")
+        and not field.many_to_many
+        and not field.one_to_many
+        and not field.one_to_one
     ] + [
         "history_id",
         "history_date",

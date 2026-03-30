@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 from os import environ
 
 from celery import Celery
+from celery.schedules import crontab
 from django.conf import settings
 
 environ.setdefault("DJANGO_SETTINGS_MODULE", "reservation_backend.settings")
@@ -17,5 +18,13 @@ app.conf.accept_content = ["json"]
 app.autodiscover_tasks(
     packages=[
         "account.tasks",
+        "reservation.tasks",
     ]
 )
+
+app.conf.beat_schedule = {
+    "check-reservation-reminders-every-minute": {
+        "task": "reservation.check_reservation_reminders",
+        "schedule": crontab(),  # every minute
+    },
+}

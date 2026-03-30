@@ -152,3 +152,89 @@ class Cost(models.Model):
 
     def __str__(self) -> str:
         return f"{self.description} — {self.amount} MAD ({self.date})"
+
+
+class NotificationPreference(models.Model):
+    """User-specific notification preferences for reservation reminders."""
+
+    REMINDER_CHOICES = [
+        (0, "Au moment de l'événement"),
+        (15, "15 minutes avant"),
+        (30, "30 minutes avant"),
+        (60, "1 heure avant"),
+        (120, "2 heures avant"),
+        (1440, "1 jour avant"),
+        (2880, "2 jours avant"),
+    ]
+
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="notification_preference",
+        verbose_name="Utilisateur",
+    )
+    notify_check_in = models.BooleanField(
+        default=True,
+        verbose_name="Notifier à l'arrivée",
+    )
+    notify_check_out = models.BooleanField(
+        default=True,
+        verbose_name="Notifier au départ",
+    )
+    reminder_minutes = models.IntegerField(
+        choices=REMINDER_CHOICES,
+        default=60,
+        verbose_name="Rappel avant (minutes)",
+    )
+    date_created = models.DateTimeField(auto_now_add=True, verbose_name="Date création")
+    date_updated = models.DateTimeField(auto_now=True, verbose_name="Date modification")
+
+    class Meta:
+        verbose_name = "Préférence de notification"
+        verbose_name_plural = "Préférences de notification"
+
+    def __str__(self) -> str:
+        return f"Notifications — {self.user.email}"
+
+
+class Notification(models.Model):
+    """A notification sent to a user about a reservation event."""
+
+    NOTIFICATION_TYPES = [
+        ("check_in", "Arrivée"),
+        ("check_out", "Départ"),
+    ]
+
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="notifications",
+        verbose_name="Utilisateur",
+    )
+    reservation = models.ForeignKey(
+        Reservation,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="notifications",
+        verbose_name="Réservation",
+    )
+    title = models.CharField(max_length=255, verbose_name="Titre")
+    message = models.TextField(verbose_name="Message")
+    notification_type = models.CharField(
+        max_length=20,
+        choices=NOTIFICATION_TYPES,
+        verbose_name="Type",
+    )
+    is_read = models.BooleanField(default=False, verbose_name="Lu")
+    date_created = models.DateTimeField(
+        auto_now_add=True, verbose_name="Date création", db_index=True
+    )
+
+    class Meta:
+        verbose_name = "Notification"
+        verbose_name_plural = "Notifications"
+        ordering = ("-date_created",)
+
+    def __str__(self) -> str:
+        return f"{self.title} — {self.user.email}"

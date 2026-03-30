@@ -1,9 +1,14 @@
 from django.urls import path
 from .views import (
     ApartmentListView,
+    ApartmentDetailView,
     CostDetailView,
     CostListCreateView,
     CostYearsView,
+    NotificationListView,
+    NotificationMarkReadView,
+    NotificationPreferenceView,
+    NotificationUnreadCountView,
     ReservationListCreateView,
     ReservationDetailEditDeleteView,
     BulkDeleteReservationView,
@@ -18,6 +23,9 @@ from .views import (
 urlpatterns = [
     # Apartments
     path("apartments/", ApartmentListView.as_view(), name="apartment-list"),
+    path(
+        "apartments/<int:pk>/", ApartmentDetailView.as_view(), name="apartment-detail"
+    ),
     # Reservations
     path("", ReservationListCreateView.as_view(), name="reservation-list-create"),
     path(
@@ -45,4 +53,21 @@ urlpatterns = [
     path("costs/years/", CostYearsView.as_view(), name="cost-years"),
     path("costs/", CostListCreateView.as_view(), name="cost-list-create"),
     path("costs/<int:pk>/", CostDetailView.as_view(), name="cost-detail"),
+    # Notifications
+    path(
+        "notifications/preferences/",
+        NotificationPreferenceView.as_view(),
+        name="notification-preferences",
+    ),
+    path("notifications/", NotificationListView.as_view(), name="notification-list"),
+    path(
+        "notifications/mark-read/",
+        NotificationMarkReadView.as_view(),
+        name="notification-mark-read",
+    ),
+    path(
+        "notifications/unread-count/",
+        NotificationUnreadCountView.as_view(),
+        name="notification-unread-count",
+    ),
 ]
