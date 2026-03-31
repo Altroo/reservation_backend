@@ -5,7 +5,8 @@ from .models import Apartment, Cost, Notification, NotificationPreference, Reser
 
 
 class ApartmentAdmin(admin.ModelAdmin):
-    list_display = ("id", "nom")
+    list_display = ("id", "nom", "building")
+    list_filter = ("building",)
     search_fields = ("nom",)
     ordering = ("nom",)
 

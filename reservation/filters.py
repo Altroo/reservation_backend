@@ -10,6 +10,7 @@ class ReservationFilter(django_filters.FilterSet):
     guest_name = django_filters.CharFilter(lookup_expr="icontains")
     payment_source = django_filters.CharFilter(lookup_expr="iexact")
     apartment = django_filters.NumberFilter()
+    building = django_filters.NumberFilter(field_name="apartment__building")
     check_in_after = django_filters.DateFilter(field_name="check_in", lookup_expr="gte")
     check_in_before = django_filters.DateFilter(
         field_name="check_in", lookup_expr="lte"
@@ -47,6 +48,7 @@ class ReservationFilter(django_filters.FilterSet):
             "guest_name",
             "payment_source",
             "apartment",
+            "building",
             "check_in_after",
             "check_in_before",
             "check_out_after",

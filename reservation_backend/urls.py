@@ -63,6 +63,11 @@ urlpatterns = [
         "api/local/",
         include(("local.urls", "local"), namespace="local"),
     ),
+    # Building (residence management)
+    path(
+        "api/building/",
+        include(("building.urls", "building"), namespace="building"),
+    ),
     # WS maintenance bootstrap
     path("api/ws/maintenance/", GetMaintenanceView.as_view()),
     # Admin panel (obscured path for security)

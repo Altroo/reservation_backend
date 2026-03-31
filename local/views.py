@@ -257,7 +257,14 @@ class LocalPlanningView(APIView):
             raise ValidationError({"year": _("L'année doit être un entier valide.")})
 
         locaux = Local.objects.all().order_by("nom")
+
+        building_id = request.query_params.get("building")
+        if building_id:
+            locaux = locaux.filter(building_id=building_id)
+
         loyers = Loyer.objects.filter(annee=year).select_related("local")
+        if building_id:
+            loyers = loyers.filter(local__building_id=building_id)
 
         # Build a lookup: {local_id: {month: loyer_data}}
         loyer_map: dict[int, dict[int, dict]] = {}
@@ -310,10 +317,17 @@ class LocalDashboardView(APIView):
 
         locaux = Local.objects.all().order_by("nom")
 
+        building_id = request.query_params.get("building")
+        if building_id:
+            locaux = locaux.filter(building_id=building_id)
+
         # Total benefit HT = sum of paid loyers for the year
-        total_benefice = Loyer.objects.filter(annee=year, paye=True).aggregate(
-            total=Sum("montant")
-        )["total"] or Decimal("0.00")
+        loyer_qs = Loyer.objects.filter(annee=year, paye=True)
+        if building_id:
+            loyer_qs = loyer_qs.filter(local__building_id=building_id)
+        total_benefice = loyer_qs.aggregate(total=Sum("montant"))["total"] or Decimal(
+            "0.00"
+        )
 
         # Per-local stats
         locaux_data = []

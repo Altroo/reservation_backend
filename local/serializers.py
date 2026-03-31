@@ -9,6 +9,9 @@ class LocalListSerializer(serializers.ModelSerializer):
         decimal_places=2,
         read_only=True,
     )
+    building_nom = serializers.CharField(
+        source="building.nom", read_only=True, default=None
+    )
     created_by_user_name = serializers.SerializerMethodField()
 
     @staticmethod
@@ -25,6 +28,8 @@ class LocalListSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "nom",
+            "building",
+            "building_nom",
             "type_local",
             "adresse",
             "superficie",
@@ -43,6 +48,7 @@ class LocalListSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "id",
             "rentabilite",
+            "building_nom",
             "created_by_user",
             "created_by_user_name",
             "date_created",
@@ -56,6 +62,7 @@ class LocalSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "nom",
+            "building",
             "type_local",
             "adresse",
             "superficie",

@@ -211,7 +211,9 @@ class DashboardStatsView(APIView):
             raise ValidationError({"year": _("year doit être un entier valide.")})
 
         qs = Reservation.objects.filter(check_in__year=year)
-
+        building_id = request.query_params.get("building")
+        if building_id:
+            qs = qs.filter(apartment__building_id=building_id)
         total_revenue = qs.aggregate(total=Sum("amount"))["total"] or 0
 
         # Revenue by source
@@ -242,7 +244,10 @@ class DashboardStatsView(APIView):
         )
 
         # Occupancy: occupied days per apartment per month
-        apartments = list(Apartment.objects.all().values("id", "nom"))
+        apt_qs = Apartment.objects.all()
+        if building_id:
+            apt_qs = apt_qs.filter(building_id=building_id)
+        apartments = list(apt_qs.values("id", "nom"))
         occupancy_by_apt = {}
         for apt in apartments:
             apt_qs = qs.filter(apartment_id=apt["id"])
@@ -261,10 +266,8 @@ class DashboardStatsView(APIView):
         ]
 
         # Costs and net profit
-        annual_costs = float(
-            Cost.objects.filter(date__year=year).aggregate(total=Sum("amount"))["total"]
-            or 0
-        )
+        cost_qs = Cost.objects.filter(date__year=year)
+        annual_costs = float(cost_qs.aggregate(total=Sum("amount"))["total"] or 0)
         net_profit = float(total_revenue) - annual_costs
 
         return Response(
@@ -328,11 +331,18 @@ class PlanningMonthView(APIView):
                 check_in__lte=month_end,
                 check_out__gt=month_start,
             )
-            .select_related("apartment")
+            .select_related("apartment", "apartment__building")
             .order_by("apartment__nom", "check_in")
         )
 
-        apartments = list(Apartment.objects.all().order_by("nom"))
+        building_id = request.query_params.get("building")
+        if building_id:
+            qs = qs.filter(apartment__building_id=building_id)
+
+        apt_qs = Apartment.objects.all().order_by("nom")
+        if building_id:
+            apt_qs = apt_qs.filter(building_id=building_id)
+        apartments = list(apt_qs)
 
         result = {}
         for apt in apartments:

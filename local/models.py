@@ -14,6 +14,14 @@ class Local(models.Model):
     ]
 
     nom = models.CharField(max_length=200, unique=True, verbose_name=_("Nom"))
+    building = models.ForeignKey(
+        "building.Building",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="locaux",
+        verbose_name=_("Résidence"),
+    )
     type_local = models.CharField(
         max_length=50,
         choices=TYPE_CHOICES,

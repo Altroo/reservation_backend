@@ -9,6 +9,7 @@ class LocalAdmin(SimpleHistoryAdmin):
     list_display = (
         "id",
         "nom",
+        "building",
         "type_local",
         "en_location",
         "locataire_nom",
@@ -16,7 +17,7 @@ class LocalAdmin(SimpleHistoryAdmin):
         "prix_achat",
         "date_created",
     )
-    list_filter = ("type_local", "en_location")
+    list_filter = ("building", "type_local", "en_location")
     search_fields = ("nom", "locataire_nom", "adresse")
     ordering = ("nom",)
     readonly_fields = ("date_created", "date_updated")

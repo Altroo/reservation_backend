@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "account.apps.AccountConfig",
     "reservation.apps.ReservationConfig",
     "local.apps.LocalConfig",
+    "building.apps.BuildingConfig",
     "axes",
 ]
 

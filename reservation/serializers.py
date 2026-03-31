@@ -4,14 +4,24 @@ from .models import Apartment, Cost, Notification, NotificationPreference, Reser
 
 
 class ApartmentSerializer(serializers.ModelSerializer):
+    building_nom = serializers.CharField(
+        source="building.nom", read_only=True, default=None
+    )
+
     class Meta:
         model = Apartment
-        fields = ["id", "nom"]
-        read_only_fields = ["id"]
+        fields = ["id", "nom", "building", "building_nom"]
+        read_only_fields = ["id", "building_nom"]
 
 
 class ReservationListSerializer(serializers.ModelSerializer):
     apartment_nom = serializers.CharField(source="apartment.nom", read_only=True)
+    apartment_building = serializers.IntegerField(
+        source="apartment.building_id", read_only=True, default=None
+    )
+    apartment_building_nom = serializers.CharField(
+        source="apartment.building.nom", read_only=True, default=None
+    )
     payment_source_display = serializers.CharField(
         source="get_payment_source_display", read_only=True
     )
@@ -35,6 +45,8 @@ class ReservationListSerializer(serializers.ModelSerializer):
             "id",
             "apartment",
             "apartment_nom",
+            "apartment_building",
+            "apartment_building_nom",
             "guest_name",
             "check_in",
             "check_out",
@@ -52,6 +64,8 @@ class ReservationListSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "id",
             "apartment_nom",
+            "apartment_building",
+            "apartment_building_nom",
             "payment_source_display",
             "created_by_user",
             "created_by_user_name",

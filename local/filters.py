@@ -8,6 +8,7 @@ class LocalFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method="global_search", label="Search")
     type_local = django_filters.CharFilter(lookup_expr="iexact")
     en_location = django_filters.BooleanFilter()
+    building = django_filters.NumberFilter(field_name="building_id")
     prix_achat__gte = django_filters.NumberFilter(
         field_name="prix_achat", lookup_expr="gte"
     )
@@ -27,6 +28,7 @@ class LocalFilter(django_filters.FilterSet):
             "search",
             "type_local",
             "en_location",
+            "building",
             "prix_achat__gte",
             "prix_achat__lte",
             "prix_location_mensuel__gte",

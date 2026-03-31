@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords
 
 from account.models import CustomUser
@@ -12,6 +13,14 @@ class Apartment(models.Model):
         unique=True,
         verbose_name="Nom de l'appartement",
         help_text="Nom de l'appartement",
+    )
+    building = models.ForeignKey(
+        "building.Building",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="apartments",
+        verbose_name=_("Résidence"),
     )
 
     class Meta:
