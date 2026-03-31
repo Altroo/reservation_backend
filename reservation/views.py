@@ -73,6 +73,9 @@ class ApartmentDetailView(APIView):
                 {"nom": [_("Un appartement avec ce nom existe déjà.")]}
             )
         apartment.nom = nom
+        if "building" in request.data:
+            building_val = request.data["building"]
+            apartment.building_id = building_val if building_val else None
         apartment.save()
         return Response(ApartmentSerializer(apartment).data, status=status.HTTP_200_OK)
 
