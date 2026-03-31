@@ -386,7 +386,14 @@ class BalanceView(APIView):
             payment_source__in=balance_sources,
         ).select_related("apartment")
 
-        apartments = list(Apartment.objects.all().order_by("nom"))
+        building_id = request.query_params.get("building")
+        if building_id:
+            qs = qs.filter(apartment__building_id=building_id)
+
+        apt_qs_filter = Apartment.objects.all()
+        if building_id:
+            apt_qs_filter = apt_qs_filter.filter(building_id=building_id)
+        apartments = list(apt_qs_filter.order_by("nom"))
 
         # Build monthly matrix per apartment
         matrix = {}
@@ -603,21 +610,20 @@ class BulkDeleteCostView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ── Notification views ───────────────────────────────────────────────────────
-
-
 class NotificationPreferenceView(APIView):
     """GET / PUT the authenticated user's notification preferences."""
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         pref, _ = NotificationPreference.objects.get_or_create(user=request.user)
         return Response(
             NotificationPreferenceSerializer(pref).data, status=status.HTTP_200_OK
         )
 
-    def put(self, request):
+    @staticmethod
+    def put(request):
         pref, _ = NotificationPreference.objects.get_or_create(user=request.user)
         serializer = NotificationPreferenceSerializer(
             pref, data=request.data, partial=True
@@ -642,7 +648,7 @@ class NotificationListView(APIView):
 
 
 class NotificationMarkReadView(APIView):
-    """POST mark one or all notifications as read."""
+    """postmark one or all notifications as read."""
 
     permission_classes = (permissions.IsAuthenticated,)
 
