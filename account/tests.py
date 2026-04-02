@@ -1111,7 +1111,7 @@ class TestCreateAccountSerializerExtra:
                 pass
 
         with pytest.raises(
-            drf_serializers.ValidationError, match="Invalid file upload"
+            drf_serializers.ValidationError, match="Fichier image invalide|Invalid file"
         ):
             CreateAccountSerializer._process_image_field(
                 "avatar", {"avatar": BrokenFile()}
@@ -1222,7 +1222,7 @@ class TestProfilePutSerializerExtra:
                 pass
 
         with pytest.raises(
-            drf_serializers.ValidationError, match="Invalid file upload"
+            drf_serializers.ValidationError, match="Erreur inattendue|Unexpected error"
         ):
             ProfilePutSerializer._process_image_field(
                 "avatar", {"avatar": BrokenFile()}

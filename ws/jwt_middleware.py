@@ -2,6 +2,7 @@ import asyncio
 from typing import Any
 from urllib.parse import parse_qs
 
+# i18n: skip-file
 from channels.auth import AuthMiddlewareStack
 from channels.db import database_sync_to_async
 from channels.middleware import BaseMiddleware

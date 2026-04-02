@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from .models import Apartment, Cost, Notification, NotificationPreference, Reservation
@@ -105,7 +106,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         if check_in and check_out and check_out <= check_in:
             raise serializers.ValidationError(
                 {
-                    "check_out": "La date de départ doit être postérieure à la date d'arrivée."
+                    "check_out": _("La date de départ doit être postérieure à la date d'arrivée.")
                 }
             )
 
@@ -125,8 +126,8 @@ class ReservationSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     {
                         "check_in": (
-                            f"Cette réservation chevauche une réservation existante "
-                            f"({overlap.guest_name}: {overlap.check_in} — {overlap.check_out})."
+                            _("Cette réservation chevauche une réservation existante")
+                            + f" ({overlap.guest_name}: {overlap.check_in} — {overlap.check_out})."
                         )
                     }
                 )

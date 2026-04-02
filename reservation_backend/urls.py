@@ -18,6 +18,7 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.utils.translation import gettext
 from django.views.static import serve
 from django.http import JsonResponse
 from ws.views import GetMaintenanceView
@@ -31,7 +32,7 @@ def health_check(request):
 def custom_404(request, exception=None):
     """Custom 404 handler returning JSON."""
     return JsonResponse(
-        {"status_code": 404, "message": "Page introuvable", "details": {}},
+        {"status_code": 404, "message": gettext("Page introuvable"), "details": {}},
         status=404,
     )
 
@@ -39,7 +40,7 @@ def custom_404(request, exception=None):
 def custom_500(request):
     """Custom 500 handler returning JSON."""
     return JsonResponse(
-        {"status_code": 500, "message": "Erreur interne du serveur", "details": {}},
+        {"status_code": 500, "message": gettext("Erreur interne du serveur"), "details": {}},
         status=500,
     )
 

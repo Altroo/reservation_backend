@@ -1,0 +1,1082 @@
+# English translations for reservation_backend
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-01 17:46+0100\n"
+"Language: en\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# account/admin.py
+#: .\account\admin.py:31 .\account\admin.py:63
+msgid "Profile"
+msgstr "Profile"
+
+#: .\account\admin.py:47 .\account\admin.py:75
+msgid "Permissions"
+msgstr "Permissions"
+
+#: .\account\admin.py:99 .\account\templates\new_password.html:11
+msgid "Changement de mot de passe - E.B.H Réservation"
+msgstr "Password Change - E.B.H Reservation"
+
+#: .\account\apps.py:8
+msgid "Comptes"
+msgstr "Accounts"
+
+#: .\account\managers.py:11
+msgid "The Email must be set"
+msgstr "The Email must be set"
+
+#: .\account\managers.py:27
+msgid "Superuser must have is_staff=True."
+msgstr "Superuser must have is_staff=True."
+
+#: .\account\managers.py:29
+msgid "Superuser must have is_superuser=True."
+msgstr "Superuser must have is_superuser=True."
+
+# account/models.py
+#: .\account\models.py:24
+msgid "Adresse e‑mail"
+msgstr "Email address"
+
+#: .\account\models.py:24
+msgid "Adresse e‑mail de l'utilisateur"
+msgstr "User email address"
+
+#: .\account\models.py:27
+msgid "Prénom"
+msgstr "First name"
+
+#: .\account\models.py:27
+msgid "Prénom de l'utilisateur"
+msgstr "User first name"
+
+#: .\account\models.py:30 .\building\models.py:14 .\local\models.py:16
+msgid "Nom"
+msgstr "Last name"
+
+#: .\account\models.py:30
+msgid "Nom de famille de l'utilisateur"
+msgstr "User last name"
+
+#: .\account\models.py:32
+msgid "Unset"
+msgstr "Unset"
+
+#: .\account\models.py:32
+msgid "Homme"
+msgstr "Male"
+
+#: .\account\models.py:32
+msgid "Femme"
+msgstr "Female"
+
+#: .\account\models.py:34
+msgid "Sexe"
+msgstr "Gender"
+
+#: .\account\models.py:38
+msgid "Sexe de l'utilisateur"
+msgstr "User gender"
+
+#: .\account\models.py:41
+msgid "Photo de profil"
+msgstr "Profile photo"
+
+#: .\account\models.py:46
+msgid "Image de profil de l'utilisateur"
+msgstr "User profile image"
+
+#: .\account\models.py:53
+msgid "Photo de profil recadrée"
+msgstr "Cropped profile photo"
+
+#: .\account\models.py:55
+msgid "Version recadrée de la photo de profil"
+msgstr "Cropped version of profile photo"
+
+#: .\account\models.py:58
+msgid "Statut personnel"
+msgstr "Staff status"
+
+#: .\account\models.py:61
+msgid "Indique si l'utilisateur peut se connecter au panneau d'administration."
+msgstr "Indicates whether the user can log into the admin panel."
+
+#: .\account\models.py:64
+msgid "Actif"
+msgstr "Active"
+
+#: .\account\models.py:67
+msgid "Indique si ce compte doit être considéré comme actif."
+msgstr "Indicates whether this account should be considered active."
+
+#: .\account\models.py:70
+msgid "Date d'inscription"
+msgstr "Registration date"
+
+#: .\account\models.py:73
+msgid "Horodatage de l'inscription de l'utilisateur."
+msgstr "Timestamp of user registration."
+
+#: .\account\models.py:77
+msgid "Date de modification"
+msgstr "Last modified"
+
+#: .\account\models.py:79
+msgid "Horodatage de la dernière modification du profil."
+msgstr "Timestamp of the last profile modification."
+
+#: .\account\models.py:82
+msgid "Mot de passe - Code de réinitialisation"
+msgstr "Password - Reset code"
+
+#: .\account\models.py:86
+msgid "Code de réinitialisation du mot de passe (généré automatiquement)."
+msgstr "Password reset code (automatically generated)."
+
+#: .\account\models.py:89
+msgid "Mot de passe - Date de création du code"
+msgstr "Password - Code creation date"
+
+#: .\account\models.py:93
+msgid "Date à laquelle le code de réinitialisation a été créé."
+msgstr "Date when the reset code was created."
+
+#: .\account\models.py:96
+msgid "Mot de passe - Task ID de réinitialisation"
+msgstr "Password - Reset task ID"
+
+#: .\account\models.py:102
+msgid "Identifiant de la tâche Celery de réinitialisation du mot de passe."
+msgstr "Celery task ID for password reset."
+
+#: .\account\models.py:105
+msgid "Mot de passe par défaut défini"
+msgstr "Default password set"
+
+#: .\account\models.py:108
+msgid "Indique si le mot de passe par défaut a été défini."
+msgstr "Indicates whether the default password has been set."
+
+#: .\account\models.py:111
+msgid "Peut consulter"
+msgstr "Can view"
+
+#: .\account\models.py:112
+msgid "Peut créer"
+msgstr "Can create"
+
+#: .\account\models.py:113
+msgid "Peut modifier"
+msgstr "Can edit"
+
+#: .\account\models.py:114
+msgid "Peut supprimer"
+msgstr "Can delete"
+
+#: .\account\models.py:120
+msgid "Historique Utilisateur"
+msgstr "User History"
+
+#: .\account\models.py:121
+msgid "Historiques Utilisateurs"
+msgstr "User Histories"
+
+#: .\account\models.py:141 .\reservation\models.py:183
+#: .\reservation\models.py:221
+msgid "Utilisateur"
+msgstr "User"
+
+#: .\account\models.py:142
+msgid "Utilisateurs"
+msgstr "Users"
+
+# account/serializers.py
+#: .\account\serializers.py:33 .\account\serializers.py:254
+#, python-format
+msgid "Valeur du genre invalide. (%(value)s)"
+msgstr "Invalid gender value. (%(value)s)"
+
+#: .\account\serializers.py:48 .\account\serializers.py:87
+#: .\account\serializers.py:272 .\account\serializers.py:311
+#, python-format
+msgid "Format d'image non reconnu. (%(field_name)s)"
+msgstr "Unrecognised image format. (%(field_name)s)"
+
+#: .\account\serializers.py:53
+#, python-format
+msgid "Fichier image invalide. (%(field_name)s: %(error)s)"
+msgstr "Invalid image file. (%(field_name)s: %(error)s)"
+
+#: .\account\serializers.py:59 .\account\serializers.py:283
+#, python-format
+msgid "Format d'image base64 invalide. (%(field_name)s)"
+msgstr "Invalid base64 image format. (%(field_name)s)"
+
+#: .\account\serializers.py:64 .\account\serializers.py:288
+#, python-format
+msgid "Données base64 mal formées. (%(field_name)s)"
+msgstr "Malformed base64 data. (%(field_name)s)"
+
+#: .\account\serializers.py:69 .\account\serializers.py:293
+#, python-format
+msgid "Type MIME d'image invalide. (%(field_name)s)"
+msgstr "Invalid image MIME type. (%(field_name)s)"
+
+#: .\account\serializers.py:76 .\account\serializers.py:300
+#, python-format
+msgid "Image trop grande. (%(field_name)s: %(size)s octets, max %(max_size)s)"
+msgstr "Image too large. (%(field_name)s: %(size)s bytes, max %(max_size)s)"
+
+#: .\account\serializers.py:82 .\account\serializers.py:306
+#, python-format
+msgid "Encodage base64 invalide. (%(field_name)s: %(error)s)"
+msgstr "Invalid base64 encoding. (%(field_name)s: %(error)s)"
+
+#: .\account\serializers.py:94 .\account\serializers.py:318
+#, python-format
+msgid "Données d'image base64 invalides. (%(field_name)s: %(error)s)"
+msgstr "Invalid base64 image data. (%(field_name)s: %(error)s)"
+
+#: .\account\serializers.py:96 .\account\serializers.py:320
+#, python-format
+msgid "Format d'image invalide. (%(field_name)s)"
+msgstr "Invalid image format. (%(field_name)s)"
+
+#: .\account\serializers.py:186 .\account\views.py:165
+msgid "Les mots de passe ne correspondent pas."
+msgstr "Passwords do not match."
+
+#: .\account\serializers.py:277
+#, python-format
+msgid "Erreur inattendue lors du traitement du fichier. (%(field_name)s)"
+msgstr "Unexpected error while processing the file. (%(field_name)s)"
+
+#: .\account\templates\new_account.html:11
+msgid "Invitation à l'application de E.B.H Réservation"
+msgstr "Invitation to the E.B.H Reservation Application"
+
+#: .\account\templates\new_account.html:144
+msgid "Invitation (Application de E.B.H Réservation)"
+msgstr "Invitation (E.B.H Reservation Application)"
+
+#: .\account\templates\new_account.html:167
+#, python-format
+msgid ""
+"Bonjour %(first_name)s,<br>Voici le mot de passe\n"
+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tde votre compte récement créé sur "
+"L'application de E.B.H Réservation :"
+msgstr ""
+"Hello %(first_name)s,<br>Here is the password\n"
+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfor your recently created E.B.H "
+"Reservation account:"
+
+#: .\account\templates\new_account.html:195
+msgid "Vous pouvez utiliser cette adresse Email, Merci,"
+msgstr "You can use your email address to log in. Thank you,"
+
+#: .\account\templates\new_account.html:208
+#: .\account\templates\new_password.html:208
+#: .\account\templates\password_reset.html:208
+msgid "Accéder à l'application"
+msgstr "Open the application"
+
+#: .\account\templates\new_account.html:216
+#: .\account\templates\new_password.html:216
+#: .\account\templates\password_reset.html:216
+msgid "L'équipe Application de E.B.H Réservation"
+msgstr "The E.B.H Reservation Application Team"
+
+#: .\account\templates\new_account.html:249
+#: .\account\templates\new_password.html:249
+#: .\account\templates\password_reset.html:249
+msgid ""
+"Cet email vous a été envoyé car vous avez un compte sur l'application de "
+"E.B.H Réservation."
+msgstr ""
+"You received this email because you have an account on the E.B.H Reservation "
+"application."
+
+#: .\account\templates\new_password.html:144
+msgid "Changement de mot de passe (E.B.H Réservation)"
+msgstr "Password Change (E.B.H Reservation)"
+
+#: .\account\templates\new_password.html:167
+#, python-format
+msgid ""
+"Bonjour %(first_name)s,<br>Un administrateur a modifié le mot de passe\n"
+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tde votre compte E.B.H Réservation. Voici "
+"votre nouveau mot de passe :"
+msgstr ""
+"Hello %(first_name)s,<br>An administrator has changed the password\n"
+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfor your E.B.H Reservation account. Here "
+"is your new password:"
+
+#: .\account\templates\new_password.html:195
+msgid ""
+"Vous pouvez utiliser ce nouveau mot de passe pour vous connecter avec votre "
+"adresse Email, Merci,"
+msgstr ""
+"You can use this new password to log in with your email address. Thank you,"
+
+# email templates
+#: .\account\templates\password_reset.html:11
+msgid "Renouvelez votre mot de passe - E.B.H Réservation"
+msgstr "Reset your password - E.B.H Reservation"
+
+#: .\account\templates\password_reset.html:144
+msgid "Renouvelez votre mot de passe"
+msgstr "Reset your password"
+
+#: .\account\templates\password_reset.html:167
+#, python-format
+msgid ""
+"Bonjour %(first_name)s,<br>Pour modifier votre mot\n"
+"                                                                    de "
+"passe, entrer ce code de sécurité :"
+msgstr ""
+"Hello %(first_name)s,<br>To reset your password,\n"
+"                                                                    enter "
+"this security code:"
+
+#: .\account\templates\password_reset.html:195
+msgid "Merci,"
+msgstr "Thank you,"
+
+# account/views.py
+#: .\account\views.py:56
+msgid "Un utilisateur avec ce champ adresse électronique existe déjà."
+msgstr "A user with this email address already exists."
+
+#: .\account\views.py:62 .\account\views.py:188 .\account\views.py:318
+msgid "L'adresse électronique est requise."
+msgstr "Email address is required."
+
+#: .\account\views.py:70 .\account\views.py:196 .\account\views.py:235
+#: .\account\views.py:326
+msgid "Entrez une adresse électronique valide."
+msgstr "Enter a valid email address."
+
+#: .\account\views.py:162
+msgid "Votre mot de passe est invalide."
+msgstr "Your password is invalid."
+
+#: .\account\views.py:170
+msgid "Le mot de passe doit contenir au moins 8 caractères."
+msgstr "Password must be at least 8 characters long."
+
+#: .\account\views.py:183
+msgid "Utilisateur ou code verification invalide."
+msgstr "Invalid user or verification code."
+
+#: .\account\views.py:218 .\account\views.py:255
+msgid ""
+"Le code de réinitialisation a expiré. Veuillez demander un nouveau code."
+msgstr "The reset code has expired. Please request a new code."
+
+# reservation/views.py
+#: .\account\views.py:230 .\reservation\views.py:40 .\reservation\views.py:70
+msgid "Ce champ est requis."
+msgstr "This field is required."
+
+#: .\account\views.py:404
+msgid "Utilisateur n'éxiste pas!"
+msgstr "User does not exist!"
+
+#: .\account\views.py:513 .\account\views.py:519
+msgid "Aucune utilisateur ne correspond à la requête."
+msgstr "No user matches the request."
+
+#: .\account\views.py:528
+msgid "Vous ne pouvez pas modifier votre utilisateur dans cette page."
+msgstr "You cannot edit your own user on this page."
+
+#: .\account\views.py:542
+msgid "Vous ne pouvez pas supprimer votre utilisateur."
+msgstr "You cannot delete your own user."
+
+#: .\account\views.py:567 .\building\views.py:112 .\local\views.py:123
+#: .\reservation\views.py:198 .\reservation\views.py:611
+msgid "Une liste d'identifiants est requise."
+msgstr "A list of identifiers is required."
+
+#: .\account\views.py:573
+msgid "Les identifiants doivent être des entiers."
+msgstr "Identifiers must be integers."
+
+#: .\account\views.py:578
+msgid "Vous ne pouvez pas supprimer votre propre utilisateur."
+msgstr "You cannot delete your own user."
+
+#: .\account\views.py:583
+msgid "Certains utilisateurs sont introuvables."
+msgstr "Some users could not be found."
+
+# reservation/models.py - Reservation
+#: .\building\models.py:15
+msgid "Nom de la résidence"
+msgstr "Residence name"
+
+#: .\building\models.py:23 .\local\models.py:64 .\local\models.py:111
+#: .\reservation\models.py:85 .\reservation\models.py:152
+msgid "Créé par"
+msgstr "Created by"
+
+#: .\building\models.py:30 .\local\models.py:23 .\reservation\models.py:23
+msgid "Résidence"
+msgstr "Residence"
+
+#: .\building\models.py:31
+msgid "Résidences"
+msgstr "Residences"
+
+# building/views.py
+#: .\building\views.py:26
+msgid "Vous n'avez pas les droits pour créer une résidence."
+msgstr "You do not have permission to create a residence."
+
+#: .\building\views.py:46
+msgid "Résidence introuvable."
+msgstr "Residence not found."
+
+#: .\building\views.py:55
+msgid "Vous n'avez pas les droits pour modifier cette résidence."
+msgstr "You do not have permission to edit this residence."
+
+#: .\building\views.py:67
+msgid "Vous n'avez pas les droits pour supprimer cette résidence."
+msgstr "You do not have permission to delete this residence."
+
+#: .\building\views.py:77
+msgid ""
+"Impossible de supprimer cette résidence car elle contient des appartements."
+msgstr "Cannot delete this residence because it contains apartments."
+
+#: .\building\views.py:89
+msgid "Impossible de supprimer cette résidence car elle contient des locaux."
+msgstr "Cannot delete this residence because it contains locals."
+
+#: .\building\views.py:107
+msgid "Vous n'avez pas les droits pour supprimer des résidences."
+msgstr "You do not have permission to delete residences."
+
+#: .\local\apps.py:8 .\local\models.py:72
+msgid "Locaux"
+msgstr "Premises"
+
+#: .\local\models.py:12
+msgid "Bureau"
+msgstr "Office"
+
+#: .\local\models.py:13
+msgid "Magasin"
+msgstr "Shop"
+
+#: .\local\models.py:28
+msgid "Type de local"
+msgstr "Premises type"
+
+# account/models.py
+#: .\local\models.py:31
+msgid "Adresse"
+msgstr "Address"
+
+#: .\local\models.py:38
+msgid "Superficie (m²)"
+msgstr "Surface area (m²)"
+
+#: .\local\models.py:41
+msgid "Prix d'achat"
+msgstr "Purchase price"
+
+#: .\local\models.py:46
+msgid "Prix de location mensuel HT"
+msgstr "Monthly rent excl. tax"
+
+#: .\local\models.py:49
+msgid "En location"
+msgstr "Rented"
+
+# reservation/models.py - Reservation
+#: .\local\models.py:52
+msgid "Nom du locataire"
+msgstr "Tenant name"
+
+#: .\local\models.py:55
+msgid "Date de début de location"
+msgstr "Rental start date"
+
+#: .\local\models.py:57 .\local\models.py:104 .\reservation\models.py:77
+msgid "Notes"
+msgstr "Notes"
+
+#: .\local\models.py:71 .\local\models.py:93
+msgid "Local"
+msgstr "Premises"
+
+#: .\local\models.py:95
+msgid "Mois"
+msgstr "Month"
+
+#: .\local\models.py:96
+msgid "Année"
+msgstr "Year"
+
+#: .\local\models.py:98
+msgid "Montant"
+msgstr "Amount"
+
+#: .\local\models.py:100
+msgid "Payé"
+msgstr "Paid"
+
+#: .\local\models.py:102
+msgid "Date de paiement"
+msgstr "Payment date"
+
+#: .\local\models.py:117
+msgid "Loyer"
+msgstr "Rent"
+
+#: .\local\models.py:118
+msgid "Loyers"
+msgstr "Rents"
+
+# local/serializers.py
+#: .\local\serializers.py:153
+msgid "Le mois doit être entre 1 et 12."
+msgstr "Month must be between 1 and 12."
+
+#: .\local\serializers.py:158
+msgid "L'année doit être entre 2000 et 2100."
+msgstr "Year must be between 2000 and 2100."
+
+#: .\local\serializers.py:174
+msgid "Un loyer existe déjà pour ce local pour ce mois et cette année."
+msgstr "A rent already exists for this premises for this month and year."
+
+# local/views.py
+#: .\local\views.py:49
+msgid "Vous n'avez pas les droits pour créer un local."
+msgstr "You do not have permission to create a local."
+
+#: .\local\views.py:68
+msgid "Local introuvable."
+msgstr "Local not found."
+
+#: .\local\views.py:78
+msgid "Vous n'avez pas les droits pour modifier ce local."
+msgstr "You do not have permission to edit this local."
+
+#: .\local\views.py:90
+msgid "Vous n'avez pas les droits pour supprimer ce local."
+msgstr "You do not have permission to delete this local."
+
+#: .\local\views.py:100
+msgid "Impossible de supprimer ce local car il possède des loyers enregistrés."
+msgstr "Cannot delete this local because it has registered rents."
+
+#: .\local\views.py:118
+msgid "Vous n'avez pas les droits pour supprimer des locaux."
+msgstr "You do not have permission to delete locals."
+
+#: .\local\views.py:162
+msgid "Vous n'avez pas les droits pour créer un loyer."
+msgstr "You do not have permission to create a rent."
+
+#: .\local\views.py:181 .\local\views.py:224
+msgid "Loyer introuvable."
+msgstr "Rent not found."
+
+#: .\local\views.py:191
+msgid "Vous n'avez pas les droits pour modifier ce loyer."
+msgstr "You do not have permission to edit this rent."
+
+#: .\local\views.py:203
+msgid "Vous n'avez pas les droits pour supprimer ce loyer."
+msgstr "You do not have permission to delete this rent."
+
+#: .\local\views.py:218
+msgid "Vous n'avez pas les droits pour modifier le statut de paiement."
+msgstr "You do not have permission to edit the payment status."
+
+#: .\local\views.py:228
+msgid "Le champ 'paye' est requis."
+msgstr "The 'paye' field is required."
+
+#: .\local\views.py:257 .\local\views.py:316
+msgid "L'année doit être un entier valide."
+msgstr "Year must be a valid integer."
+
+#: .\reservation\apps.py:8 .\reservation\models.py:99
+msgid "Réservations"
+msgstr "Reservations"
+
+# reservation/models.py - Apartment
+#: .\reservation\models.py:14 .\reservation\models.py:15
+msgid "Nom de l'appartement"
+msgstr "Apartment name"
+
+#: .\reservation\models.py:27 .\reservation\models.py:42
+msgid "Appartement"
+msgstr "Apartment"
+
+#: .\reservation\models.py:28
+msgid "Appartements"
+msgstr "Apartments"
+
+# reservation/models.py - Reservation
+#: .\reservation\models.py:46
+msgid "Nom du client"
+msgstr "Guest name"
+
+#: .\reservation\models.py:47
+msgid "Nom complet du client"
+msgstr "Full guest name"
+
+#: .\reservation\models.py:50
+msgid "Date d'arrivée"
+msgstr "Check-in date"
+
+#: .\reservation\models.py:54
+msgid "Date de départ"
+msgstr "Check-out date"
+
+#: .\reservation\models.py:60 .\reservation\models.py:136
+msgid "Montant (MAD)"
+msgstr "Amount (MAD)"
+
+#: .\reservation\models.py:61
+msgid "Montant total de la réservation en MAD"
+msgstr "Total reservation amount in MAD"
+
+#: .\reservation\models.py:66
+msgid "Source de paiement"
+msgstr "Payment source"
+
+#: .\reservation\models.py:71
+msgid "Montant retourné"
+msgstr "Amount returned"
+
+#: .\reservation\models.py:72
+msgid "Indique si le montant a été retourné"
+msgstr "Indicates whether the amount has been returned"
+
+#: .\reservation\models.py:88 .\reservation\models.py:154
+#: .\reservation\models.py:198 .\reservation\models.py:240
+msgid "Date création"
+msgstr "Creation date"
+
+#: .\reservation\models.py:90 .\reservation\models.py:155
+#: .\reservation\models.py:199
+msgid "Date modification"
+msgstr "Last modified"
+
+#: .\reservation\models.py:93
+msgid "Historique Réservation"
+msgstr "Reservation History"
+
+#: .\reservation\models.py:94
+msgid "Historiques Réservations"
+msgstr "Reservation Histories"
+
+#: .\reservation\models.py:98 .\reservation\models.py:229
+msgid "Réservation"
+msgstr "Reservation"
+
+# reservation/models.py - Cost
+#: .\reservation\models.py:121
+msgid "Entretien"
+msgstr "Maintenance"
+
+#: .\reservation\models.py:122
+msgid "Charges"
+msgstr "Charges"
+
+#: .\reservation\models.py:123
+msgid "Assurance"
+msgstr "Insurance"
+
+#: .\reservation\models.py:124
+msgid "Taxes"
+msgstr "Taxes"
+
+#: .\reservation\models.py:125
+msgid "Autre"
+msgstr "Other"
+
+#: .\reservation\models.py:130
+msgid "Description"
+msgstr "Description"
+
+#: .\reservation\models.py:131
+msgid "Description du coût"
+msgstr "Cost description"
+
+#: .\reservation\models.py:138
+msgid "Date"
+msgstr "Date"
+
+#: .\reservation\models.py:143
+msgid "Catégorie"
+msgstr "Category"
+
+#: .\reservation\models.py:158
+msgid "Coût"
+msgstr "Cost"
+
+#: .\reservation\models.py:159
+msgid "Coûts"
+msgstr "Costs"
+
+# reservation/models.py - NotificationPreference
+#: .\reservation\models.py:170
+msgid "Au moment de l'événement"
+msgstr "At the time of the event"
+
+#: .\reservation\models.py:171
+msgid "15 minutes avant"
+msgstr "15 minutes before"
+
+#: .\reservation\models.py:172
+msgid "30 minutes avant"
+msgstr "30 minutes before"
+
+#: .\reservation\models.py:173
+msgid "1 heure avant"
+msgstr "1 hour before"
+
+#: .\reservation\models.py:174
+msgid "2 heures avant"
+msgstr "2 hours before"
+
+#: .\reservation\models.py:175
+msgid "1 jour avant"
+msgstr "1 day before"
+
+#: .\reservation\models.py:176
+msgid "2 jours avant"
+msgstr "2 days before"
+
+#: .\reservation\models.py:187
+msgid "Notifier à l'arrivée"
+msgstr "Notify on check-in"
+
+#: .\reservation\models.py:191
+msgid "Notifier au départ"
+msgstr "Notify on check-out"
+
+#: .\reservation\models.py:196
+msgid "Rappel avant (minutes)"
+msgstr "Reminder before (minutes)"
+
+#: .\reservation\models.py:202
+msgid "Préférence de notification"
+msgstr "Notification preference"
+
+#: .\reservation\models.py:203
+msgid "Préférences de notification"
+msgstr "Notification preferences"
+
+# reservation/models.py - Notification
+#: .\reservation\models.py:213
+msgid "Arrivée"
+msgstr "Check-in"
+
+#: .\reservation\models.py:214
+msgid "Départ"
+msgstr "Check-out"
+
+#: .\reservation\models.py:231
+msgid "Titre"
+msgstr "Title"
+
+#: .\reservation\models.py:232
+msgid "Message"
+msgstr "Message"
+
+#: .\reservation\models.py:236
+msgid "Type"
+msgstr "Type"
+
+#: .\reservation\models.py:238
+msgid "Lu"
+msgstr "Read"
+
+#: .\reservation\models.py:244
+msgid "Notification"
+msgstr "Notification"
+
+#: .\reservation\models.py:245
+msgid "Notifications"
+msgstr "Notifications"
+
+# reservation/serializers.py
+#: .\reservation\serializers.py:109
+msgid "La date de départ doit être postérieure à la date d'arrivée."
+msgstr "Check-out date must be after check-in date."
+
+#: .\reservation\serializers.py:129
+msgid "Cette réservation chevauche une réservation existante"
+msgstr "This reservation overlaps with an existing reservation"
+
+# reservation/tasks.py
+#: .\reservation\tasks.py:52
+#, python-format
+msgid "Arrivée — %(guest_name)s"
+msgstr "Check-in — %(guest_name)s"
+
+#: .\reservation\tasks.py:54
+#, python-format
+msgid "%(guest_name)s arrive le %(check_in)s à l'appartement %(apartment)s."
+msgstr "%(guest_name)s is arriving on %(check_in)s at apartment %(apartment)s."
+
+#: .\reservation\tasks.py:78
+#, python-format
+msgid "Départ — %(guest_name)s"
+msgstr "Check-out — %(guest_name)s"
+
+#: .\reservation\tasks.py:80
+#, python-format
+msgid "%(guest_name)s quitte l'appartement %(apartment)s le %(check_out)s."
+msgstr "%(guest_name)s is leaving apartment %(apartment)s on %(check_out)s."
+
+#: .\reservation\views.py:43 .\reservation\views.py:73
+msgid "Un appartement avec ce nom existe déjà."
+msgstr "An apartment with this name already exists."
+
+#: .\reservation\views.py:60
+msgid "Appartement introuvable."
+msgstr "Apartment not found."
+
+#: .\reservation\views.py:65
+msgid "Vous n'avez pas les droits pour modifier cet appartement."
+msgstr "You do not have permission to edit this apartment."
+
+#: .\reservation\views.py:85
+msgid "Vous n'avez pas les droits pour supprimer cet appartement."
+msgstr "You do not have permission to delete this apartment."
+
+#: .\reservation\views.py:93
+msgid ""
+"Impossible de supprimer cet appartement car il possède des réservations. "
+"Veuillez d'abord supprimer les réservations associées."
+msgstr ""
+"Cannot delete this apartment because it has reservations. Please delete the "
+"associated reservations first."
+
+#: .\reservation\views.py:132
+msgid "Vous n'avez pas les droits pour créer une réservation."
+msgstr "You do not have permission to create a reservation."
+
+#: .\reservation\views.py:154 .\reservation\views.py:458
+msgid "Aucune réservation ne correspond à la requête."
+msgstr "No reservation matches the request."
+
+#: .\reservation\views.py:164
+msgid "Vous n'avez pas les droits pour modifier cette réservation."
+msgstr "You do not have permission to edit this reservation."
+
+#: .\reservation\views.py:178
+msgid "Vous n'avez pas les droits pour supprimer cette réservation."
+msgstr "You do not have permission to delete this reservation."
+
+#: .\reservation\views.py:194
+msgid "Vous n'avez pas les droits pour supprimer des réservations."
+msgstr "You do not have permission to delete reservations."
+
+#: .\reservation\views.py:214 .\reservation\views.py:383
+#: .\reservation\views.py:525
+msgid "year doit être un entier valide."
+msgstr "year must be a valid integer."
+
+#: .\reservation\views.py:321
+msgid "year et month doivent être des entiers valides."
+msgstr "year and month must be valid integers."
+
+#: .\reservation\views.py:463
+msgid "Ce champ doit être un booléen (true/false)."
+msgstr "This field must be a boolean (true/false)."
+
+#: .\reservation\views.py:534
+msgid "month doit être un entier valide entre 1 et 12."
+msgstr "month must be a valid integer between 1 and 12."
+
+#: .\reservation\views.py:542
+msgid "Vous n'avez pas les droits pour créer un coût."
+msgstr "You do not have permission to create a cost."
+
+#: .\reservation\views.py:559
+msgid "Coût introuvable."
+msgstr "Cost not found."
+
+#: .\reservation\views.py:564
+msgid "Vous n'avez pas les droits pour modifier ce coût."
+msgstr "You do not have permission to edit this cost."
+
+#: .\reservation\views.py:575
+msgid "Vous n'avez pas les droits pour supprimer ce coût."
+msgstr "You do not have permission to delete this cost."
+
+#: .\reservation\views.py:607
+msgid "Vous n'avez pas les droits pour supprimer des coûts."
+msgstr "You do not have permission to delete costs."
+
+#: .\templates\admin\base_site.html:5
+msgid "View site"
+msgstr "View site"
+
+#: .\templates\admin\base_site.html:9
+msgid "Documentation"
+msgstr "Documentation"
+
+#: .\templates\admin\base_site.html:13
+msgid "Change password"
+msgstr "Change password"
+
+#: .\templates\admin\base_site.html:17
+msgid "Log out"
+msgstr "Log out"
+
+# ws/models.py
+#: .\ws\models.py:12 .\ws\models.py:16 .\ws\models.py:17
+msgid "Maintenance"
+msgstr "Maintenance"
+
+# account/views.py — _g() runtime strings
+#: .\account\views.py
+msgid "Renouvellement du mot de passe - E.B.H Réservation"
+msgstr "Password Reset - E.B.H Reservation"
+
+#: .\account\views.py
+msgid "Invitation - Application de E.B.H Réservation"
+msgstr "Invitation - E.B.H Reservation Application"
+
+# building/views.py — _g() runtime strings
+#: .\building\views.py
+msgid "%(count)d résidence(s) supprimée(s)."
+msgstr "%(count)d building(s) deleted."
+
+#: .\building\views.py
+msgid "%(count)d résidence(s) ignorée(s) (contiennent des appartements ou locaux)."
+msgstr "%(count)d building(s) skipped (contain apartments or premises)."
+
+# local/views.py — _g() runtime strings
+#: .\local\views.py
+msgid "%(count)d local/locaux supprimé(s)."
+msgstr "%(count)d premise(s) deleted."
+
+#: .\local\views.py
+msgid "%(count)d local/locaux ignoré(s) (possèdent des loyers)."
+msgstr "%(count)d premise(s) skipped (have rents)."
+
+# account/templates — email templates
+#: .\account\templates\new_account.html .\account\templates\new_password.html .\account\templates\password_reset.html
+msgid "Cordialement,"
+msgstr "Best regards,"
+
+# reservation_backend/utils.py — api_exception_handler
+#: .\reservation_backend\utils.py
+msgid "Suppression impossible"
+msgstr "Deletion not possible"
+
+#: .\reservation_backend\utils.py
+msgid "Cet élément ne peut pas être supprimé car il est utilisé dans d'autres documents. Utilisez l'archivage à la place."
+msgstr "This item cannot be deleted because it is used in other documents. Use archiving instead."
+
+#: .\reservation_backend\utils.py
+msgid "Requête ralentie. Réessayez dans %(wait)d seconde(s)."
+msgstr "Request throttled. Retry in %(wait)d second(s)."
+
+#: .\reservation_backend\utils.py
+msgid "Requête invalide"
+msgstr "Bad request"
+
+#: .\reservation_backend\utils.py
+msgid "Non autorisé"
+msgstr "Unauthorized"
+
+#: .\reservation_backend\utils.py
+msgid "Accès refusé"
+msgstr "Access denied"
+
+#: .\reservation_backend\utils.py
+msgid "Aucune correspondance avec l'URI donnée"
+msgstr "No match found for the given URI"
+
+#: .\reservation_backend\utils.py
+msgid "Méthode non autorisée"
+msgstr "Method not allowed"
+
+#: .\reservation_backend\utils.py
+msgid "Trop de requêtes"
+msgstr "Too many requests"
+
+#: .\reservation_backend\utils.py
+msgid "Erreur interne du serveur"
+msgstr "Internal server error"
+
+# urls.py custom error handlers
+#: .\reservation_backend\urls.py
+msgid "Page introuvable"
+msgstr "Page not found"
+
+# account/filters.py filter labels
+#: .\account\filters.py
+msgid "Search"
+msgstr "Search"
+
+#: .\account\filters.py
+msgid "Date Joined After"
+msgstr "Date Joined After"
+
+#: .\account\filters.py
+msgid "Date Joined Before"
+msgstr "Date Joined Before"
+
+#: .\account\filters.py
+msgid "Last Login After"
+msgstr "Last Login After"
+
+#: .\account\filters.py
+msgid "Last Login Before"
+msgstr "Last Login Before"
+
+#: .\account\filters.py
+msgid "Gender"
+msgstr "Gender"
+
+#: .\account\filters.py
+msgid "Is Staff"
+msgstr "Is Staff"
+
+#: .\account\filters.py
+msgid "Is Active"
+msgstr "Is Active"
+
+#: reservation_backend/utils.py
+msgid "File size %(size)d bytes exceeds maximum %(max)d bytes"
+msgstr "File size %(size)d bytes exceeds maximum %(max)d bytes"
+
+#: reservation_backend/utils.py
+msgid "Failed to read image: %(error)s"
+msgstr "Failed to read image: %(error)s"
+
+#: reservation_backend/utils.py
+msgid "Image too small: %(width)dx%(height)d. Minimum is 10x10 pixels."
+msgstr "Image too small: %(width)dx%(height)d. Minimum is 10x10 pixels."
+
+#: reservation_backend/utils.py
+msgid "Image too large: %(width)dx%(height)d. Maximum is 10000x10000 pixels."
+msgstr "Image too large: %(width)dx%(height)d. Maximum is 10000x10000 pixels."
+
+#: reservation_backend/utils.py
+msgid "Image too large even after compression: %(size)d bytes. Please upload a smaller image."
+msgstr "Image too large even after compression: %(size)d bytes. Please upload a smaller image."
+
+#: reservation_backend/utils.py
+msgid "Image processing failed: %(error)s. Please ensure the file is a valid image."
+msgstr "Image processing failed: %(error)s. Please ensure the file is a valid image."

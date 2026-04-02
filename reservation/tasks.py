@@ -7,6 +7,7 @@ from asgiref.sync import async_to_sync
 from celery import shared_task
 from channels.layers import get_channel_layer
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from reservation.models import Notification, NotificationPreference, Reservation
 
@@ -48,11 +49,15 @@ def check_reservation_reminders():
                     notif = Notification.objects.create(
                         user=pref.user,
                         reservation=res,
-                        title=f"Arrivée — {res.guest_name}",
-                        message=(
-                            f"{res.guest_name} arrive le {res.check_in} "
-                            f"à l'appartement {res.apartment.nom}."
-                        ),
+                        title=_("Arrivée — %(guest_name)s") % {"guest_name": res.guest_name},
+                        message=_(
+                            "%(guest_name)s arrive le %(check_in)s "
+                            "à l'appartement %(apartment)s."
+                        ) % {
+                            "guest_name": res.guest_name,
+                            "check_in": res.check_in,
+                            "apartment": res.apartment.nom,
+                        },
                         notification_type="check_in",
                     )
                     _broadcast_notification(channel_layer, pref.user.id, notif)
@@ -70,11 +75,15 @@ def check_reservation_reminders():
                     notif = Notification.objects.create(
                         user=pref.user,
                         reservation=res,
-                        title=f"Départ — {res.guest_name}",
-                        message=(
-                            f"{res.guest_name} quitte l'appartement "
-                            f"{res.apartment.nom} le {res.check_out}."
-                        ),
+                        title=_("Départ — %(guest_name)s") % {"guest_name": res.guest_name},
+                        message=_(
+                            "%(guest_name)s quitte l'appartement "
+                            "%(apartment)s le %(check_out)s."
+                        ) % {
+                            "guest_name": res.guest_name,
+                            "apartment": res.apartment.nom,
+                            "check_out": res.check_out,
+                        },
                         notification_type="check_out",
                     )
                     _broadcast_notification(channel_layer, pref.user.id, notif)

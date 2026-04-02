@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from django.db.models import Sum
 from django.http import Http404
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, gettext
 from rest_framework import permissions, status
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
@@ -129,9 +129,9 @@ class BulkDeleteLocalView(APIView):
         deleted_count = deletable.count()
         deletable.delete()
 
-        msg = f"{deleted_count} local/locaux supprimé(s)."
+        msg = gettext("%(count)d local/locaux supprimé(s).") % {"count": deleted_count}
         if with_loyers:
-            msg += f" {with_loyers} local/locaux ignoré(s) " f"(possèdent des loyers)."
+            msg += " " + gettext("%(count)d local/locaux ignoré(s) (possèdent des loyers).") % {"count": with_loyers}
 
         return Response({"detail": msg}, status=status.HTTP_200_OK)
 

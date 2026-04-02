@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from local.models import Local, Loyer
@@ -149,12 +150,12 @@ class LoyerSerializer(serializers.ModelSerializer):
 
     def validate_mois(self, value):
         if value < 1 or value > 12:
-            raise serializers.ValidationError("Le mois doit être entre 1 et 12.")
+            raise serializers.ValidationError(_("Le mois doit être entre 1 et 12."))
         return value
 
     def validate_annee(self, value):
         if value < 2000 or value > 2100:
-            raise serializers.ValidationError("L'année doit être entre 2000 et 2100.")
+            raise serializers.ValidationError(_("L'année doit être entre 2000 et 2100."))
         return value
 
     def validate(self, attrs):
@@ -169,9 +170,9 @@ class LoyerSerializer(serializers.ModelSerializer):
             if qs.exists():
                 raise serializers.ValidationError(
                     {
-                        "mois": (
-                            f"Un loyer existe déjà pour ce local "
-                            f"en {mois:02d}/{annee}."
+                        "mois": _(
+                            "Un loyer existe déjà pour ce local "
+                            "pour ce mois et cette année."
                         )
                     }
                 )

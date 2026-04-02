@@ -3,17 +3,18 @@ from channels.layers import get_channel_layer
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
 
 MAINTENANCE_GROUP = "maintenance"
 
 
 class WsMaintenanceState(models.Model):
-    maintenance = models.BooleanField(default=False, verbose_name="Maintenance")
+    maintenance = models.BooleanField(default=False, verbose_name=_("Maintenance"))
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Maintenance"
-        verbose_name_plural = "Maintenance"
+        verbose_name = _("Maintenance")
+        verbose_name_plural = _("Maintenance")
 
 
 @receiver(post_save, sender=WsMaintenanceState)

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.template.loader import render_to_string
+from django.utils.translation import gettext_lazy as _
 
 from account.models import CustomUser
 from .forms import CustomAuthShopChangeForm, CustomAuthShopCreationForm
@@ -27,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
     date_hierarchy = "date_joined"
     fieldsets = (
         (
-            "Profile",
+            _("Profile"),
             {
                 "fields": (
                     "email",
@@ -43,7 +44,7 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
         (
-            "Permissions",
+            _("Permissions"),
             {
                 "fields": (
                     "is_active",
@@ -59,7 +60,7 @@ class CustomUserAdmin(UserAdmin):
     )
     add_fieldsets = (
         (
-            "Profile",
+            _("Profile"),
             {
                 "fields": (
                     "email",
@@ -71,7 +72,7 @@ class CustomUserAdmin(UserAdmin):
                 )
             },
         ),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser")}),
+        (_("Permissions"), {"fields": ("is_active", "is_staff", "is_superuser")}),
     )
     search_fields = ("email",)
     ordering = ("-id",)
@@ -95,7 +96,7 @@ class CustomUserAdmin(UserAdmin):
                 send_email.delay(
                     user_pk=user.pk,
                     email_=user.email,
-                    mail_subject="Changement de mot de passe - E.B.H Réservation",
+                    mail_subject=_("Changement de mot de passe - E.B.H Réservation"),
                     message=message,
                 )
                 return super().user_change_password(request, id, form_url)

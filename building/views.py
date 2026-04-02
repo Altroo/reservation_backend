@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, gettext
 from rest_framework import permissions, status
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
@@ -125,11 +125,8 @@ class BulkDeleteBuildingView(APIView):
         deleted_count = deletable.count()
         deletable.delete()
 
-        msg = f"{deleted_count} résidence(s) supprimée(s)."
+        msg = gettext("%(count)d résidence(s) supprimée(s).") % {"count": deleted_count}
         if with_refs:
-            msg += (
-                f" {with_refs} résidence(s) ignorée(s) "
-                f"(contiennent des appartements ou locaux)."
-            )
+            msg += " " + gettext("%(count)d résidence(s) ignorée(s) (contiennent des appartements ou locaux).") % {"count": with_refs}
 
         return Response({"detail": msg}, status=status.HTTP_200_OK)

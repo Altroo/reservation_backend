@@ -17,6 +17,7 @@ GaussianBlur: Any = cv2.GaussianBlur
 
 from django.core.files.base import ContentFile
 from django.db.models import ProtectedError
+from django.utils.translation import gettext
 from numpy import uint8, frombuffer
 from rest_framework import serializers, status
 from rest_framework.exceptions import Throttled
@@ -58,7 +59,7 @@ class ImageProcessor:
 
             if size > ImageProcessor.MAX_FILE_SIZE:
                 raise ValueError(
-                    f"File size {size} bytes exceeds maximum {ImageProcessor.MAX_FILE_SIZE} bytes"
+                    gettext("File size %(size)d bytes exceeds maximum %(max)d bytes") % {"size": size, "max": ImageProcessor.MAX_FILE_SIZE}
                 )
 
             # Handle both bytes and BytesIO objects
@@ -69,24 +70,24 @@ class ImageProcessor:
                 except UnidentifiedImageError:
                     return None
                 except Exception as e:
-                    raise ValueError(f"Failed to read image: {str(e)}")
+                    raise ValueError(gettext("Failed to read image: %(error)s") % {"error": str(e)})
             else:
                 try:
                     image = Image.open(BytesIO(image_data))
                 except UnidentifiedImageError:
                     return None
                 except Exception as e:
-                    raise ValueError(f"Failed to read image: {str(e)}")
+                    raise ValueError(gettext("Failed to read image: %(error)s") % {"error": str(e)})
 
             # Validate image dimensions
             width, height = image.size
             if width < 10 or height < 10:
                 raise ValueError(
-                    f"Image too small: {width}x{height}. Minimum is 10x10 pixels."
+                    gettext("Image too small: %(width)dx%(height)d. Minimum is 10x10 pixels.") % {"width": width, "height": height}
                 )
             if width > 10000 or height > 10000:
                 raise ValueError(
-                    f"Image too large: {width}x{height}. Maximum is 10000x10000 pixels."
+                    gettext("Image too large: %(width)dx%(height)d. Maximum is 10000x10000 pixels.") % {"width": width, "height": height}
                 )
 
             # Convert to RGB if necessary (WebP doesn't support some modes)
@@ -118,8 +119,7 @@ class ImageProcessor:
 
                 if output.getbuffer().nbytes > ImageProcessor.MAX_FILE_SIZE:
                     raise ValueError(
-                        f"Image too large even after compression: {output.getbuffer().nbytes} bytes. "
-                        f"Please upload a smaller image."
+                        gettext("Image too large even after compression: %(size)d bytes. Please upload a smaller image.") % {"size": output.getbuffer().nbytes}
                     )
 
             # Create a unique filename with .webp extension
@@ -129,7 +129,7 @@ class ImageProcessor:
             raise
         except Exception as e:
             raise ValueError(
-                f"Image processing failed: {str(e)}. Please ensure the file is a valid image."
+                gettext("Image processing failed: %(error)s. Please ensure the file is a valid image.") % {"error": str(e)}
             )
 
     @staticmethod
@@ -219,37 +219,39 @@ class Base64ImageField(serializers.ImageField):
 
 
 def api_exception_handler(exc, context):
-    # Handle ProtectedError (on_delete=PROTECT) with a clear French message
+    # Handle ProtectedError (on_delete=PROTECT) with a clear message
     if isinstance(exc, ProtectedError):
         error_payload = {
             "status_code": 409,
-            "message": "Suppression impossible",
+            "message": gettext("Suppression impossible"),
             "details": {
                 "protected": [
-                    "Cet élément ne peut pas être supprimé car il est utilisé "
-                    "dans d'autres documents. Utilisez l'archivage à la place."
+                    gettext(
+                        "Cet élément ne peut pas être supprimé car il est utilisé "
+                        "dans d'autres documents. Utilisez l'archivage à la place."
+                    )
                 ]
             },
         }
         return Response(error_payload, status=status.HTTP_409_CONFLICT)
 
-    # Translate DRF throttle message to French before handling
+    # Translate DRF throttle message before handling
     if isinstance(exc, Throttled):
         wait = int(exc.wait) if exc.wait else 0
-        exc.detail = f"Requête ralentie. Réessayez dans {wait} seconde{'s' if wait != 1 else ''}."
+        exc.detail = gettext("Requête ralentie. Réessayez dans %(wait)d seconde(s).") % {"wait": wait}
 
     response = exception_handler(exc, context)
 
     if response is not None:
-        # French translations for HTTP status descriptions
+        # Translated HTTP status descriptions
         http_code_to_message = {
-            400: "Requête invalide",
-            401: "Non autorisé",
-            403: "Accès refusé",
-            404: "Aucune correspondance avec l’URI donnée",
-            405: "Méthode non autorisée",
-            429: "Trop de requêtes",
-            500: "Erreur interne du serveur",
+            400: gettext("Requête invalide"),
+            401: gettext("Non autorisé"),
+            403: gettext("Accès refusé"),
+            404: gettext("Aucune correspondance avec l'URI donnée"),
+            405: gettext("Méthode non autorisée"),
+            429: gettext("Trop de requêtes"),
+            500: gettext("Erreur interne du serveur"),
             # fallback to English for others
             **{
                 v.value: v.description

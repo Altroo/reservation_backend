@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load i18n %}
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 	<meta charset="UTF-8">
@@ -7,7 +8,7 @@
 	<meta name="x-apple-disable-message-reformatting">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta content="telephone=no" name="format-detection">
-	<title>Invitation à l'application de E.B.H Réservation</title>
+	<title>{% trans "Invitation à l'application de E.B.H Réservation" %}</title>
 	<!--[if (mso 16)]>
 	<style type="text/css">
 		a {
@@ -140,7 +141,7 @@
 															    style="padding-right:20px;Margin:0">
 																<h1
 																	style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Arial, 'helvetica neue', Helvetica, verdana, sans-serif;font-size:32px;font-style:normal;font-weight:normal;color:#0D070B;text-align:left">
-																	Invitation (Application de E.B.H Réservation)</h1></td>
+																	{% trans "Invitation (Application de E.B.H Réservation)" %}</h1></td>
 														</tr>
 													</table>
 												</td>
@@ -163,8 +164,8 @@
 															    style="padding:0;Margin:0;padding-top:20px;padding-left:20px;padding-right:20px">
 																<p
 																	style="margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Arial, 'helvetica neue', Helvetica, verdana, sans-serif;line-height:38px;color:#0D070B;font-size:16px;letter-spacing: -0.01em">
-																	Bonjour {{ first_name }},<br>Voici le mot de passe
-																	de votre compte récement créé sur L'application de E.B.H Réservation :</p></td>
+																	{% blocktrans %}Bonjour {{ first_name }},<br>Voici le mot de passe
+																	de votre compte récement créé sur L'application de E.B.H Réservation :{% endblocktrans %}</p></td>
 														</tr>
 														<tr>
 															<td height="10" align="left"
@@ -191,7 +192,7 @@
 															    style="padding:0;Margin:0;padding-left:20px;padding-right:20px">
 																<p
 																	style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Arial, 'helvetica neue', Helvetica, verdana, sans-serif;line-height:18px;color:#0D070B;font-size:16px;letter-spacing: -0.01em;font-weight: 400;">
-																	Vous pouvez utiliser cette adresse Email, Merci,</p></td>
+																	{% trans "Vous pouvez utiliser cette adresse Email, Merci," %}</p></td>
 														</tr>
 														<tr>
 															<td height="10" align="center"
@@ -204,7 +205,7 @@
 															<td align="center" style="padding:0;Margin:0;padding-left:15px;padding-right:15px">
 																<a href="{{ frontend_url }}" target="_blank"
 																   style="background-color:#0D070B;color:#FFFFFF;padding:12px 30px;font-weight:700;text-decoration:none;font-size:16px;border-style:solid;border-width:1px;display:inline-block;border-radius:10px;border-color:#0D070B;font-family:Arial, 'helvetica neue', Helvetica, verdana, sans-serif;line-height:23px;text-align:center;mso-style-priority:100 !important;"
-																>Accéder à l'application</a>
+																>{% trans "Accéder à l'application" %}</a>
 															</td>
 														</tr>
 														{% endif %}														<tr>
@@ -212,7 +213,7 @@
 															    style="padding:0;Margin:0;padding-left:20px;padding-right:20px">
 																<p
 																	style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Arial, 'helvetica neue', Helvetica, verdana, sans-serif;line-height:18px;color:#0D070B;font-size:16px;letter-spacing: -0.01em;font-weight: 400;">
-																	Cordialement,<br>L’équipe Application de E.B.H Réservation</p></td>
+																	{% trans "Cordialement," %}<br>{% trans "L'équipe Application de E.B.H Réservation" %}</p></td>
 														</tr>
 														<tr>
 															<td height="40" align="center"
@@ -245,8 +246,7 @@
 															    style="padding:0;Margin:0;padding-right:20px">
 																<p
 																	style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Arial, 'helvetica neue', Helvetica, verdana, sans-serif;line-height:15px;color:#0D070B;font-size:10px!important;">
-																	Cet email vous a été envoyé car vous avez un compte
-                                                                    sur L'application de E.B.H Contrats.</p></td>
+																	{% trans "Cet email vous a été envoyé car vous avez un compte sur l'application de E.B.H Réservation." %}</p></td>
 														</tr>
 													</table>
 												</td>

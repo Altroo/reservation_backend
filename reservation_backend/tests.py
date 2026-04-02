@@ -114,7 +114,7 @@ class TestImageProcessor:
         img.save(bytes_io, format="PNG")
         bytes_io.seek(0)
 
-        with pytest.raises(ValueError, match="too small"):
+        with pytest.raises(ValueError, match="too small|trop petite"):
             ImageProcessor.convert_to_webp(bytes_io)
 
     def test_convert_to_webp_non_image(self):
