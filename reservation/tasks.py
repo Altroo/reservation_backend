@@ -98,19 +98,17 @@ def _broadcast_notification(channel_layer, user_id, notification):
                 "type": "receive_group_message",
                 "message": {
                     "type": "NOTIFICATION",
-                    "notification": {
-                        "id": notification.id,
-                        "reservation_id": (
-                            notification.reservation_id
-                            if notification.reservation
-                            else None
-                        ),
-                        "title": notification.title,
-                        "message": notification.message,
-                        "notification_type": notification.notification_type,
-                        "is_read": notification.is_read,
-                        "date_created": notification.date_created.isoformat(),
-                    },
+                    "id": notification.id,
+                    "reservation_id": (
+                        notification.reservation_id
+                        if notification.reservation
+                        else None
+                    ),
+                    "title": notification.title,
+                    "message": notification.message,
+                    "notification_type": notification.notification_type,
+                    "is_read": notification.is_read,
+                    "date_created": notification.date_created.isoformat(),
                 },
             },
         )
