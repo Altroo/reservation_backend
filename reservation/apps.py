@@ -6,3 +6,6 @@ class ReservationConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "reservation"
     verbose_name = _("Réservations")
+
+    def ready(self):
+        import reservation.signals  # noqa: F401

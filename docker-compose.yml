@@ -84,6 +84,24 @@ services:
       - ./media:/app/media
       - ./static:/app/static
 
+  celery-beat:
+    build: .
+    container_name: reservation_celery_beat
+    restart: always
+    command: celery -A reservation_backend beat --loglevel=info
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - backend
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
 volumes:
   reservation_db_data:
   redis_data:
