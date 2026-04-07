@@ -23,6 +23,11 @@ class Apartment(models.Model):
         verbose_name=_("Résidence"),
     )
 
+    history = HistoricalRecords(
+        verbose_name=_("Historique Appartement"),
+        verbose_name_plural=_("Historiques Appartements"),
+    )
+
     class Meta:
         verbose_name = _("Appartement")
         verbose_name_plural = _("Appartements")
@@ -153,6 +158,10 @@ class Cost(models.Model):
     )
     date_created = models.DateTimeField(auto_now_add=True, verbose_name=_("Date création"))
     date_updated = models.DateTimeField(auto_now=True, verbose_name=_("Date modification"))
+    history = HistoricalRecords(
+        verbose_name=_("Historique Coût"),
+        verbose_name_plural=_("Historiques Coûts"),
+    )
 
     class Meta:
         verbose_name = _("Coût")
@@ -197,6 +206,10 @@ class NotificationPreference(models.Model):
     )
     date_created = models.DateTimeField(auto_now_add=True, verbose_name=_("Date création"))
     date_updated = models.DateTimeField(auto_now=True, verbose_name=_("Date modification"))
+    history = HistoricalRecords(
+        verbose_name=_("Historique Préférence Notification"),
+        verbose_name_plural=_("Historiques Préférences Notifications"),
+    )
 
     class Meta:
         verbose_name = _("Préférence de notification")
@@ -238,6 +251,10 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False, verbose_name=_("Lu"))
     date_created = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Date création"), db_index=True
+    )
+    history = HistoricalRecords(
+        verbose_name=_("Historique Notification"),
+        verbose_name_plural=_("Historiques Notifications"),
     )
 
     class Meta:

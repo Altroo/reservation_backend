@@ -112,6 +112,10 @@ class Loyer(models.Model):
     )
     date_created = models.DateTimeField(auto_now_add=True, db_index=True)
     date_updated = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords(
+        verbose_name=_("Historique Loyer"),
+        verbose_name_plural=_("Historiques Loyers"),
+    )
 
     class Meta:
         verbose_name = _("Loyer")
