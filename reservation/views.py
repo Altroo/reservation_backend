@@ -646,8 +646,11 @@ class NotificationListView(APIView):
         qs = Notification.objects.filter(user=request.user).select_related(
             "reservation"
         )
-        serializer = NotificationSerializer(qs[:50], many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = CustomPagination()
+        paginator.page_size = 10
+        page = paginator.paginate_queryset(qs, request)
+        serializer = NotificationSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 class NotificationMarkReadView(APIView):
