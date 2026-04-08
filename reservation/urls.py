@@ -6,10 +6,6 @@ from .views import (
     CostDetailView,
     CostListCreateView,
     CostYearsView,
-    NotificationListView,
-    NotificationMarkReadView,
-    NotificationPreferenceView,
-    NotificationUnreadCountView,
     ReservationListCreateView,
     ReservationDetailEditDeleteView,
     BulkDeleteReservationView,
@@ -55,21 +51,4 @@ urlpatterns = [
     path("costs/bulk-delete/", BulkDeleteCostView.as_view(), name="cost-bulk-delete"),
     path("costs/", CostListCreateView.as_view(), name="cost-list-create"),
     path("costs/<int:pk>/", CostDetailView.as_view(), name="cost-detail"),
-    # Notifications
-    path(
-        "notifications/preferences/",
-        NotificationPreferenceView.as_view(),
-        name="notification-preferences",
-    ),
-    path("notifications/", NotificationListView.as_view(), name="notification-list"),
-    path(
-        "notifications/mark-read/",
-        NotificationMarkReadView.as_view(),
-        name="notification-mark-read",
-    ),
-    path(
-        "notifications/unread-count/",
-        NotificationUnreadCountView.as_view(),
-        name="notification-unread-count",
-    ),
 ]

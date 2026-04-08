@@ -2,10 +2,10 @@ from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
 
-class ReservationConfig(AppConfig):
+class NotificationConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "reservation"
-    verbose_name = _("Réservations")
+    name = "notification"
+    verbose_name = _("Notifications")
 
     def ready(self):
-        pass
+        import notification.signals  # noqa: F401

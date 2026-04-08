@@ -19,12 +19,13 @@ app.autodiscover_tasks(
     packages=[
         "account.tasks",
         "reservation.tasks",
+        "notification.tasks",
     ]
 )
 
 app.conf.beat_schedule = {
     "check-reservation-reminders-every-minute": {
-        "task": "reservation.check_reservation_reminders",
+        "task": "notification.check_reservation_reminders",
         "schedule": crontab(),  # every minute
     },
 }

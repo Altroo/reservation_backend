@@ -59,6 +59,8 @@ urlpatterns = [
         "api/reservation/",
         include(("reservation.urls", "reservation"), namespace="reservation"),
     ),
+    # Notifications
+    path("api/notifications/", include("notification.urls")),
     # Local (property rental management)
     path(
         "api/local/",
