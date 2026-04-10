@@ -11,10 +11,18 @@ from rest_framework.views import APIView
 from core.pagination import CustomPagination
 from core.permissions import can_create, can_update, can_delete
 from .filters import ReservationFilter
-from .models import Apartment, Cost, Reservation
+from .models import (
+    Apartment,
+    Cost,
+    CostCategoryOption,
+    PaymentSourceOption,
+    Reservation,
+)
 from .serializers import (
     ApartmentSerializer,
     CostSerializer,
+    CostCategoryOptionSerializer,
+    PaymentSourceOptionSerializer,
     ReservationListSerializer,
     ReservationSerializer,
 )
@@ -95,6 +103,156 @@ class ApartmentDetailView(APIView):
                 }
             )
         apartment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PaymentSourceOptionListView(APIView):
+    """GET all payment sources, POST create a new payment source."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        serializer = PaymentSourceOptionSerializer(
+            PaymentSourceOption.objects.all(), many=True
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def post(request):
+        if not can_create(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour créer une source de paiement.")
+            )
+        serializer = PaymentSourceOptionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        return Response(
+            PaymentSourceOptionSerializer(instance).data, status=status.HTTP_201_CREATED
+        )
+
+
+class PaymentSourceOptionDetailView(APIView):
+    """PUT rename, DELETE a payment source option."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def _get_payment_source(pk: int) -> PaymentSourceOption:
+        try:
+            return PaymentSourceOption.objects.get(pk=pk)
+        except PaymentSourceOption.DoesNotExist:
+            raise Http404(_("Source de paiement introuvable."))
+
+    def put(self, request, pk: int):
+        if not can_update(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour modifier cette source de paiement.")
+            )
+        option = self._get_payment_source(pk)
+        old_name = option.nom
+        serializer = PaymentSourceOptionSerializer(option, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        if old_name != instance.nom:
+            Reservation.objects.filter(payment_source=old_name).update(
+                payment_source=instance.nom
+            )
+        return Response(
+            PaymentSourceOptionSerializer(instance).data, status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, pk: int):
+        if not can_delete(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour supprimer cette source de paiement.")
+            )
+        option = self._get_payment_source(pk)
+        if Reservation.objects.filter(payment_source=option.nom).exists():
+            raise ValidationError(
+                {
+                    "detail": [
+                        _(
+                            "Impossible de supprimer cette source de paiement car elle est utilisée par des réservations."
+                        )
+                    ]
+                }
+            )
+        option.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CostCategoryOptionListView(APIView):
+    """GET all cost categories, POST create a new cost category."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        serializer = CostCategoryOptionSerializer(
+            CostCategoryOption.objects.all(), many=True
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def post(request):
+        if not can_create(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour créer une catégorie de coût.")
+            )
+        serializer = CostCategoryOptionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        return Response(
+            CostCategoryOptionSerializer(instance).data, status=status.HTTP_201_CREATED
+        )
+
+
+class CostCategoryOptionDetailView(APIView):
+    """PUT rename, DELETE a cost category option."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def _get_cost_category(pk: int) -> CostCategoryOption:
+        try:
+            return CostCategoryOption.objects.get(pk=pk)
+        except CostCategoryOption.DoesNotExist:
+            raise Http404(_("Catégorie de coût introuvable."))
+
+    def put(self, request, pk: int):
+        if not can_update(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour modifier cette catégorie de coût.")
+            )
+        option = self._get_cost_category(pk)
+        old_name = option.nom
+        serializer = CostCategoryOptionSerializer(option, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        if old_name != instance.nom:
+            Cost.objects.filter(category=old_name).update(category=instance.nom)
+        return Response(
+            CostCategoryOptionSerializer(instance).data, status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, pk: int):
+        if not can_delete(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour supprimer cette catégorie de coût.")
+            )
+        option = self._get_cost_category(pk)
+        if Cost.objects.filter(category=option.nom).exists():
+            raise ValidationError(
+                {
+                    "detail": [
+                        _(
+                            "Impossible de supprimer cette catégorie de coût car elle est utilisée par des coûts."
+                        )
+                    ]
+                }
+            )
+        option.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

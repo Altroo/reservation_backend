@@ -7,6 +7,24 @@ from simple_history.models import HistoricalRecords
 from account.models import CustomUser
 
 
+class LocalTypeOption(models.Model):
+    """Available local types for local forms."""
+
+    nom = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name=_("Type de local"),
+    )
+
+    class Meta:
+        verbose_name = _("Type de local")
+        verbose_name_plural = _("Types de local")
+        ordering = ("nom",)
+
+    def __str__(self):
+        return self.nom
+
+
 class Local(models.Model):
     TYPE_CHOICES = [
         ("Bureau", _("Bureau")),

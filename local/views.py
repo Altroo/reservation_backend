@@ -12,10 +12,11 @@ from rest_framework.views import APIView
 from core.pagination import CustomPagination
 from core.permissions import can_create, can_delete, can_update
 from local.filters import LocalFilter, LoyerFilter
-from local.models import Local, Loyer
+from local.models import Local, LocalTypeOption, Loyer
 from local.serializers import (
     LocalListSerializer,
     LocalSerializer,
+    LocalTypeOptionSerializer,
     LoyerListSerializer,
     LoyerSerializer,
 )
@@ -131,9 +132,83 @@ class BulkDeleteLocalView(APIView):
 
         msg = gettext("%(count)d local/locaux supprimé(s).") % {"count": deleted_count}
         if with_loyers:
-            msg += " " + gettext("%(count)d local/locaux ignoré(s) (possèdent des loyers).") % {"count": with_loyers}
+            msg += " " + gettext(
+                "%(count)d local/locaux ignoré(s) (possèdent des loyers)."
+            ) % {"count": with_loyers}
 
         return Response({"detail": msg}, status=status.HTTP_200_OK)
+
+
+class LocalTypeOptionListView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def get(request):
+        serializer = LocalTypeOptionSerializer(LocalTypeOption.objects.all(), many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def post(request):
+        if not can_create(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour créer un type de local.")
+            )
+
+        serializer = LocalTypeOptionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        return Response(
+            LocalTypeOptionSerializer(instance).data, status=status.HTTP_201_CREATED
+        )
+
+
+class LocalTypeOptionDetailView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def _get_local_type(pk: int) -> LocalTypeOption:
+        try:
+            return LocalTypeOption.objects.get(pk=pk)
+        except LocalTypeOption.DoesNotExist:
+            raise Http404(_("Type de local introuvable."))
+
+    def put(self, request, pk: int):
+        if not can_update(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour modifier ce type de local.")
+            )
+
+        option = self._get_local_type(pk)
+        old_name = option.nom
+        serializer = LocalTypeOptionSerializer(option, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        if old_name != instance.nom:
+            Local.objects.filter(type_local=old_name).update(type_local=instance.nom)
+        return Response(
+            LocalTypeOptionSerializer(instance).data, status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, pk: int):
+        if not can_delete(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour supprimer ce type de local.")
+            )
+
+        option = self._get_local_type(pk)
+        if Local.objects.filter(type_local=option.nom).exists():
+            raise ValidationError(
+                {
+                    "detail": [
+                        _(
+                            "Impossible de supprimer ce type de local car il est utilisé par des locaux."
+                        )
+                    ]
+                }
+            )
+
+        option.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # ── Loyer CRUD ────────────────────────────────────────────────────────────────

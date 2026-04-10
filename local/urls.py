@@ -6,6 +6,8 @@ from local.views import (
     LocalDetailView,
     LocalListCreateView,
     LocalPlanningView,
+    LocalTypeOptionDetailView,
+    LocalTypeOptionListView,
     LocalYearsView,
     LoyerDetailView,
     LoyerListCreateView,
@@ -13,6 +15,10 @@ from local.views import (
 )
 
 urlpatterns = [
+    path("types/", LocalTypeOptionListView.as_view(), name="local-type-list"),
+    path(
+        "types/<int:pk>/", LocalTypeOptionDetailView.as_view(), name="local-type-detail"
+    ),
     # Locaux
     path("locaux/", LocalListCreateView.as_view(), name="local-list-create"),
     path("locaux/<int:pk>/", LocalDetailView.as_view(), name="local-detail"),

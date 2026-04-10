@@ -1,7 +1,27 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from .models import Apartment, Cost, Reservation
+from .models import (
+    Apartment,
+    Cost,
+    CostCategoryOption,
+    PaymentSourceOption,
+    Reservation,
+)
+
+
+class PaymentSourceOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentSourceOption
+        fields = ["id", "nom"]
+        read_only_fields = ["id"]
+
+
+class CostCategoryOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CostCategoryOption
+        fields = ["id", "nom"]
+        read_only_fields = ["id"]
 
 
 class ApartmentSerializer(serializers.ModelSerializer):

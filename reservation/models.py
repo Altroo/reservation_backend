@@ -5,6 +5,24 @@ from simple_history.models import HistoricalRecords
 from account.models import CustomUser
 
 
+class PaymentSourceOption(models.Model):
+    """Available payment sources for reservation forms."""
+
+    nom = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name=_("Source de paiement"),
+    )
+
+    class Meta:
+        verbose_name = _("Source de paiement")
+        verbose_name_plural = _("Sources de paiement")
+        ordering = ("nom",)
+
+    def __str__(self) -> str:
+        return self.nom
+
+
 class Apartment(models.Model):
     """Représente un appartement / unité louée."""
 
@@ -176,3 +194,21 @@ class Cost(models.Model):
 
     def __str__(self) -> str:
         return f"{self.description} — {self.amount} MAD ({self.date})"
+
+
+class CostCategoryOption(models.Model):
+    """Available cost categories for cost forms."""
+
+    nom = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name=_("Catégorie de coût"),
+    )
+
+    class Meta:
+        verbose_name = _("Catégorie de coût")
+        verbose_name_plural = _("Catégories de coût")
+        ordering = ("nom",)
+
+    def __str__(self) -> str:
+        return self.nom

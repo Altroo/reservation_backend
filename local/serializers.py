@@ -1,7 +1,14 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from local.models import Local, Loyer
+from local.models import Local, LocalTypeOption, Loyer
+
+
+class LocalTypeOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LocalTypeOption
+        fields = ["id", "nom"]
+        read_only_fields = ["id"]
 
 
 class LocalListSerializer(serializers.ModelSerializer):
@@ -155,7 +162,9 @@ class LoyerSerializer(serializers.ModelSerializer):
 
     def validate_annee(self, value):
         if value < 2000 or value > 2100:
-            raise serializers.ValidationError(_("L'année doit être entre 2000 et 2100."))
+            raise serializers.ValidationError(
+                _("L'année doit être entre 2000 et 2100.")
+            )
         return value
 
     def validate(self, attrs):
