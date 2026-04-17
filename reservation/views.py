@@ -8,6 +8,7 @@ from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from building.models import Building
 from core.pagination import CustomPagination
 from core.permissions import can_create, can_update, can_delete
 from .filters import ReservationFilter
@@ -48,7 +49,17 @@ class ApartmentListView(APIView):
             raise ValidationError(
                 {"nom": [_("Un appartement avec ce nom existe déjà.")]}
             )
-        apartment = Apartment.objects.create(nom=nom)
+
+        building = None
+        if "building" in request.data:
+            building_value = request.data.get("building")
+            if building_value not in (None, ""):
+                try:
+                    building = Building.objects.get(pk=building_value)
+                except (Building.DoesNotExist, TypeError, ValueError):
+                    raise ValidationError({"building": [_("Résidence introuvable.")]})
+
+        apartment = Apartment.objects.create(nom=nom, building=building)
         serializer = ApartmentSerializer(apartment)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

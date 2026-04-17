@@ -10,6 +10,7 @@ class NotificationPreferenceSerializer(serializers.ModelSerializer):
             "id",
             "notify_check_in",
             "notify_check_out",
+            "notify_unpaid_rents",
             "reminder_minutes",
             "date_created",
             "date_updated",

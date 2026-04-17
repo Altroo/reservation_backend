@@ -498,6 +498,15 @@ class TestLocalPlanningView:
         self.url = reverse("local:local-planning")
         self.staff_user, self.staff_client = make_staff_user(email="planning@test.com")
 
+    @staticmethod
+    def _freeze_today(monkeypatch, frozen_date: date):
+        class FrozenDate(date):
+            @classmethod
+            def today(cls):
+                return frozen_date
+
+        monkeypatch.setattr("local.views.date", FrozenDate)
+
     def test_planning_empty(self):
         resp = self.staff_client.get(self.url, {"year": 2026})
         assert resp.status_code == status.HTTP_200_OK
@@ -520,6 +529,20 @@ class TestLocalPlanningView:
         resp = self.staff_client.get(self.url, {"year": "abc"})
         assert resp.status_code == status.HTTP_400_BAD_REQUEST
 
+    def test_planning_adds_current_month_implicit_unpaid_rent(self, monkeypatch):
+        self._freeze_today(monkeypatch, date(2026, 4, 17))
+        local = make_local(nom="PL2", en_location=True, prix_location_mensuel="6500.00")
+        make_loyer(local, mois=3, annee=2026, paye=True, montant="6500.00")
+
+        resp = self.staff_client.get(self.url, {"year": 2026})
+        assert resp.status_code == status.HTTP_200_OK
+
+        loc = resp.data["locaux"][0]
+        assert loc["months"][4]["id"] is None
+        assert loc["months"][4]["paye"] is False
+        assert loc["months"][4]["is_implicit"] is True
+        assert loc["months"][4]["montant"] == "6500.00"
+
 
 # ── Dashboard API Tests ───────────────────────────────────────────────────────
 
@@ -536,7 +559,8 @@ class TestLocalDashboardView:
         assert resp.data["total_en_location"] == 0
         assert resp.data["total_libres"] == 0
 
-    def test_dashboard_with_data(self):
+    def test_dashboard_with_data(self, monkeypatch):
+        TestLocalPlanningView._freeze_today(monkeypatch, date(2026, 4, 17))
         l1 = make_local(
             nom="DB1",
             en_location=True,
@@ -563,7 +587,7 @@ class TestLocalDashboardView:
         db1 = next(l for l in resp.data["locaux"] if l["nom"] == "DB1")
         assert db1["rentabilite"] == "6.00"
         assert db1["loyers_payes"] == "10000.00"
-        assert db1["loyers_impayes"] == "5000.00"
+        assert db1["loyers_impayes"] == "10000.00"
 
     def test_dashboard_invalid_year(self):
         resp = self.staff_client.get(self.url, {"year": "xyz"})

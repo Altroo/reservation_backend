@@ -32,6 +32,10 @@ class NotificationPreference(models.Model):
         default=True,
         verbose_name=_("Notifier au départ"),
     )
+    notify_unpaid_rents = models.BooleanField(
+        default=True,
+        verbose_name=_("Notifier les loyers impayés"),
+    )
     reminder_minutes = models.IntegerField(
         choices=REMINDER_CHOICES,
         default=60,

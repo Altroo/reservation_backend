@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import AccessToken
 
 from account.models import CustomUser
+from building.models import Building
 from reservation.models import Apartment, Reservation
 
 pytestmark = pytest.mark.django_db
@@ -51,6 +52,10 @@ def make_readonly_user(email="readonly@test.com", password="securepass123"):
 
 def make_apartment(nom="5B"):
     return Apartment.objects.create(nom=nom)
+
+
+def make_building(nom="Residence Test"):
+    return Building.objects.create(nom=nom)
 
 
 def make_reservation(apartment, created_by=None, **kwargs):
@@ -140,6 +145,29 @@ class TestApartmentListView:
     def test_unauthenticated_returns_401(self):
         response = self.anon_client.get(self.url)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_create_apartment_with_building_returns_201(self):
+        building = make_building(nom="Residence AP")
+
+        response = self.staff_client.post(
+            self.url,
+            {"nom": "AP3", "building": building.pk},
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data["building"] == building.pk
+        assert Apartment.objects.get(nom="AP3").building_id == building.pk
+
+    def test_create_apartment_with_unknown_building_returns_400(self):
+        response = self.staff_client.post(
+            self.url,
+            {"nom": "AP4", "building": 99999},
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "building" in response.data["details"]
 
 
 # ── Reservation List/Create ───────────────────────────────────────────────────
