@@ -168,6 +168,14 @@ class Cost(models.Model):
         verbose_name=_("Catégorie"),
         db_index=True,
     )
+    building = models.ForeignKey(
+        "building.Building",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="costs",
+        verbose_name=_("Résidence"),
+    )
     created_by_user = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,

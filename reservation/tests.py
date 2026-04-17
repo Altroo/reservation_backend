@@ -8,7 +8,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from account.models import CustomUser
 from building.models import Building
-from reservation.models import Apartment, Reservation
+from reservation.models import Apartment, Cost, Reservation
 
 pytestmark = pytest.mark.django_db
 
@@ -529,21 +529,129 @@ class TestBalanceView:
         assert "reservations" in response.data
 
 
-# ── Cost Years ────────────────────────────────────────────────────────────────
-
-
-from reservation.models import Cost  # noqa: E402
-
-
 def make_cost(user, year=2025, **kwargs):
     defaults = {
         "description": "Test cost",
         "amount": "200.00",
         "date": date(year, 6, 15),
         "category": "Autre",
+        "building": None,
     }
     defaults.update(kwargs)
     return Cost.objects.create(created_by_user=user, **defaults)
+
+
+# ── Cost API ─────────────────────────────────────────────────────────────────
+
+
+class TestCostListCreateView:
+    def setup_method(self):
+        self.url = reverse("reservation:cost-list-create")
+        self.staff_user, self.staff_client = make_staff_user(email="costs@test.com")
+        self.readonly_user, self.readonly_client = make_readonly_user(
+            email="costs-readonly@test.com"
+        )
+        self.anon_client = APIClient()
+
+    def test_list_filters_by_building(self):
+        building_a = make_building(nom="Residence A")
+        building_b = make_building(nom="Residence B")
+        make_cost(self.staff_user, year=2025, building=building_a, description="A")
+        make_cost(self.staff_user, year=2025, building=building_b, description="B")
+
+        response = self.staff_client.get(self.url, {"building": building_a.pk})
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 1
+        assert response.data[0]["building"] == building_a.pk
+        assert response.data[0]["building_nom"] == "Residence A"
+
+    def test_create_with_building_returns_201(self):
+        building = make_building(nom="Residence Cost")
+
+        response = self.staff_client.post(
+            self.url,
+            {
+                "description": "Internet",
+                "amount": "350.00",
+                "date": "2025-06-15",
+                "category": "Charges",
+                "building": building.pk,
+            },
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data["building"] == building.pk
+        assert response.data["building_nom"] == building.nom
+        assert Cost.objects.get(description="Internet").building_id == building.pk
+
+    def test_create_without_permission_returns_403(self):
+        response = self.readonly_client.post(
+            self.url,
+            {
+                "description": "Blocked",
+                "amount": "100.00",
+                "date": "2025-06-15",
+                "category": "Autre",
+            },
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_unauthenticated_returns_401(self):
+        response = self.anon_client.get(self.url)
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+class TestCostDetailView:
+    def setup_method(self):
+        self.staff_user, self.staff_client = make_staff_user(email="cost-detail@test.com")
+        self.readonly_user, self.readonly_client = make_readonly_user(
+            email="cost-detail-readonly@test.com"
+        )
+
+    def test_update_building_returns_200(self):
+        building = make_building(nom="Residence Cost Update")
+        cost = make_cost(self.staff_user, description="Syndic")
+        url = reverse("reservation:cost-detail", kwargs={"pk": cost.pk})
+
+        response = self.staff_client.put(
+            url,
+            {
+                "description": "Syndic",
+                "amount": "200.00",
+                "date": "2025-06-15",
+                "category": "Charges",
+                "building": building.pk,
+            },
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["building"] == building.pk
+        assert response.data["building_nom"] == building.nom
+
+    def test_update_without_permission_returns_403(self):
+        cost = make_cost(self.staff_user)
+        url = reverse("reservation:cost-detail", kwargs={"pk": cost.pk})
+
+        response = self.readonly_client.put(
+            url,
+            {
+                "description": "Blocked",
+                "amount": "200.00",
+                "date": "2025-06-15",
+                "category": "Autre",
+            },
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+# ── Cost Years ────────────────────────────────────────────────────────────────
 
 
 class TestCostYearsView:

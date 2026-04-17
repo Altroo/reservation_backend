@@ -684,7 +684,8 @@ class CostListCreateView(APIView):
     def get(request):
         year = request.query_params.get("year")
         month = request.query_params.get("month")
-        qs = Cost.objects.select_related("created_by_user").all()
+        building = request.query_params.get("building")
+        qs = Cost.objects.select_related("created_by_user", "building").all()
         if year:
             try:
                 qs = qs.filter(date__year=int(year))
@@ -699,6 +700,13 @@ class CostListCreateView(APIView):
             except (ValueError, TypeError):
                 raise ValidationError(
                     {"month": _("month doit être un entier valide entre 1 et 12.")}
+                )
+        if building:
+            try:
+                qs = qs.filter(building_id=int(building))
+            except (ValueError, TypeError):
+                raise ValidationError(
+                    {"building": _("building doit être un entier valide.")}
                 )
         serializer = CostSerializer(qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -37,10 +37,11 @@ class CostAdmin(SimpleHistoryAdmin):
         "amount",
         "date",
         "category",
+        "building",
         "created_by_user",
         "date_created",
     )
-    list_filter = ("category", "date")
+    list_filter = ("category", "building", "date")
     search_fields = ("description",)
     date_hierarchy = "date"
     ordering = ("-date",)
@@ -137,11 +138,12 @@ class HistoricalCostAdmin(admin.ModelAdmin):
         "amount",
         "date",
         "category",
+        "building",
         "history_type",
         "history_date",
         "history_user",
     )
-    list_filter = ("history_type", "history_date", "category")
+    list_filter = ("history_type", "history_date", "category", "building")
     search_fields = ("description",)
     readonly_fields = [
         field.name

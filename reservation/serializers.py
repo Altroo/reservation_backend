@@ -161,6 +161,9 @@ class CostSerializer(serializers.ModelSerializer):
     """Serializer for cost entries."""
 
     created_by_user_name = serializers.SerializerMethodField()
+    building_nom = serializers.CharField(
+        source="building.nom", read_only=True, default=None
+    )
 
     @staticmethod
     def get_created_by_user_name(obj):
@@ -177,6 +180,8 @@ class CostSerializer(serializers.ModelSerializer):
             "amount",
             "date",
             "category",
+            "building",
+            "building_nom",
             "created_by_user",
             "created_by_user_name",
             "date_created",
@@ -186,6 +191,7 @@ class CostSerializer(serializers.ModelSerializer):
             "id",
             "created_by_user",
             "created_by_user_name",
+            "building_nom",
             "date_created",
             "date_updated",
         ]

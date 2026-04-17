@@ -514,7 +514,7 @@ class TestLocalPlanningView:
         assert resp.data["locaux"] == []
 
     def test_planning_with_data(self):
-        local = make_local(nom="PL1", en_location=True)
+        local = make_local(nom="PL1", en_location=False)
         make_loyer(local, mois=1, annee=2026, paye=True)
         make_loyer(local, mois=2, annee=2026, paye=False)
         resp = self.staff_client.get(self.url, {"year": 2026})
@@ -542,6 +542,27 @@ class TestLocalPlanningView:
         assert loc["months"][4]["paye"] is False
         assert loc["months"][4]["is_implicit"] is True
         assert loc["months"][4]["montant"] == "6500.00"
+
+    def test_planning_adds_implicit_unpaid_rents_for_elapsed_months(self, monkeypatch):
+        self._freeze_today(monkeypatch, date(2026, 4, 17))
+        local = make_local(
+            nom="PL3",
+            en_location=True,
+            date_debut_location=date(2026, 2, 1),
+            prix_location_mensuel="4200.00",
+        )
+        make_loyer(local, mois=3, annee=2026, paye=True, montant="4200.00")
+
+        resp = self.staff_client.get(self.url, {"year": 2026})
+        assert resp.status_code == status.HTTP_200_OK
+
+        loc = resp.data["locaux"][0]
+        assert loc["months"][1] is None
+        assert loc["months"][2]["is_implicit"] is True
+        assert loc["months"][2]["paye"] is False
+        assert loc["months"][3]["paye"] is True
+        assert loc["months"][4]["is_implicit"] is True
+        assert loc["months"][5] is None
 
 
 # ── Dashboard API Tests ───────────────────────────────────────────────────────

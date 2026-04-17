@@ -93,6 +93,18 @@ class BuildingDetailView(APIView):
                 }
             )
 
+        if building.costs.exists():
+            raise ValidationError(
+                {
+                    "detail": [
+                        _(
+                            "Impossible de supprimer cette résidence car "
+                            "elle contient des coûts."
+                        )
+                    ]
+                }
+            )
+
         building.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -116,17 +128,21 @@ class BulkDeleteBuildingView(APIView):
             qs.filter(apartments__isnull=False)
             .distinct()
             .union(qs.filter(locaux__isnull=False).distinct())
+            .union(qs.filter(costs__isnull=False).distinct())
         ).count()
         deletable = qs.exclude(
             id__in=qs.filter(apartments__isnull=False)
             .values_list("id", flat=True)
             .union(qs.filter(locaux__isnull=False).values_list("id", flat=True))
+            .union(qs.filter(costs__isnull=False).values_list("id", flat=True))
         )
         deleted_count = deletable.count()
         deletable.delete()
 
         msg = gettext("%(count)d résidence(s) supprimée(s).") % {"count": deleted_count}
         if with_refs:
-            msg += " " + gettext("%(count)d résidence(s) ignorée(s) (contiennent des appartements ou locaux).") % {"count": with_refs}
+            msg += " " + gettext(
+                "%(count)d résidence(s) ignorée(s) (contiennent des appartements, locaux ou coûts)."
+            ) % {"count": with_refs}
 
         return Response({"detail": msg}, status=status.HTTP_200_OK)

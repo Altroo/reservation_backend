@@ -22,33 +22,41 @@ from local.serializers import (
 )
 
 
-def _has_current_month_unpaid_rent(local: Local, selected_year: int) -> bool:
-    """Detect an unpaid rent due this month even when no Loyer row exists yet."""
+def _is_due_month_for_local(
+    local: Local, selected_year: int, selected_month: int
+) -> bool:
+    """Return whether a rent should already exist for the given month."""
 
     today = date.today()
     if selected_year != today.year or not local.en_location:
         return False
 
-    if local.date_debut_location and local.date_debut_location > today:
+    if selected_month < 1 or selected_month > today.month:
         return False
 
-    return not Loyer.objects.filter(
-        local=local,
-        annee=today.year,
-        mois=today.month,
-    ).exists()
+    if local.date_debut_location:
+        if local.date_debut_location.year > selected_year:
+            return False
+        if (
+            local.date_debut_location.year == selected_year
+            and selected_month < local.date_debut_location.month
+        ):
+            return False
+
+    return True
 
 
-def _build_implicit_current_month_loyer(local: Local) -> dict:
-    today = date.today()
+def _build_implicit_loyer(
+    local: Local, selected_year: int, selected_month: int
+) -> dict:
     return {
         "id": None,
         "montant": str(local.prix_location_mensuel),
         "paye": False,
         "date_paiement": None,
         "is_implicit": True,
-        "mois": today.month,
-        "annee": today.year,
+        "mois": selected_month,
+        "annee": selected_year,
     }
 
 # ── Local CRUD ────────────────────────────────────────────────────────────────
@@ -388,8 +396,8 @@ class LocalPlanningView(APIView):
             months = {}
             for m in range(1, 13):
                 loyer_data = loyer_map.get(local.pk, {}).get(m)
-                if loyer_data is None and m == date.today().month and _has_current_month_unpaid_rent(local, year):
-                    loyer_data = _build_implicit_current_month_loyer(local)
+                if loyer_data is None and _is_due_month_for_local(local, year, m):
+                    loyer_data = _build_implicit_loyer(local, year, m)
                 months[m] = loyer_data or None
             result.append(
                 {
@@ -453,8 +461,17 @@ class LocalDashboardView(APIView):
             loyers_impayes = loyers_annee.filter(paye=False).aggregate(
                 total=Sum("montant")
             )["total"] or Decimal("0.00")
-            if _has_current_month_unpaid_rent(local, year):
-                loyers_impayes += Decimal(str(local.prix_location_mensuel))
+            existing_months = set(loyers_annee.values_list("mois", flat=True))
+            implicit_unpaid_months = sum(
+                1
+                for month in range(1, date.today().month + 1)
+                if month not in existing_months
+                and _is_due_month_for_local(local, year, month)
+            )
+            if implicit_unpaid_months:
+                loyers_impayes += Decimal(str(local.prix_location_mensuel)) * Decimal(
+                    implicit_unpaid_months
+                )
 
             locaux_data.append(
                 {

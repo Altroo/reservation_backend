@@ -198,6 +198,21 @@ class TestBuildingDetailView:
         resp = self.staff_client.delete(url)
         assert resp.status_code == status.HTTP_400_BAD_REQUEST
 
+    def test_delete_with_costs_blocked(self):
+        from reservation.models import Cost
+
+        b = make_building(nom="DELCOST")
+        Cost.objects.create(
+            description="Internet",
+            amount="400.00",
+            date="2026-01-15",
+            category="Charges",
+            building=b,
+        )
+        url = reverse("building:building-detail", args=[b.pk])
+        resp = self.staff_client.delete(url)
+        assert resp.status_code == status.HTTP_400_BAD_REQUEST
+
     def test_delete_permission_denied(self):
         _, ro_client = make_readonly_user(email="rodel-bldg@test.com")
         b = make_building(nom="NODEL")
@@ -250,6 +265,25 @@ class TestBulkDeleteBuildingView:
             prix_location_mensuel="5000.00",
         )
         b2 = make_building(nom="BDL2")
+        resp = self.staff_client.delete(
+            self.url, {"ids": [b1.pk, b2.pk]}, format="json"
+        )
+        assert resp.status_code == status.HTTP_200_OK
+        assert Building.objects.filter(pk=b1.pk).exists()
+        assert not Building.objects.filter(pk=b2.pk).exists()
+
+    def test_bulk_delete_skips_with_costs(self):
+        from reservation.models import Cost
+
+        b1 = make_building(nom="BDC1")
+        Cost.objects.create(
+            description="Electricite",
+            amount="250.00",
+            date="2026-01-10",
+            category="Charges",
+            building=b1,
+        )
+        b2 = make_building(nom="BDC2")
         resp = self.staff_client.delete(
             self.url, {"ids": [b1.pk, b2.pk]}, format="json"
         )
