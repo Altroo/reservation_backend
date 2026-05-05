@@ -1,7 +1,14 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
-from .models import Apartment, Cost, Reservation
+from .models import (
+    Apartment,
+    Cost,
+    HiltonReport,
+    HiltonReportApartmentRevenue,
+    HiltonReportManualLine,
+    Reservation,
+)
 
 
 class ApartmentAdmin(SimpleHistoryAdmin):
@@ -48,9 +55,54 @@ class CostAdmin(SimpleHistoryAdmin):
     readonly_fields = ("date_created", "date_updated")
 
 
+class HiltonReportApartmentRevenueInline(admin.TabularInline):
+    model = HiltonReportApartmentRevenue
+    extra = 0
+    readonly_fields = (
+        "apartment",
+        "apartment_nom",
+        "reservation_count",
+        "total_amount",
+    )
+    can_delete = False
+
+
+class HiltonReportManualLineInline(admin.TabularInline):
+    model = HiltonReportManualLine
+    extra = 0
+
+
+class HiltonReportAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "start_date",
+        "end_date",
+        "gross_revenue",
+        "manual_cost_total",
+        "manual_adjustment_total",
+        "net_total",
+        "created_by_user",
+        "date_created",
+    )
+    list_filter = ("start_date", "end_date", "created_by_user")
+    search_fields = ("notes",)
+    date_hierarchy = "end_date"
+    ordering = ("-end_date", "-id")
+    readonly_fields = (
+        "gross_revenue",
+        "manual_cost_total",
+        "manual_adjustment_total",
+        "net_total",
+        "date_created",
+        "date_updated",
+    )
+    inlines = (HiltonReportApartmentRevenueInline, HiltonReportManualLineInline)
+
+
 admin.site.register(Apartment, ApartmentAdmin)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Cost, CostAdmin)
+admin.site.register(HiltonReport, HiltonReportAdmin)
 
 
 # Historical Model Admins (Read-only)

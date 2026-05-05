@@ -57,6 +57,7 @@ class CustomUserAdmin(UserAdmin):
                     "can_create",
                     "can_edit",
                     "can_delete",
+                    "can_access_hilton_reports",
                 )
             },
         ),

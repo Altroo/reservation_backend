@@ -5,6 +5,9 @@ from .models import (
     Apartment,
     Cost,
     CostCategoryOption,
+    HiltonReport,
+    HiltonReportApartmentRevenue,
+    HiltonReportManualLine,
     PaymentSourceOption,
     Reservation,
 )
@@ -195,3 +198,80 @@ class CostSerializer(serializers.ModelSerializer):
             "date_created",
             "date_updated",
         ]
+
+
+class HiltonReportApartmentRevenueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HiltonReportApartmentRevenue
+        fields = [
+            "id",
+            "apartment",
+            "apartment_nom",
+            "reservation_count",
+            "total_amount",
+        ]
+        read_only_fields = fields
+
+
+class HiltonReportManualLineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HiltonReportManualLine
+        fields = ["id", "line_type", "description", "amount", "sort_order"]
+        read_only_fields = ["id"]
+
+    def validate(self, attrs):
+        line_type = attrs.get("line_type") or HiltonReportManualLine.LineType.COST
+        amount = attrs.get("amount", 0)
+        if amount < 0:
+            raise serializers.ValidationError(
+                {"amount": _("Le montant doit être positif.")}
+            )
+        if line_type == HiltonReportManualLine.LineType.NOTE:
+            attrs["amount"] = 0
+        return attrs
+
+
+class HiltonReportSerializer(serializers.ModelSerializer):
+    apartment_revenues = HiltonReportApartmentRevenueSerializer(many=True, read_only=True)
+    manual_lines = HiltonReportManualLineSerializer(many=True, read_only=True)
+    building_name = serializers.SerializerMethodField()
+    created_by_user_name = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_building_name(_):
+        return "Hilton residence"
+
+    @staticmethod
+    def get_created_by_user_name(obj):
+        if obj.created_by_user:
+            name = f"{obj.created_by_user.first_name} {obj.created_by_user.last_name}".strip()
+            return name or obj.created_by_user.email
+        return None
+
+    class Meta:
+        model = HiltonReport
+        fields = [
+            "id",
+            "building_name",
+            "start_date",
+            "end_date",
+            "notes",
+            "gross_revenue",
+            "manual_cost_total",
+            "manual_adjustment_total",
+            "net_total",
+            "created_by_user",
+            "created_by_user_name",
+            "date_created",
+            "date_updated",
+            "apartment_revenues",
+            "manual_lines",
+        ]
+        read_only_fields = fields
+
+
+class HiltonReportMutationSerializer(serializers.Serializer):
+    start_date = serializers.DateField(required=False)
+    end_date = serializers.DateField(required=False)
+    notes = serializers.CharField(required=False, allow_blank=True)
+    manual_lines = HiltonReportManualLineSerializer(many=True, required=False)

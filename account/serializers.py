@@ -131,6 +131,7 @@ class CreateAccountSerializer(serializers.ModelSerializer):
             "can_create",
             "can_edit",
             "can_delete",
+            "can_access_hilton_reports",
         ]
         extra_kwargs = {
             "password": {"write_only": True},
@@ -227,6 +228,7 @@ class ProfileGETSerializer(serializers.ModelSerializer):
             "can_create",
             "can_edit",
             "can_delete",
+            "can_access_hilton_reports",
         ]
 
 
@@ -437,6 +439,7 @@ class UsersListSerializer(serializers.ModelSerializer):
             "can_create",
             "can_edit",
             "can_delete",
+            "can_access_hilton_reports",
         ]
         read_only_fields = ("date_joined", "date_updated", "last_login")
 
@@ -471,6 +474,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "can_create",
             "can_edit",
             "can_delete",
+            "can_access_hilton_reports",
         ]
         read_only_fields = ("id", "date_joined", "date_updated", "last_login")
 
@@ -489,6 +493,7 @@ class UserPatchSerializer(ProfilePutSerializer):
             "can_create",
             "can_edit",
             "can_delete",
+            "can_access_hilton_reports",
         ]
         read_only_fields = ("id", "email", "date_joined", "last_login")
 

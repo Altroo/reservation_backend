@@ -8,6 +8,9 @@ from .views import (
     CostDetailView,
     CostListCreateView,
     CostYearsView,
+    HiltonReportDetailView,
+    HiltonReportListCreateView,
+    HiltonReportPreviewView,
     PaymentSourceOptionDetailView,
     PaymentSourceOptionListView,
     ReservationListCreateView,
@@ -60,6 +63,22 @@ urlpatterns = [
     ),
     path("years/", ReservationYearsView.as_view(), name="reservation-years"),
     path("occupied-dates/", OccupiedDatesView.as_view(), name="occupied-dates"),
+    # Hilton reports
+    path(
+        "hilton-reports/",
+        HiltonReportListCreateView.as_view(),
+        name="hilton-report-list-create",
+    ),
+    path(
+        "hilton-reports/preview/",
+        HiltonReportPreviewView.as_view(),
+        name="hilton-report-preview",
+    ),
+    path(
+        "hilton-reports/<int:pk>/",
+        HiltonReportDetailView.as_view(),
+        name="hilton-report-detail",
+    ),
     # Costs
     path("costs/years/", CostYearsView.as_view(), name="cost-years"),
     path(

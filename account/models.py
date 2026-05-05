@@ -112,6 +112,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     can_create = models.BooleanField(_("Peut créer"), default=False)
     can_edit = models.BooleanField(_("Peut modifier"), default=False)
     can_delete = models.BooleanField(_("Peut supprimer"), default=False)
+    can_access_hilton_reports = models.BooleanField(
+        _("Peut accéder aux rapports Hilton"), default=False
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

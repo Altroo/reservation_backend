@@ -4,7 +4,7 @@ Permission utilities for reservations app.
 Access model:
 - is_staff users: always granted full access regardless of flags
 - Regular authenticated users: access determined by per-user boolean flags
-  (can_view, can_create, can_edit, can_delete on CustomUser)
+  (can_view, can_create, can_edit, can_delete, can_access_hilton_reports on CustomUser)
 """
 
 from typing import TYPE_CHECKING
@@ -31,3 +31,8 @@ def can_update(user: "CustomUser") -> bool:
 def can_delete(user: "CustomUser") -> bool:
     """Staff always allowed; others need can_delete flag (defaults False)."""
     return user.is_staff or user.can_delete
+
+
+def can_access_hilton_reports(user: "CustomUser") -> bool:
+    """Staff always allowed; others need the Hilton reports flag."""
+    return user.is_staff or user.can_access_hilton_reports

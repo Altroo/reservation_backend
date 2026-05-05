@@ -1,5 +1,7 @@
+from decimal import Decimal
 from datetime import date
 
+from django.db import transaction
 from django.db.models import Sum, Count
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
@@ -10,12 +12,20 @@ from rest_framework.views import APIView
 
 from building.models import Building
 from core.pagination import CustomPagination
-from core.permissions import can_create, can_update, can_delete
+from core.permissions import (
+    can_access_hilton_reports,
+    can_create,
+    can_update,
+    can_delete,
+)
 from .filters import ReservationFilter
 from .models import (
     Apartment,
     Cost,
     CostCategoryOption,
+    HiltonReport,
+    HiltonReportApartmentRevenue,
+    HiltonReportManualLine,
     PaymentSourceOption,
     Reservation,
 )
@@ -23,10 +33,15 @@ from .serializers import (
     ApartmentSerializer,
     CostSerializer,
     CostCategoryOptionSerializer,
+    HiltonReportMutationSerializer,
+    HiltonReportSerializer,
     PaymentSourceOptionSerializer,
     ReservationListSerializer,
     ReservationSerializer,
 )
+
+
+HILTON_BUILDING_NAME = "Hilton residence"
 
 
 class ApartmentListView(APIView):
@@ -673,6 +688,251 @@ class OccupiedDatesView(APIView):
             qs = qs.exclude(pk=exclude_id)
         ranges = [{"check_in": str(ci), "check_out": str(co)} for ci, co in qs]
         return Response(ranges, status=status.HTTP_200_OK)
+
+
+class HiltonReportBaseView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @staticmethod
+    def _require_hilton_access(request):
+        if not can_access_hilton_reports(request.user):
+            raise PermissionDenied(
+                _("Vous n'avez pas les droits pour accéder aux rapports Hilton.")
+            )
+
+    @staticmethod
+    def _get_hilton_building() -> Building:
+        building = Building.objects.filter(nom__iexact=HILTON_BUILDING_NAME).first()
+        if not building:
+            raise ValidationError(
+                {"detail": _("La résidence Hilton residence est introuvable.")}
+            )
+        return building
+
+    @staticmethod
+    def _latest_report(lock: bool = False):
+        qs = HiltonReport.objects.order_by("-end_date", "-id")
+        if lock:
+            qs = qs.select_for_update()
+        return qs.first()
+
+    def _resolve_period(self, start_date, end_date, lock_latest: bool = False):
+        if not end_date:
+            raise ValidationError({"end_date": [_("Ce champ est requis.")]})
+
+        latest_report = self._latest_report(lock=lock_latest)
+        if latest_report:
+            resolved_start = latest_report.end_date
+        else:
+            if not start_date:
+                raise ValidationError({"start_date": [_("Ce champ est requis.")]})
+            resolved_start = start_date
+
+        if end_date <= resolved_start:
+            raise ValidationError(
+                {"end_date": [_("La date de fin doit être postérieure à la date de début.")]}
+            )
+        return resolved_start, end_date
+
+    @staticmethod
+    def _build_apartment_rows(building: Building, start_date, end_date):
+        apartments = list(Apartment.objects.filter(building=building).order_by("nom"))
+        revenue_map = {
+            row["apartment_id"]: row
+            for row in Reservation.objects.filter(
+                apartment__building=building,
+                check_in__gte=start_date,
+                check_in__lt=end_date,
+            )
+            .values("apartment_id")
+            .annotate(total=Sum("amount"), count=Count("id"))
+        }
+
+        rows = []
+        for apartment in apartments:
+            revenue = revenue_map.get(apartment.id, {})
+            rows.append(
+                {
+                    "apartment": apartment.id,
+                    "apartment_nom": apartment.nom,
+                    "reservation_count": revenue.get("count", 0),
+                    "total_amount": revenue.get("total") or Decimal("0.00"),
+                }
+            )
+        return rows
+
+    @staticmethod
+    def _serialize_preview_rows(rows):
+        return [
+            {
+                "apartment": row["apartment"],
+                "apartment_nom": row["apartment_nom"],
+                "reservation_count": row["reservation_count"],
+                "total_amount": str(row["total_amount"]),
+            }
+            for row in rows
+        ]
+
+    @staticmethod
+    def _replace_manual_lines(report: HiltonReport, manual_lines):
+        report.manual_lines.all().delete()
+        HiltonReportManualLine.objects.bulk_create(
+            [
+                HiltonReportManualLine(
+                    report=report,
+                    line_type=line.get("line_type", HiltonReportManualLine.LineType.COST),
+                    description=line.get("description", "").strip(),
+                    amount=(
+                        Decimal("0.00")
+                        if line.get("line_type") == HiltonReportManualLine.LineType.NOTE
+                        else line.get("amount", Decimal("0.00"))
+                    ),
+                    sort_order=line.get("sort_order", index),
+                )
+                for index, line in enumerate(manual_lines)
+            ]
+        )
+
+    @staticmethod
+    def _get_report(pk: int) -> HiltonReport:
+        try:
+            return (
+                HiltonReport.objects.select_related("created_by_user")
+                .prefetch_related("apartment_revenues", "manual_lines")
+                .get(pk=pk)
+            )
+        except HiltonReport.DoesNotExist:
+            raise Http404(_("Rapport Hilton introuvable."))
+
+
+class HiltonReportListCreateView(HiltonReportBaseView):
+    def get(self, request):
+        self._require_hilton_access(request)
+        reports = (
+            HiltonReport.objects.select_related("created_by_user")
+            .prefetch_related("apartment_revenues", "manual_lines")
+            .order_by("-end_date", "-id")
+        )
+        return Response(
+            HiltonReportSerializer(reports, many=True).data,
+            status=status.HTTP_200_OK,
+        )
+
+    def post(self, request):
+        self._require_hilton_access(request)
+        serializer = HiltonReportMutationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        with transaction.atomic():
+            building = self._get_hilton_building()
+            start_date, end_date = self._resolve_period(
+                data.get("start_date"),
+                data.get("end_date"),
+                lock_latest=True,
+            )
+            report = HiltonReport.objects.create(
+                start_date=start_date,
+                end_date=end_date,
+                notes=data.get("notes", ""),
+                created_by_user=request.user,
+            )
+            rows = self._build_apartment_rows(building, start_date, end_date)
+            HiltonReportApartmentRevenue.objects.bulk_create(
+                [
+                    HiltonReportApartmentRevenue(
+                        report=report,
+                        apartment_id=row["apartment"],
+                        apartment_nom=row["apartment_nom"],
+                        reservation_count=row["reservation_count"],
+                        total_amount=row["total_amount"],
+                    )
+                    for row in rows
+                ]
+            )
+            self._replace_manual_lines(report, data.get("manual_lines", []))
+            report.recalculate_totals()
+
+        return Response(
+            HiltonReportSerializer(self._get_report(report.pk)).data,
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class HiltonReportDetailView(HiltonReportBaseView):
+    def get(self, request, pk: int):
+        self._require_hilton_access(request)
+        return Response(
+            HiltonReportSerializer(self._get_report(pk)).data,
+            status=status.HTTP_200_OK,
+        )
+
+    def put(self, request, pk: int):
+        self._require_hilton_access(request)
+        if "start_date" in request.data or "end_date" in request.data:
+            raise ValidationError(
+                {"detail": _("La période d'un rapport Hilton ne peut pas être modifiée.")}
+            )
+
+        report = self._get_report(pk)
+        serializer = HiltonReportMutationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        with transaction.atomic():
+            report.notes = data.get("notes", report.notes)
+            report.save(update_fields=["notes", "date_updated"])
+            if "manual_lines" in data:
+                self._replace_manual_lines(report, data.get("manual_lines", []))
+            report.recalculate_totals()
+
+        return Response(
+            HiltonReportSerializer(self._get_report(pk)).data,
+            status=status.HTTP_200_OK,
+        )
+
+    def delete(self, request, pk: int):
+        self._require_hilton_access(request)
+        report = self._get_report(pk)
+        latest_report = self._latest_report()
+        if not latest_report or latest_report.pk != report.pk:
+            raise ValidationError(
+                {"detail": _("Seul le dernier rapport Hilton peut être supprimé.")}
+            )
+        report.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class HiltonReportPreviewView(HiltonReportBaseView):
+    def get(self, request):
+        self._require_hilton_access(request)
+        serializer = HiltonReportMutationSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        building = self._get_hilton_building()
+        start_date, end_date = self._resolve_period(
+            data.get("start_date"),
+            data.get("end_date"),
+        )
+        rows = self._build_apartment_rows(building, start_date, end_date)
+        gross_revenue = sum(
+            (row["total_amount"] for row in rows), Decimal("0.00")
+        )
+
+        return Response(
+            {
+                "building_name": HILTON_BUILDING_NAME,
+                "start_date": str(start_date),
+                "end_date": str(end_date),
+                "gross_revenue": str(gross_revenue),
+                "manual_cost_total": "0.00",
+                "manual_adjustment_total": "0.00",
+                "net_total": str(gross_revenue),
+                "apartment_revenues": self._serialize_preview_rows(rows),
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class CostListCreateView(APIView):
