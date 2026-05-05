@@ -42,6 +42,26 @@ from .serializers import (
 
 
 HILTON_BUILDING_NAME = "Hilton residence"
+HILTON_PAYMENT_SOURCE_TOTAL_FIELDS = {
+    "Booking": "booking_total",
+    "Airbnb": "airbnb_total",
+    "Cash": "cash_revenue_total",
+    "Bank": "bank_total",
+}
+HILTON_PAYMENT_SOURCE_ALIASES = {
+    "booking": "Booking",
+    "booking.com": "Booking",
+    "airbnb": "Airbnb",
+    "cash": "Cash",
+    "espèces": "Cash",
+    "especes": "Cash",
+    "espèce": "Cash",
+    "espece": "Cash",
+    "bank": "Bank",
+    "bank transfer": "Bank",
+    "virement": "Bank",
+    "virement bancaire": "Bank",
+}
 
 
 class ApartmentListView(APIView):
@@ -735,18 +755,52 @@ class HiltonReportBaseView(APIView):
         return resolved_start, end_date
 
     @staticmethod
-    def _build_apartment_rows(building: Building, start_date, end_date):
+    def _normalize_payment_source(payment_source: str | None):
+        if not payment_source:
+            return None
+        return HILTON_PAYMENT_SOURCE_ALIASES.get(payment_source.strip().casefold())
+
+    @staticmethod
+    def _empty_source_totals():
+        return {
+            "booking_total": Decimal("0.00"),
+            "airbnb_total": Decimal("0.00"),
+            "cash_revenue_total": Decimal("0.00"),
+            "cash_total": Decimal("0.00"),
+            "bank_total": Decimal("0.00"),
+        }
+
+    @classmethod
+    def _build_revenue_snapshot(cls, building: Building, start_date, end_date):
         apartments = list(Apartment.objects.filter(building=building).order_by("nom"))
-        revenue_map = {
-            row["apartment_id"]: row
-            for row in Reservation.objects.filter(
+        revenue_map: dict[int, dict[str, Decimal | int]] = {}
+        source_totals = cls._empty_source_totals()
+
+        for row in (
+            Reservation.objects.filter(
                 apartment__building=building,
                 check_in__gte=start_date,
                 check_in__lt=end_date,
             )
-            .values("apartment_id")
+            .values("apartment_id", "payment_source")
             .annotate(total=Sum("amount"), count=Count("id"))
-        }
+        ):
+            apartment_id = row["apartment_id"]
+            total = row["total"] or Decimal("0.00")
+            count = row["count"] or 0
+            apartment_revenue = revenue_map.setdefault(
+                apartment_id,
+                {
+                    "total_amount": Decimal("0.00"),
+                    "reservation_count": 0,
+                },
+            )
+            apartment_revenue["total_amount"] += total
+            apartment_revenue["reservation_count"] += count
+
+            source = cls._normalize_payment_source(row["payment_source"])
+            if source:
+                source_totals[HILTON_PAYMENT_SOURCE_TOTAL_FIELDS[source]] += total
 
         rows = []
         for apartment in apartments:
@@ -755,11 +809,12 @@ class HiltonReportBaseView(APIView):
                 {
                     "apartment": apartment.id,
                     "apartment_nom": apartment.nom,
-                    "reservation_count": revenue.get("count", 0),
-                    "total_amount": revenue.get("total") or Decimal("0.00"),
+                    "reservation_count": revenue.get("reservation_count", 0),
+                    "total_amount": revenue.get("total_amount") or Decimal("0.00"),
                 }
             )
-        return rows
+        source_totals["cash_total"] = source_totals["cash_revenue_total"]
+        return rows, source_totals
 
     @staticmethod
     def _serialize_preview_rows(rows):
@@ -772,6 +827,10 @@ class HiltonReportBaseView(APIView):
             }
             for row in rows
         ]
+
+    @staticmethod
+    def _has_report_content(gross_revenue, manual_lines) -> bool:
+        return gross_revenue > Decimal("0.00") or len(manual_lines) > 0
 
     @staticmethod
     def _replace_manual_lines(report: HiltonReport, manual_lines):
@@ -837,7 +896,9 @@ class HiltonReportListCreateView(HiltonReportBaseView):
                 notes=data.get("notes", ""),
                 created_by_user=request.user,
             )
-            rows = self._build_apartment_rows(building, start_date, end_date)
+            rows, source_totals = self._build_revenue_snapshot(
+                building, start_date, end_date
+            )
             HiltonReportApartmentRevenue.objects.bulk_create(
                 [
                     HiltonReportApartmentRevenue(
@@ -850,7 +911,22 @@ class HiltonReportListCreateView(HiltonReportBaseView):
                     for row in rows
                 ]
             )
-            self._replace_manual_lines(report, data.get("manual_lines", []))
+            manual_lines = data.get("manual_lines", [])
+            gross_revenue = sum(
+                (row["total_amount"] for row in rows), Decimal("0.00")
+            )
+            if not self._has_report_content(gross_revenue, manual_lines):
+                raise ValidationError(
+                    {
+                        "detail": _(
+                            "Ajoutez au moins une réservation Hilton ou une ligne manuelle complète avant de créer le rapport."
+                        )
+                    }
+                )
+            for field, value in source_totals.items():
+                setattr(report, field, value)
+            report.save(update_fields=[*source_totals.keys(), "date_updated"])
+            self._replace_manual_lines(report, manual_lines)
             report.recalculate_totals()
 
         return Response(
@@ -880,10 +956,21 @@ class HiltonReportDetailView(HiltonReportBaseView):
         data = serializer.validated_data
 
         with transaction.atomic():
+            manual_lines = data.get("manual_lines", [])
+            if "manual_lines" in data and not self._has_report_content(
+                report.gross_revenue, manual_lines
+            ):
+                raise ValidationError(
+                    {
+                        "detail": _(
+                            "Ajoutez au moins une réservation Hilton ou une ligne manuelle complète avant d'enregistrer le rapport."
+                        )
+                    }
+                )
             report.notes = data.get("notes", report.notes)
             report.save(update_fields=["notes", "date_updated"])
             if "manual_lines" in data:
-                self._replace_manual_lines(report, data.get("manual_lines", []))
+                self._replace_manual_lines(report, manual_lines)
             report.recalculate_totals()
 
         return Response(
@@ -915,7 +1002,9 @@ class HiltonReportPreviewView(HiltonReportBaseView):
             data.get("start_date"),
             data.get("end_date"),
         )
-        rows = self._build_apartment_rows(building, start_date, end_date)
+        rows, source_totals = self._build_revenue_snapshot(
+            building, start_date, end_date
+        )
         gross_revenue = sum(
             (row["total_amount"] for row in rows), Decimal("0.00")
         )
@@ -928,6 +1017,11 @@ class HiltonReportPreviewView(HiltonReportBaseView):
                 "gross_revenue": str(gross_revenue),
                 "manual_cost_total": "0.00",
                 "manual_adjustment_total": "0.00",
+                "booking_total": str(source_totals["booking_total"]),
+                "airbnb_total": str(source_totals["airbnb_total"]),
+                "cash_revenue_total": str(source_totals["cash_revenue_total"]),
+                "cash_total": str(source_totals["cash_total"]),
+                "bank_total": str(source_totals["bank_total"]),
                 "net_total": str(gross_revenue),
                 "apartment_revenues": self._serialize_preview_rows(rows),
             },

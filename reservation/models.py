@@ -230,6 +230,36 @@ class HiltonReport(models.Model):
         default=0,
         verbose_name=_("Total ajustements manuels"),
     )
+    booking_total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Total Booking"),
+    )
+    airbnb_total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Total Airbnb"),
+    )
+    cash_revenue_total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Total espèces avant coûts"),
+    )
+    cash_total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Total espèces"),
+    )
+    bank_total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Total virement bancaire"),
+    )
     net_total = models.DecimalField(
         max_digits=12,
         decimal_places=2,
@@ -283,6 +313,7 @@ class HiltonReport(models.Model):
         self.gross_revenue = gross
         self.manual_cost_total = manual_cost_total
         self.manual_adjustment_total = manual_adjustment_total
+        self.cash_total = self.cash_revenue_total - manual_cost_total
         self.net_total = gross + manual_adjustment_total - manual_cost_total
         if save:
             self.save(
@@ -290,6 +321,7 @@ class HiltonReport(models.Model):
                     "gross_revenue",
                     "manual_cost_total",
                     "manual_adjustment_total",
+                    "cash_total",
                     "net_total",
                     "date_updated",
                 ]
