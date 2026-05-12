@@ -206,12 +206,57 @@ class Cost(models.Model):
         return f"{self.description} — {self.amount} MAD ({self.date})"
 
 
+class HiltonReportSettings(models.Model):
+    """Singleton settings used for Hilton cash reports."""
+
+    singleton_key = models.PositiveSmallIntegerField(default=1, unique=True, editable=False)
+    carry_forward_balance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Balance à reporter"),
+    )
+    date_updated = models.DateTimeField(
+        auto_now=True, verbose_name=_("Date modification")
+    )
+
+    class Meta:
+        verbose_name = _("Paramètres rapport Hilton")
+        verbose_name_plural = _("Paramètres rapport Hilton")
+
+    def __str__(self) -> str:
+        return _("Paramètres rapport Hilton")
+
+    @classmethod
+    def load(cls) -> "HiltonReportSettings":
+        settings, _ = cls.objects.get_or_create(singleton_key=1)
+        return settings
+
+
 class HiltonReport(models.Model):
     """Saved interval report for Hilton residence revenue and manual lines."""
 
     start_date = models.DateField(verbose_name=_("Date début"), db_index=True)
     end_date = models.DateField(verbose_name=_("Date fin"), db_index=True)
     notes = models.TextField(blank=True, default="", verbose_name=_("Notes"))
+    opening_balance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Balance à reporter"),
+    )
+    cash_register_total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Caisse Hilton"),
+    )
+    cost_period_label = models.CharField(
+        max_length=120,
+        blank=True,
+        default="",
+        verbose_name=_("Période des coûts"),
+    )
     gross_revenue = models.DecimalField(
         max_digits=12,
         decimal_places=2,
@@ -313,8 +358,13 @@ class HiltonReport(models.Model):
         self.gross_revenue = gross
         self.manual_cost_total = manual_cost_total
         self.manual_adjustment_total = manual_adjustment_total
-        self.cash_total = self.cash_revenue_total - manual_cost_total
-        self.net_total = gross + manual_adjustment_total - manual_cost_total
+        self.cash_total = self.cash_revenue_total - manual_adjustment_total
+        self.net_total = (
+            self.opening_balance
+            + self.cash_revenue_total
+            - manual_adjustment_total
+            - manual_cost_total
+        )
         if save:
             self.save(
                 update_fields=[
@@ -391,6 +441,11 @@ class HiltonReportManualLine(models.Model):
         decimal_places=2,
         default=0,
         verbose_name=_("Montant"),
+    )
+    operations_count = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Nombre d'opérations"),
     )
     sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Ordre"))
 

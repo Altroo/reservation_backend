@@ -8,7 +8,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from account.models import CustomUser
 from building.models import Building
-from reservation.models import Apartment, Cost, Reservation
+from reservation.models import Apartment, Cost, HiltonReportSettings, Reservation
 
 pytestmark = pytest.mark.django_db
 
@@ -527,6 +527,104 @@ class TestBalanceView:
         assert "total_returned" in response.data
         assert "total_not_returned" in response.data
         assert "reservations" in response.data
+
+
+class TestHiltonReportViews:
+    def setup_method(self):
+        self.staff_user, self.staff_client = make_staff_user(email="hilton@test.com")
+        self.building = make_building(nom="Hilton residence")
+        self.other_building = make_building(nom="Other residence")
+        self.apt = Apartment.objects.create(nom="Hilton 5B", building=self.building)
+        self.other_apt = Apartment.objects.create(nom="Other 1", building=self.other_building)
+        settings = HiltonReportSettings.load()
+        settings.carry_forward_balance = "1000.00"
+        settings.save()
+
+    def test_preview_is_hilton_cash_only_and_includes_opening_balance(self):
+        make_reservation(
+            self.apt,
+            payment_source="Cash",
+            amount="500.00",
+            check_in=date(2025, 1, 10),
+            check_out=date(2025, 1, 12),
+        )
+        make_reservation(
+            self.apt,
+            payment_source="Airbnb",
+            amount="700.00",
+            check_in=date(2025, 1, 11),
+            check_out=date(2025, 1, 13),
+        )
+        make_reservation(
+            self.other_apt,
+            payment_source="Cash",
+            amount="900.00",
+            check_in=date(2025, 1, 14),
+            check_out=date(2025, 1, 15),
+        )
+
+        response = self.staff_client.get(
+            reverse("reservation:hilton-report-preview"),
+            {"start_date": "2025-01-01", "end_date": "2025-02-01"},
+        )
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["opening_balance"] == "1000.00"
+        assert response.data["gross_revenue"] == "500.00"
+        assert response.data["cash_revenue_total"] == "500.00"
+        assert response.data["net_total"] == "1500.00"
+
+    def test_create_report_calculates_balance_from_cash_deductions_and_costs(self):
+        make_reservation(
+            self.apt,
+            payment_source="Cash",
+            amount="500.00",
+            check_in=date(2025, 1, 10),
+            check_out=date(2025, 1, 12),
+        )
+
+        response = self.staff_client.post(
+            reverse("reservation:hilton-report-list-create"),
+            {
+                "start_date": "2025-01-01",
+                "end_date": "2025-02-01",
+                "cash_register_total": "25.00",
+                "cost_period_label": "From January to February",
+                "manual_lines": [
+                    {
+                        "line_type": "adjustment",
+                        "description": "Owner withdrawal",
+                        "amount": "50.00",
+                    },
+                    {
+                        "line_type": "cost",
+                        "description": "Laundry",
+                        "amount": "100.00",
+                        "operations_count": 2,
+                    },
+                ],
+            },
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data["opening_balance"] == "1000.00"
+        assert response.data["cash_register_total"] == "25.00"
+        assert response.data["gross_revenue"] == "500.00"
+        assert response.data["manual_adjustment_total"] == "50.00"
+        assert response.data["manual_cost_total"] == "100.00"
+        assert response.data["net_total"] == "1350.00"
+        assert response.data["manual_lines"][1]["operations_count"] == 2
+
+    def test_admin_can_update_hilton_carry_forward_balance(self):
+        response = self.staff_client.put(
+            reverse("reservation:hilton-report-settings"),
+            {"carry_forward_balance": "2222.50"},
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["carry_forward_balance"] == "2222.50"
 
 
 def make_cost(user, year=2025, **kwargs):

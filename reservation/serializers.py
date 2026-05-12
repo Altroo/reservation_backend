@@ -8,6 +8,7 @@ from .models import (
     HiltonReport,
     HiltonReportApartmentRevenue,
     HiltonReportManualLine,
+    HiltonReportSettings,
     PaymentSourceOption,
     Reservation,
 )
@@ -216,7 +217,14 @@ class HiltonReportApartmentRevenueSerializer(serializers.ModelSerializer):
 class HiltonReportManualLineSerializer(serializers.ModelSerializer):
     class Meta:
         model = HiltonReportManualLine
-        fields = ["id", "line_type", "description", "amount", "sort_order"]
+        fields = [
+            "id",
+            "line_type",
+            "description",
+            "amount",
+            "operations_count",
+            "sort_order",
+        ]
         read_only_fields = ["id"]
 
     def validate(self, attrs):
@@ -228,7 +236,15 @@ class HiltonReportManualLineSerializer(serializers.ModelSerializer):
             )
         if line_type == HiltonReportManualLine.LineType.NOTE:
             attrs["amount"] = 0
+            attrs["operations_count"] = None
         return attrs
+
+
+class HiltonReportSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HiltonReportSettings
+        fields = ["id", "carry_forward_balance", "date_updated"]
+        read_only_fields = ["id", "date_updated"]
 
 
 class HiltonReportSerializer(serializers.ModelSerializer):
@@ -256,6 +272,9 @@ class HiltonReportSerializer(serializers.ModelSerializer):
             "start_date",
             "end_date",
             "notes",
+            "opening_balance",
+            "cash_register_total",
+            "cost_period_label",
             "gross_revenue",
             "manual_cost_total",
             "manual_adjustment_total",
@@ -279,4 +298,15 @@ class HiltonReportMutationSerializer(serializers.Serializer):
     start_date = serializers.DateField(required=False)
     end_date = serializers.DateField(required=False)
     notes = serializers.CharField(required=False, allow_blank=True)
+    cash_register_total = serializers.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        min_value=0,
+        required=False,
+    )
+    cost_period_label = serializers.CharField(
+        max_length=120,
+        required=False,
+        allow_blank=True,
+    )
     manual_lines = HiltonReportManualLineSerializer(many=True, required=False)

@@ -11,6 +11,7 @@ from .views import (
     HiltonReportDetailView,
     HiltonReportListCreateView,
     HiltonReportPreviewView,
+    HiltonReportSettingsView,
     PaymentSourceOptionDetailView,
     PaymentSourceOptionListView,
     ReservationListCreateView,
@@ -78,6 +79,11 @@ urlpatterns = [
         "hilton-reports/<int:pk>/",
         HiltonReportDetailView.as_view(),
         name="hilton-report-detail",
+    ),
+    path(
+        "hilton-report-settings/",
+        HiltonReportSettingsView.as_view(),
+        name="hilton-report-settings",
     ),
     # Costs
     path("costs/years/", CostYearsView.as_view(), name="cost-years"),
