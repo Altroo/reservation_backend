@@ -7,6 +7,7 @@ from .models import (
     HiltonReport,
     HiltonReportApartmentRevenue,
     HiltonReportManualLine,
+    HiltonReportSettings,
     Reservation,
 )
 
@@ -77,6 +78,7 @@ class HiltonReportAdmin(admin.ModelAdmin):
         "id",
         "start_date",
         "end_date",
+        "opening_balance",
         "gross_revenue",
         "manual_cost_total",
         "manual_adjustment_total",
@@ -94,6 +96,7 @@ class HiltonReportAdmin(admin.ModelAdmin):
     ordering = ("-end_date", "-id")
     readonly_fields = (
         "gross_revenue",
+        "opening_balance",
         "manual_cost_total",
         "manual_adjustment_total",
         "booking_total",
@@ -108,10 +111,22 @@ class HiltonReportAdmin(admin.ModelAdmin):
     inlines = (HiltonReportApartmentRevenueInline, HiltonReportManualLineInline)
 
 
+class HiltonReportSettingsAdmin(admin.ModelAdmin):
+    list_display = ("carry_forward_balance", "date_updated")
+    readonly_fields = ("date_updated",)
+
+    def has_add_permission(self, request):
+        return not HiltonReportSettings.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 admin.site.register(Apartment, ApartmentAdmin)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Cost, CostAdmin)
 admin.site.register(HiltonReport, HiltonReportAdmin)
+admin.site.register(HiltonReportSettings, HiltonReportSettingsAdmin)
 
 
 # Historical Model Admins (Read-only)

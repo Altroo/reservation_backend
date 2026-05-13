@@ -26,6 +26,7 @@ from .models import (
     HiltonReport,
     HiltonReportApartmentRevenue,
     HiltonReportManualLine,
+    HiltonReportSettings,
     PaymentSourceOption,
     Reservation,
 )
@@ -35,6 +36,7 @@ from .serializers import (
     CostCategoryOptionSerializer,
     HiltonReportMutationSerializer,
     HiltonReportSerializer,
+    HiltonReportSettingsSerializer,
     PaymentSourceOptionSerializer,
     ReservationListSerializer,
     ReservationSerializer,
@@ -785,6 +787,10 @@ class HiltonReportBaseView(APIView):
             .values("apartment_id", "payment_source")
             .annotate(total=Sum("amount"), count=Count("id"))
         ):
+            source = cls._normalize_payment_source(row["payment_source"])
+            if source != "Cash":
+                continue
+
             apartment_id = row["apartment_id"]
             total = row["total"] or Decimal("0.00")
             count = row["count"] or 0
@@ -798,9 +804,7 @@ class HiltonReportBaseView(APIView):
             apartment_revenue["total_amount"] += total
             apartment_revenue["reservation_count"] += count
 
-            source = cls._normalize_payment_source(row["payment_source"])
-            if source:
-                source_totals[HILTON_PAYMENT_SOURCE_TOTAL_FIELDS[source]] += total
+            source_totals[HILTON_PAYMENT_SOURCE_TOTAL_FIELDS[source]] += total
 
         rows = []
         for apartment in apartments:
@@ -845,6 +849,11 @@ class HiltonReportBaseView(APIView):
                         Decimal("0.00")
                         if line.get("line_type") == HiltonReportManualLine.LineType.NOTE
                         else line.get("amount", Decimal("0.00"))
+                    ),
+                    operations_count=(
+                        None
+                        if line.get("line_type") == HiltonReportManualLine.LineType.NOTE
+                        else line.get("operations_count")
                     ),
                     sort_order=line.get("sort_order", index),
                 )
@@ -894,6 +903,9 @@ class HiltonReportListCreateView(HiltonReportBaseView):
                 start_date=start_date,
                 end_date=end_date,
                 notes=data.get("notes", ""),
+                opening_balance=HiltonReportSettings.load().carry_forward_balance,
+                cash_register_total=data.get("cash_register_total", Decimal("0.00")),
+                cost_period_label=data.get("cost_period_label", ""),
                 created_by_user=request.user,
             )
             rows, source_totals = self._build_revenue_snapshot(
@@ -971,7 +983,19 @@ class HiltonReportDetailView(HiltonReportBaseView):
             report.save(update_fields=["notes", "date_updated"])
             if "manual_lines" in data:
                 self._replace_manual_lines(report, manual_lines)
+            if "cash_register_total" in data:
+                report.cash_register_total = data["cash_register_total"]
+            if "cost_period_label" in data:
+                report.cost_period_label = data["cost_period_label"]
             report.recalculate_totals()
+            report.save(
+                update_fields=[
+                    "notes",
+                    "cash_register_total",
+                    "cost_period_label",
+                    "date_updated",
+                ]
+            )
 
         return Response(
             HiltonReportSerializer(self._get_report(pk)).data,
@@ -1008,12 +1032,16 @@ class HiltonReportPreviewView(HiltonReportBaseView):
         gross_revenue = sum(
             (row["total_amount"] for row in rows), Decimal("0.00")
         )
+        opening_balance = HiltonReportSettings.load().carry_forward_balance
 
         return Response(
             {
                 "building_name": HILTON_BUILDING_NAME,
                 "start_date": str(start_date),
                 "end_date": str(end_date),
+                "opening_balance": str(opening_balance),
+                "cash_register_total": "0.00",
+                "cost_period_label": "",
                 "gross_revenue": str(gross_revenue),
                 "manual_cost_total": "0.00",
                 "manual_adjustment_total": "0.00",
@@ -1022,11 +1050,31 @@ class HiltonReportPreviewView(HiltonReportBaseView):
                 "cash_revenue_total": str(source_totals["cash_revenue_total"]),
                 "cash_total": str(source_totals["cash_total"]),
                 "bank_total": str(source_totals["bank_total"]),
-                "net_total": str(gross_revenue),
+                "net_total": str(opening_balance + gross_revenue),
                 "apartment_revenues": self._serialize_preview_rows(rows),
             },
             status=status.HTTP_200_OK,
         )
+
+
+class HiltonReportSettingsView(APIView):
+    permission_classes = (permissions.IsAdminUser,)
+
+    @staticmethod
+    def get(request):
+        settings = HiltonReportSettings.load()
+        return Response(
+            HiltonReportSettingsSerializer(settings).data,
+            status=status.HTTP_200_OK,
+        )
+
+    @staticmethod
+    def put(request):
+        settings = HiltonReportSettings.load()
+        serializer = HiltonReportSettingsSerializer(settings, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CostListCreateView(APIView):
