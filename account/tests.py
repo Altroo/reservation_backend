@@ -468,6 +468,23 @@ class TestAccountAPIExtras:
         assert created.first_name == "New"
         assert created.default_password_set is True
 
+    def test_post_users_create_without_avatar_queues_default_thumbnail(self):
+        url = reverse("account:users")
+        payload = {
+            "email": "noavatar@example.com",
+            "first_name": "No",
+            "last_name": "Avatar",
+            "is_staff": False,
+            "is_active": True,
+        }
+
+        with patch("account.views.generate_user_thumbnail.apply_async") as apply_async:
+            resp = self.auth_client.post(url, payload, format="json")
+
+        assert resp.status_code == status.HTTP_204_NO_CONTENT
+        created = self.user_model.objects.get(email="noavatar@example.com")
+        apply_async.assert_called_once_with((created.pk,))
+
     def test_user_detail_get_self_404(self):
         url = reverse("account:users_detail", args=[self.user.pk])
         assert self.auth_client.get(url).status_code == 404
