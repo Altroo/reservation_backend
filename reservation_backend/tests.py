@@ -1,6 +1,7 @@
 import base64
 import binascii
 from io import BytesIO
+from pathlib import Path
 from unittest.mock import patch
 import numpy as np
 import pytest
@@ -25,6 +26,14 @@ from .utils import (
     api_exception_handler,
     CustomPagination,
 )
+
+
+def test_production_celery_worker_uses_sync_safe_pool():
+    compose_file = Path(__file__).resolve().parents[1] / "docker-compose.yml"
+    compose = compose_file.read_text()
+
+    assert "--pool=prefork" in compose
+    assert "-P gevent" not in compose
 
 
 @pytest.mark.django_db
