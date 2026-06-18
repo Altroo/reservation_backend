@@ -297,7 +297,7 @@ class HiltonReportSerializer(serializers.ModelSerializer):
 class HiltonReportMutationSerializer(serializers.Serializer):
     start_date = serializers.DateField(required=False)
     end_date = serializers.DateField(required=False)
-    notes = serializers.CharField(required=False, allow_blank=True)
+    notes = serializers.CharField(max_length=2000, required=False, allow_blank=True)
     cash_register_total = serializers.DecimalField(
         max_digits=12,
         decimal_places=2,
