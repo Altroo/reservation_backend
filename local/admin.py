@@ -1,7 +1,14 @@
 from django.contrib import admin
 from simple_history.admin import SimpleHistoryAdmin
 
-from local.models import Local, Loyer
+from local.models import Local, LocalTypeOption, Loyer
+
+
+@admin.register(LocalTypeOption)
+class LocalTypeOptionAdmin(SimpleHistoryAdmin):
+    list_display = ("id", "nom")
+    search_fields = ("nom",)
+    ordering = ("nom",)
 
 
 @admin.register(Local)
@@ -118,5 +125,43 @@ class HistoricalLoyerAdmin(admin.ModelAdmin):
         return False
 
 
+class HistoricalLocalTypeOptionAdmin(admin.ModelAdmin):
+    """Read-only admin for viewing historical LocalTypeOption records."""
+
+    list_display = (
+        "history_id",
+        "id",
+        "nom",
+        "history_type",
+        "history_date",
+        "history_user",
+    )
+    list_filter = ("history_type", "history_date")
+    search_fields = ("nom",)
+    readonly_fields = [
+        field.name
+        for field in LocalTypeOption._meta.get_fields()
+        if hasattr(field, "name")
+        and getattr(field, "concrete", False)
+        and not field.many_to_many
+    ] + [
+        "history_id",
+        "history_date",
+        "history_change_reason",
+        "history_type",
+        "history_user",
+    ]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+admin.site.register(LocalTypeOption.history.model, HistoricalLocalTypeOptionAdmin)
 admin.site.register(Local.history.model, HistoricalLocalAdmin)
 admin.site.register(Loyer.history.model, HistoricalLoyerAdmin)

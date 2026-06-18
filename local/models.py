@@ -15,6 +15,10 @@ class LocalTypeOption(models.Model):
         unique=True,
         verbose_name=_("Type de local"),
     )
+    history = HistoricalRecords(
+        verbose_name=_("Historique Type de local"),
+        verbose_name_plural=_("Historiques Types de local"),
+    )
 
     class Meta:
         verbose_name = _("Type de local")

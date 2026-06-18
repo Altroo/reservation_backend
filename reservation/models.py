@@ -15,6 +15,10 @@ class PaymentSourceOption(models.Model):
         unique=True,
         verbose_name=_("Source de paiement"),
     )
+    history = HistoricalRecords(
+        verbose_name=_("Historique Source de paiement"),
+        verbose_name_plural=_("Historiques Sources de paiement"),
+    )
 
     class Meta:
         verbose_name = _("Source de paiement")
@@ -219,6 +223,10 @@ class HiltonReportSettings(models.Model):
     date_updated = models.DateTimeField(
         auto_now=True, verbose_name=_("Date modification")
     )
+    history = HistoricalRecords(
+        verbose_name=_("Historique Paramètres rapport Hilton"),
+        verbose_name_plural=_("Historiques Paramètres rapport Hilton"),
+    )
 
     class Meta:
         verbose_name = _("Paramètres rapport Hilton")
@@ -325,6 +333,10 @@ class HiltonReport(models.Model):
     date_updated = models.DateTimeField(
         auto_now=True, verbose_name=_("Date modification")
     )
+    history = HistoricalRecords(
+        verbose_name=_("Historique Rapport Hilton"),
+        verbose_name_plural=_("Historiques Rapports Hilton"),
+    )
 
     class Meta:
         verbose_name = _("Rapport Hilton")
@@ -405,6 +417,10 @@ class HiltonReportApartmentRevenue(models.Model):
         default=0,
         verbose_name=_("Montant total"),
     )
+    history = HistoricalRecords(
+        verbose_name=_("Historique Revenu appartement rapport Hilton"),
+        verbose_name_plural=_("Historiques Revenus appartements rapports Hilton"),
+    )
 
     class Meta:
         verbose_name = _("Revenu appartement rapport Hilton")
@@ -448,6 +464,10 @@ class HiltonReportManualLine(models.Model):
         verbose_name=_("Nombre d'opérations"),
     )
     sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Ordre"))
+    history = HistoricalRecords(
+        verbose_name=_("Historique Ligne manuelle rapport Hilton"),
+        verbose_name_plural=_("Historiques Lignes manuelles rapports Hilton"),
+    )
 
     class Meta:
         verbose_name = _("Ligne manuelle rapport Hilton")
@@ -465,6 +485,10 @@ class CostCategoryOption(models.Model):
         max_length=100,
         unique=True,
         verbose_name=_("Catégorie de coût"),
+    )
+    history = HistoricalRecords(
+        verbose_name=_("Historique Catégorie de coût"),
+        verbose_name_plural=_("Historiques Catégories de coût"),
     )
 
     class Meta:
