@@ -448,6 +448,10 @@ class LocalDashboardView(APIView):
         locaux_data = []
         total_en_location = 0
         total_libres = 0
+        monthly_rents = {
+            month: {"paid": Decimal("0.00"), "unpaid": Decimal("0.00")}
+            for month in range(1, 13)
+        }
         for local in locaux:
             if local.en_location:
                 total_en_location += 1
@@ -461,17 +465,24 @@ class LocalDashboardView(APIView):
             loyers_impayes = loyers_annee.filter(paye=False).aggregate(
                 total=Sum("montant")
             )["total"] or Decimal("0.00")
-            existing_months = set(loyers_annee.values_list("mois", flat=True))
-            implicit_unpaid_months = sum(
-                1
+            existing_rents = list(
+                loyers_annee.values("mois", "montant", "paye")
+            )
+            existing_months = {loyer["mois"] for loyer in existing_rents}
+            for loyer in existing_rents:
+                status_key = "paid" if loyer["paye"] else "unpaid"
+                monthly_rents[loyer["mois"]][status_key] += loyer["montant"]
+
+            implicit_unpaid_months = [
+                month
                 for month in range(1, date.today().month + 1)
                 if month not in existing_months
                 and _is_due_month_for_local(local, year, month)
-            )
-            if implicit_unpaid_months:
-                loyers_impayes += Decimal(str(local.prix_location_mensuel)) * Decimal(
-                    implicit_unpaid_months
-                )
+            ]
+            implicit_unpaid_amount = Decimal(str(local.prix_location_mensuel))
+            for month in implicit_unpaid_months:
+                loyers_impayes += implicit_unpaid_amount
+                monthly_rents[month]["unpaid"] += implicit_unpaid_amount
 
             locaux_data.append(
                 {
@@ -493,6 +504,14 @@ class LocalDashboardView(APIView):
                 "total_benefice_ht": str(total_benefice),
                 "total_en_location": total_en_location,
                 "total_libres": total_libres,
+                "monthly_rents": [
+                    {
+                        "month": month,
+                        "paid": str(monthly_rents[month]["paid"]),
+                        "unpaid": str(monthly_rents[month]["unpaid"]),
+                    }
+                    for month in range(1, 13)
+                ],
                 "locaux": locaux_data,
             },
             status=status.HTTP_200_OK,

@@ -420,6 +420,12 @@ class DashboardStatsView(APIView):
         qs = Reservation.objects.filter(check_in__year=year)
         building_id = request.query_params.get("building")
         if building_id:
+            try:
+                building_id = int(building_id)
+            except (ValueError, TypeError):
+                raise ValidationError(
+                    {"building": _("building doit être un entier valide.")}
+                )
             qs = qs.filter(apartment__building_id=building_id)
         total_revenue = qs.aggregate(total=Sum("amount"))["total"] or 0
 
@@ -474,6 +480,8 @@ class DashboardStatsView(APIView):
 
         # Costs and net profit
         cost_qs = Cost.objects.filter(date__year=year)
+        if building_id:
+            cost_qs = cost_qs.filter(building_id=building_id)
         annual_costs = float(cost_qs.aggregate(total=Sum("amount"))["total"] or 0)
         net_profit = float(total_revenue) - annual_costs
 

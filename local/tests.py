@@ -579,6 +579,10 @@ class TestLocalDashboardView:
         assert resp.data["total_benefice_ht"] == "0.00"
         assert resp.data["total_en_location"] == 0
         assert resp.data["total_libres"] == 0
+        assert resp.data["monthly_rents"] == [
+            {"month": month, "paid": "0.00", "unpaid": "0.00"}
+            for month in range(1, 13)
+        ]
 
     def test_dashboard_with_data(self, monkeypatch):
         TestLocalPlanningView._freeze_today(monkeypatch, date(2026, 4, 17))
@@ -609,6 +613,26 @@ class TestLocalDashboardView:
         assert db1["rentabilite"] == "6.00"
         assert db1["loyers_payes"] == "10000.00"
         assert db1["loyers_impayes"] == "10000.00"
+        assert resp.data["monthly_rents"][0] == {
+            "month": 1,
+            "paid": "5000.00",
+            "unpaid": "0.00",
+        }
+        assert resp.data["monthly_rents"][1] == {
+            "month": 2,
+            "paid": "5000.00",
+            "unpaid": "0.00",
+        }
+        assert resp.data["monthly_rents"][2] == {
+            "month": 3,
+            "paid": "0.00",
+            "unpaid": "5000.00",
+        }
+        assert resp.data["monthly_rents"][3] == {
+            "month": 4,
+            "paid": "0.00",
+            "unpaid": "5000.00",
+        }
 
     def test_dashboard_invalid_year(self):
         resp = self.staff_client.get(self.url, {"year": "xyz"})

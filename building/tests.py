@@ -1,4 +1,5 @@
 import pytest
+from django.apps import apps
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -367,11 +368,12 @@ class TestBuildingFilterOnDashboard:
         )
 
     def test_dashboard_filter_by_building(self):
-        from reservation.models import Apartment, Reservation
+        from reservation.models import Apartment, Cost, Reservation
 
         b1 = make_building(nom="Hilton-D")
+        b2 = make_building(nom="Nectar-D")
         apt1 = Apartment.objects.create(nom="HD-101", building=b1)
-        apt2 = Apartment.objects.create(nom="Other-201")
+        apt2 = Apartment.objects.create(nom="Other-201", building=b2)
         Reservation.objects.create(
             apartment=apt1,
             guest_name="G1",
@@ -388,11 +390,65 @@ class TestBuildingFilterOnDashboard:
             amount="2000.00",
             created_by_user=self.staff_user,
         )
+        Cost.objects.create(
+            description="Hilton cost",
+            amount="250.00",
+            date="2026-03-20",
+            category="Charges",
+            building=b1,
+        )
+        Cost.objects.create(
+            description="Nectar cost",
+            amount="900.00",
+            date="2026-03-20",
+            category="Charges",
+            building=b2,
+        )
 
         url = reverse("reservation:dashboard-stats")
         resp = self.staff_client.get(url, {"year": 2026, "building": b1.pk})
         assert resp.status_code == status.HTTP_200_OK
         assert resp.data["total_revenue"] == 1000.0
+        assert resp.data["annual_costs"] == 250.0
+        assert resp.data["net_profit"] == 750.0
+        assert list(resp.data["occupancy_by_apartment"]) == ["HD-101"]
+
+    def test_dashboard_rejects_invalid_building(self):
+        url = reverse("reservation:dashboard-stats")
+        resp = self.staff_client.get(url, {"year": 2026, "building": "invalid"})
+        assert resp.status_code == status.HTTP_400_BAD_REQUEST
+
+
+class TestLegacyApartmentBuildingAssignment:
+    def test_assigns_known_legacy_apartments_without_overwriting_existing_links(self):
+        from importlib import import_module
+
+        from reservation.models import Apartment
+
+        hilton = make_building(nom="Hilton residence")
+        nectar = make_building(nom="Nectar")
+        erasmus = make_building(nom="ERASMUS")
+        hilton_apartment = Apartment.objects.create(nom="HR étage 09 N°05")
+        city_center_apartment = Apartment.objects.create(nom="City Center 5B")
+        nectar_apartment = Apartment.objects.create(nom="NR APP N°40")
+        existing_apartment = Apartment.objects.create(
+            nom="HR already assigned",
+            building=erasmus,
+        )
+
+        migration = import_module(
+            "reservation.migrations.0019_assign_legacy_apartment_buildings"
+        )
+        migration.assign_legacy_apartment_buildings(apps, None)
+
+        hilton_apartment.refresh_from_db()
+        city_center_apartment.refresh_from_db()
+        nectar_apartment.refresh_from_db()
+        existing_apartment.refresh_from_db()
+        assert hilton_apartment.building_id == hilton.pk
+        assert city_center_apartment.building_id == hilton.pk
+        assert nectar_apartment.building_id == nectar.pk
+        assert existing_apartment.building_id == erasmus.pk
 
 
 class TestBuildingFilterOnLocalPlanning:
