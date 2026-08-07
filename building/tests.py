@@ -346,6 +346,8 @@ class TestBuildingFilterOnReservationPlanning:
         assert resp.status_code == status.HTTP_200_OK
         assert "H-101" in resp.data["apartments"]
         assert "N-201" not in resp.data["apartments"]
+        assert resp.data["month_revenue"] == 1000.0
+        assert resp.data["occupied_nights"] == 4
 
     def test_planning_no_filter_returns_all(self):
         from reservation.models import Apartment

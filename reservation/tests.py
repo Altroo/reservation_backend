@@ -439,6 +439,25 @@ class TestDashboardStatsView:
         response = self.staff_client.get(self.url, {"year": 2025})
         assert len(response.data["monthly_revenue"]) == 12
 
+    def test_occupancy_uses_unique_nights_inside_selected_year(self):
+        boundary_apt = make_apartment(nom="DS-BOUNDARY")
+        make_reservation(
+            boundary_apt,
+            check_in=date(2024, 12, 30),
+            check_out=date(2025, 1, 3),
+        )
+        make_reservation(
+            boundary_apt,
+            check_in=date(2025, 1, 2),
+            check_out=date(2025, 1, 4),
+        )
+
+        response = self.staff_client.get(self.url, {"year": 2025})
+
+        assert response.data["occupancy_by_apartment"]["DS-BOUNDARY"][
+            "occupied_days"
+        ] == 3
+
     def test_by_source_present(self):
         response = self.staff_client.get(self.url, {"year": 2025})
         sources = [s["source"] for s in response.data["by_source"]]
@@ -498,12 +517,44 @@ class TestPlanningMonthView:
         assert apt_data is not None
         assert len(apt_data["reservations"]) >= 1
 
+    def test_month_kpis_match_dashboard_revenue_and_visible_occupied_nights(self):
+        make_reservation(
+            self.apt,
+            check_in=date(2025, 6, 29),
+            check_out=date(2025, 7, 2),
+            amount="100.00",
+        )
+        make_reservation(
+            self.apt,
+            check_in=date(2025, 7, 5),
+            check_out=date(2025, 7, 7),
+            amount="200.00",
+        )
+
+        planning_response = self.staff_client.get(
+            self.url,
+            {"year": 2025, "month": 7},
+        )
+        dashboard_response = self.staff_client.get(
+            reverse("reservation:dashboard-stats"),
+            {"year": 2025},
+        )
+
+        july_revenue = dashboard_response.data["monthly_revenue"][6]["total"]
+        assert planning_response.data["month_revenue"] == pytest.approx(200.0)
+        assert planning_response.data["month_revenue"] == pytest.approx(july_revenue)
+        assert planning_response.data["occupied_nights"] == 3
+
     def test_unauthenticated_returns_401(self):
         response = self.anon_client.get(self.url, {"year": 2025, "month": 6})
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_invalid_month_returns_400(self):
         response = self.staff_client.get(self.url, {"year": 2025, "month": "xyz"})
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_out_of_range_month_returns_400(self):
+        response = self.staff_client.get(self.url, {"year": 2025, "month": 13})
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 

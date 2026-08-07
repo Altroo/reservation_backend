@@ -1,5 +1,6 @@
+from collections import defaultdict
+from datetime import date, timedelta
 from decimal import Decimal
-from datetime import date
 
 from django.db import transaction
 from django.db.models import Sum, Count
@@ -64,6 +65,18 @@ HILTON_PAYMENT_SOURCE_ALIASES = {
     "virement": "Bank",
     "virement bancaire": "Bank",
 }
+
+
+def _occupied_dates_by_apartment(reservations, period_start, period_end):
+    """Return unique occupied dates per apartment inside [start, end)."""
+    occupied_dates = defaultdict(set)
+    for reservation in reservations:
+        current_date = max(reservation.check_in, period_start)
+        checkout_date = min(reservation.check_out, period_end)
+        while current_date < checkout_date:
+            occupied_dates[reservation.apartment_id].add(current_date)
+            current_date += timedelta(days=1)
+    return occupied_dates
 
 
 class ApartmentListView(APIView):
@@ -456,20 +469,42 @@ class DashboardStatsView(APIView):
             .order_by("apartment__nom")
         )
 
-        # Occupancy: occupied days per apartment per month
+        # Occupancy is based on the nights actually falling inside the selected
+        # year. Revenue remains attributed to the check-in year/month.
         apt_qs = Apartment.objects.all()
         if building_id:
             apt_qs = apt_qs.filter(building_id=building_id)
         apartments = list(apt_qs.values("id", "nom"))
+
+        year_start = date(year, 1, 1)
+        year_end = date(year + 1, 1, 1)
+        occupancy_qs = Reservation.objects.filter(
+            check_in__lt=year_end,
+            check_out__gt=year_start,
+        )
+        if building_id:
+            occupancy_qs = occupancy_qs.filter(apartment__building_id=building_id)
+        occupancy_reservations = list(occupancy_qs)
+        occupied_dates = _occupied_dates_by_apartment(
+            occupancy_reservations,
+            year_start,
+            year_end,
+        )
+        occupancy_counts = defaultdict(int)
+        for reservation in occupancy_reservations:
+            occupancy_counts[reservation.apartment_id] += 1
+
+        revenue_by_apartment = {
+            item["apartment_id"]: float(item["total"] or 0)
+            for item in qs.values("apartment_id").annotate(total=Sum("amount"))
+        }
         occupancy_by_apt = {}
         for apt in apartments:
-            apt_qs = qs.filter(apartment_id=apt["id"])
-            occupied_days = sum(r.nights for r in apt_qs) if apt_qs.exists() else 0
             occupancy_by_apt[apt["nom"]] = {
                 "nom": apt["nom"],
-                "occupied_days": occupied_days,
-                "reservation_count": apt_qs.count(),
-                "revenue": float(apt_qs.aggregate(t=Sum("amount"))["t"] or 0),
+                "occupied_days": len(occupied_dates[apt["id"]]),
+                "reservation_count": occupancy_counts[apt["id"]],
+                "revenue": revenue_by_apartment.get(apt["id"], 0.0),
             }
 
         # Daily revenue (grouped by check_in date)
@@ -532,14 +567,18 @@ class PlanningMonthView(APIView):
             raise ValidationError(
                 {"error": _("year et month doivent être des entiers valides.")}
             )
+        if month < 1 or month > 12:
+            raise ValidationError(
+                {"month": _("month doit être compris entre 1 et 12.")}
+            )
 
         # Include reservations that overlap with the requested month
-        from datetime import date as dt
         import calendar
 
         last_day = calendar.monthrange(year, month)[1]
-        month_start = dt(year, month, 1)
-        month_end = dt(year, month, last_day)
+        month_start = date(year, month, 1)
+        month_end = date(year, month, last_day)
+        next_month_start = month_end + timedelta(days=1)
 
         qs = (
             Reservation.objects.filter(
@@ -554,6 +593,21 @@ class PlanningMonthView(APIView):
         if building_id:
             qs = qs.filter(apartment__building_id=building_id)
 
+        visible_reservations = list(qs)
+        month_revenue = (
+            qs.filter(
+                check_in__gte=month_start,
+                check_in__lt=next_month_start,
+            ).aggregate(total=Sum("amount"))["total"]
+            or Decimal("0.00")
+        )
+        occupied_dates = _occupied_dates_by_apartment(
+            visible_reservations,
+            month_start,
+            next_month_start,
+        )
+        occupied_nights = sum(len(dates) for dates in occupied_dates.values())
+
         apt_qs = Apartment.objects.all().order_by("nom")
         if building_id:
             apt_qs = apt_qs.filter(building_id=building_id)
@@ -561,7 +615,9 @@ class PlanningMonthView(APIView):
 
         result = {}
         for apt in apartments:
-            apt_reservations = [r for r in qs if r.apartment_id == apt.id]
+            apt_reservations = [
+                r for r in visible_reservations if r.apartment_id == apt.id
+            ]
             result[apt.nom] = {
                 "id": apt.id,
                 "nom": apt.nom,
@@ -575,6 +631,8 @@ class PlanningMonthView(APIView):
                 "year": year,
                 "month": month,
                 "last_day": last_day,
+                "month_revenue": float(month_revenue),
+                "occupied_nights": occupied_nights,
                 "apartments": result,
             },
             status=status.HTTP_200_OK,
