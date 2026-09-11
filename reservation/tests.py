@@ -8,7 +8,13 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from account.models import CustomUser
 from building.models import Building
-from reservation.models import Apartment, Cost, HiltonReportSettings, Reservation
+from reservation.models import (
+    Apartment,
+    Cost,
+    CostCategoryOption,
+    HiltonReportSettings,
+    Reservation,
+)
 
 pytestmark = pytest.mark.django_db
 
@@ -734,6 +740,24 @@ class TestCostListCreateView:
         assert response.data["building"] == building.pk
         assert response.data["building_nom"] == building.nom
         assert Cost.objects.get(description="Internet").building_id == building.pk
+
+    def test_create_with_dynamic_category_returns_201(self):
+        CostCategoryOption.objects.create(nom="Nettoyage")
+
+        response = self.staff_client.post(
+            self.url,
+            {
+                "description": "Nettoyage",
+                "amount": "250.00",
+                "date": "2025-06-15",
+                "category": "Nettoyage",
+            },
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_201_CREATED
+        assert response.data["category"] == "Nettoyage"
+        assert Cost.objects.get(description="Nettoyage").category == "Nettoyage"
 
     def test_create_without_permission_returns_403(self):
         response = self.readonly_client.post(

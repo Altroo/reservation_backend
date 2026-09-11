@@ -148,14 +148,6 @@ class Reservation(models.Model):
 class Cost(models.Model):
     """Represents a cost entry (maintenance, charges, taxes, etc.)."""
 
-    CATEGORY_CHOICES = [
-        ("Entretien", _("Entretien")),
-        ("Charges", _("Charges")),
-        ("Assurance", _("Assurance")),
-        ("Taxes", _("Taxes")),
-        ("Autre", _("Autre")),
-    ]
-
     description = models.CharField(
         max_length=300,
         verbose_name=_("Description"),
@@ -168,8 +160,7 @@ class Cost(models.Model):
     )
     date = models.DateField(verbose_name=_("Date"), db_index=True)
     category = models.CharField(
-        max_length=50,
-        choices=CATEGORY_CHOICES,
+        max_length=100,
         default="Autre",
         verbose_name=_("Catégorie"),
         db_index=True,
