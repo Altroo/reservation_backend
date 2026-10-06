@@ -1,3 +1,4 @@
+from reservation_backend.ordering import apply_list_ordering
 from collections import defaultdict
 from datetime import date, timedelta
 from decimal import Decimal
@@ -1176,7 +1177,7 @@ class CostListCreateView(APIView):
                 raise ValidationError(
                     {"building": _("building doit être un entier valide.")}
                 )
-        serializer = CostSerializer(qs, many=True)
+        serializer = CostSerializer(apply_list_ordering(qs, request.query_params), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @staticmethod

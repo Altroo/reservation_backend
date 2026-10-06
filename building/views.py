@@ -1,3 +1,4 @@
+from reservation_backend.ordering import apply_list_ordering
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _, gettext
 from rest_framework import permissions, status
@@ -16,7 +17,7 @@ class BuildingListCreateView(APIView):
     @staticmethod
     def get(request):
         buildings = Building.objects.all().select_related("created_by_user")
-        serializer = BuildingSerializer(buildings, many=True)
+        serializer = BuildingSerializer(apply_list_ordering(buildings, request.query_params), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @staticmethod

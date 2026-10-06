@@ -1,3 +1,4 @@
+from reservation_backend.ordering import apply_list_ordering
 from datetime import date
 from decimal import Decimal
 
@@ -79,7 +80,7 @@ class LocalListCreateView(APIView):
             serializer = LocalListSerializer(page, many=True)
             return paginator.get_paginated_response(serializer.data)
 
-        serializer = LocalListSerializer(qs, many=True)
+        serializer = LocalListSerializer(apply_list_ordering(qs, request.query_params), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @staticmethod
