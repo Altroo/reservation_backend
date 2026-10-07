@@ -40,7 +40,11 @@ def custom_404(request, exception=None):
 def custom_500(request):
     """Custom 500 handler returning JSON."""
     return JsonResponse(
-        {"status_code": 500, "message": gettext("Erreur interne du serveur"), "details": {}},
+        {
+            "status_code": 500,
+            "message": gettext("Erreur interne du serveur"),
+            "details": {},
+        },
         status=500,
     )
 
@@ -50,6 +54,7 @@ handler404 = custom_404
 handler500 = custom_500
 
 urlpatterns = [
+    path("api/ai/", include("ai_assistant.urls")),
     # Health check endpoint (unauthenticated)
     path("api/health/", health_check, name="health-check"),
     # Account
