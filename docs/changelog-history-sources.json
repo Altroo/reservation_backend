@@ -1,0 +1,4451 @@
+{
+  "application": "Reservation",
+  "reconstructed": true,
+  "import_date": "2026-10-09",
+  "repository_heads": {
+    "frontend": "d612ff3d0c9f993ceadd72f9b812faf5abff67b7",
+    "backend": "42578173100a23fe3815ac96dcf2431f575075e8"
+  },
+  "versioning": {
+    "convention": "Reconstructed product milestones, not public API compatibility or verified production release dates. One entry per development date; major workflow milestones reset minor and patch; capability dates increment minor; corrections, compatibility, documentation and checkpoints increment patch.",
+    "prior_evidence": "No release tags in either repository. package.json remained at scaffold version 0.1.0 throughout committed history.",
+    "milestones": [
+      {
+        "date": "2026-03-11",
+        "version": "1.0.0",
+        "commits": [
+          "cee8b864279b2e1369f29944619a587686bf7d39",
+          "28621af39fb2b504ba98c0241095313b41857a90",
+          "2a0378a7f781ce86e40d42b8ccd76c78d131ad4b",
+          "14f066513eb5324a317ee7dc54d65b1efb0716db",
+          "c85bec7cad9e3fcb8a025cdff64c8a569b18bb67"
+        ]
+      },
+      {
+        "date": "2026-03-30",
+        "version": "2.0.0",
+        "commits": [
+          "0014168c90cfecc5590d089ec0c9f26919cdde9e",
+          "406fe6891c83731de35bdf0a7e1d9c508dc5f3c4",
+          "b0ff0ddfcd01f1503a41b44d6cba50bea0d8b9c9",
+          "5e8201fc5dea58d7e34b41d914e9cfd242a17a33",
+          "0c2dc2cbfa99f3e40334ec6feb87cc7a6fa2e626",
+          "1d3ae46e35c29e96fa08a95287454a656f17f7b8",
+          "8eb4329033d44fcb4830dcf4f355d9ac7ef218db",
+          "90d50bde228c57cbad53cf03af1f289389ac1cbb",
+          "a501882ff8654460a90a002c0cb1b5a694bba35b",
+          "987ed03a7a6d87026e6d0153d28e2b4e73995f2b",
+          "bfc06c1643f7b81ea8f075aad41a4266078dfe39",
+          "fd362396710c0bf3be33b9d9c412cf72ec2f8bb0",
+          "79226500ba21d745bc44d119efd65329438e706f",
+          "d9f77202626b993528842866479c7bf086b8fc1c"
+        ]
+      },
+      {
+        "date": "2026-03-31",
+        "version": "3.0.0",
+        "commits": [
+          "cd7bb01904a81e251c83780a4758a143fd29e04c",
+          "39a6f4e273f8e3c34437db9a9736c4002270256c",
+          "a94f3a99296ddd4edf0926e5f1aa78391bea8a32",
+          "d4b3f37873091d201a21a8fd753c92118f39fcb9",
+          "cf53ed66afb42f73b2b58ccc26f6bc45c602e930",
+          "f0b30bf99885260c497db991877624cc8034fcb7",
+          "986882614336f33d8f7958efbb6f36493b2a991f",
+          "0806c53963f5140c9d2f1091f90f523e5767ac78",
+          "d7f52e0c6f4aabd312a384fe903fd4570859c410",
+          "ad6b132872768bd04a91cfc73ead8218e581b4d3",
+          "d0077b3c13d7954c792e49fd1cd49d13901fc29e",
+          "5b379307939e1f0083cf8ae1d3c4d5d43a7f751e",
+          "eb98ed68640a34685fd0197d093bb1832fb1cf54",
+          "6b53fac98a3675d3268d79c2607056203fc876c5"
+        ]
+      }
+    ],
+    "subsequent_feature_dates": [
+      "2026-04-02",
+      "2026-04-06",
+      "2026-04-07",
+      "2026-04-08",
+      "2026-04-10",
+      "2026-04-17",
+      "2026-04-23",
+      "2026-05-05",
+      "2026-05-12",
+      "2026-05-13",
+      "2026-05-20",
+      "2026-06-18",
+      "2026-07-23",
+      "2026-09-23",
+      "2026-10-07",
+      "2026-10-09"
+    ]
+  },
+  "current_release_evidence": [
+    "ws/models.py",
+    "ws/views.py",
+    "src/components/shared/appUpdate/appUpdate.tsx",
+    "src/utils/colorMode.ts"
+  ],
+  "classifications": [
+    {
+      "date": "2026-03-10",
+      "version": "0.1.0",
+      "classification": "foundation",
+      "commits": [
+        "4dcf39c4b7e216d2a060809fd130ccd986f3b2f0",
+        "019874675e5395e8f1b7d74d142329741ecd8b65"
+      ]
+    },
+    {
+      "date": "2026-03-11",
+      "version": "1.0.0",
+      "classification": "major",
+      "commits": [
+        "cee8b864279b2e1369f29944619a587686bf7d39",
+        "28621af39fb2b504ba98c0241095313b41857a90",
+        "2a0378a7f781ce86e40d42b8ccd76c78d131ad4b",
+        "14f066513eb5324a317ee7dc54d65b1efb0716db",
+        "c85bec7cad9e3fcb8a025cdff64c8a569b18bb67"
+      ]
+    },
+    {
+      "date": "2026-03-12",
+      "version": "1.0.1",
+      "classification": "patch",
+      "commits": [
+        "cfae1f890a12f97c9260fdbdb68bee1e3c01e374"
+      ]
+    },
+    {
+      "date": "2026-03-13",
+      "version": "1.0.2",
+      "classification": "patch",
+      "commits": [
+        "146003ae96b5848fe7e0b677db38aa99e463474d"
+      ]
+    },
+    {
+      "date": "2026-03-14",
+      "version": "1.1.0",
+      "classification": "minor",
+      "commits": [
+        "199fb4c9104eba962bae2225ed051cd505c74221",
+        "f69948947537a869225bbd0ca080e2a4a117f065",
+        "7af8b5232c47f07626a95b9c2a11c3c0f4dae6d8",
+        "48cd49d6f8d2975d8ca431558a27b82471887f8b",
+        "fc6711bc091809f5d0146489966b4257e50d1fcb",
+        "922f1427ca5527000f11bbfa8735455b15ac2a8c",
+        "9f389a0738ac5a5ee59c1fcefaf302cfdfd8d69e",
+        "ad0a6ca9f7fb9a2853e6c0a2127158effc425556",
+        "911efe7d93c4ac1d58b75a6f5d18c9d4f2a3ec78",
+        "ed0ef1443cdc55d5a759d6b7448337cfd28432c8",
+        "573e2eeaf2ba420a0387d85aaba9427000753191"
+      ]
+    },
+    {
+      "date": "2026-03-24",
+      "version": "1.2.0",
+      "classification": "minor",
+      "commits": [
+        "e26c9e814ddab380b14a204dd35f16ebe4f8d9e5",
+        "a59d31e9ad087aa6f37baeb557ad8001974dadcb",
+        "910eba30117965e0295cdc2aae2aab1d2943c275",
+        "b3214aaf7189d2ea4b4c23152be0764a383175cd",
+        "a09bb55204057fbfb7ce8ce815daa6797d3f562b",
+        "246b78f0f1a56e2769b1b055eed5c7d9c3bb7d1c",
+        "f9f6b016bb0ade046cb4adf84a813c6fe69e341c"
+      ]
+    },
+    {
+      "date": "2026-03-25",
+      "version": "1.3.0",
+      "classification": "minor",
+      "commits": [
+        "0ee661cf9289a0dcbc843d7fdeb7adac3f4f7bc9",
+        "120c200e2aa7ea071bccfcd33e385a656da3d99e",
+        "381ab8a62a27d9cc38f0fb5e99ad2a29b4a02302",
+        "905bdd76a6ea0bb8ee0fa4689928c3da11f3a768",
+        "878c576f45d42b5c7d28f482bb437329948a3ef1"
+      ]
+    },
+    {
+      "date": "2026-03-26",
+      "version": "1.4.0",
+      "classification": "minor",
+      "commits": [
+        "831c6d60996386d98a75ca225096f9686b36347e",
+        "b58790993750467fe4c4f0da9836e1b593a4fe2b",
+        "cd6891486735bdf618a97ad0581681f38c1fabbc",
+        "6a7e1ba0aa79a942ab0f2b52f43187b38a93c79e"
+      ]
+    },
+    {
+      "date": "2026-03-27",
+      "version": "1.5.0",
+      "classification": "minor",
+      "commits": [
+        "dabfbd7960b5d460221b61d15701f1b8e586b307",
+        "dce375fcfec8b6bda2959ee62a3f2b36fa5fd4c5",
+        "c82ba737f04549543bb2bed11b99e36ace379528",
+        "a08c88cde5fa2db72146d9a7e3298126be7d0352",
+        "044ccaae05ec168c75391d1a2f148659b5e55457",
+        "fee5f73d06afca27f25d91072a3336db79f61063",
+        "698b5536d84b1728bd915b0d8f22b19fb7930145",
+        "82f579951fbe230476fa68d98a886610b69e5a3d",
+        "0eabbab71f42f85d7a78b85f9c384e74d4f83739",
+        "164f8c9dac4f68a68f7313292a1d481e7e336d67",
+        "d49400a9f031f768656b440e444bb245a4f2617f",
+        "3b041b7f129305a1abd157634a853e2218113055",
+        "5dce28c9d2b1601078414138496ed050c19775c4",
+        "e0f4e964cc471acbd043ac47d0f90d47bda123f3",
+        "c487ab55ce62b6a61b57469706ea85be7082904d",
+        "404bcf68ad7ffaee9a8402b0666aaafca4f335f9",
+        "4f7ecc7b3e8200c7bbc2ade9cd21f5a8c2f09029",
+        "2d8efdb71079bdf76dd64a7d7e05dc0e3b12e0c5"
+      ]
+    },
+    {
+      "date": "2026-03-30",
+      "version": "2.0.0",
+      "classification": "major",
+      "commits": [
+        "0014168c90cfecc5590d089ec0c9f26919cdde9e",
+        "406fe6891c83731de35bdf0a7e1d9c508dc5f3c4",
+        "b0ff0ddfcd01f1503a41b44d6cba50bea0d8b9c9",
+        "5e8201fc5dea58d7e34b41d914e9cfd242a17a33",
+        "0c2dc2cbfa99f3e40334ec6feb87cc7a6fa2e626",
+        "1d3ae46e35c29e96fa08a95287454a656f17f7b8",
+        "8eb4329033d44fcb4830dcf4f355d9ac7ef218db",
+        "90d50bde228c57cbad53cf03af1f289389ac1cbb",
+        "a501882ff8654460a90a002c0cb1b5a694bba35b",
+        "987ed03a7a6d87026e6d0153d28e2b4e73995f2b",
+        "bfc06c1643f7b81ea8f075aad41a4266078dfe39",
+        "fd362396710c0bf3be33b9d9c412cf72ec2f8bb0",
+        "79226500ba21d745bc44d119efd65329438e706f",
+        "d9f77202626b993528842866479c7bf086b8fc1c"
+      ]
+    },
+    {
+      "date": "2026-03-31",
+      "version": "3.0.0",
+      "classification": "major",
+      "commits": [
+        "cd7bb01904a81e251c83780a4758a143fd29e04c",
+        "39a6f4e273f8e3c34437db9a9736c4002270256c",
+        "a94f3a99296ddd4edf0926e5f1aa78391bea8a32",
+        "d4b3f37873091d201a21a8fd753c92118f39fcb9",
+        "cf53ed66afb42f73b2b58ccc26f6bc45c602e930",
+        "f0b30bf99885260c497db991877624cc8034fcb7",
+        "986882614336f33d8f7958efbb6f36493b2a991f",
+        "0806c53963f5140c9d2f1091f90f523e5767ac78",
+        "d7f52e0c6f4aabd312a384fe903fd4570859c410",
+        "ad6b132872768bd04a91cfc73ead8218e581b4d3",
+        "d0077b3c13d7954c792e49fd1cd49d13901fc29e",
+        "5b379307939e1f0083cf8ae1d3c4d5d43a7f751e",
+        "eb98ed68640a34685fd0197d093bb1832fb1cf54",
+        "6b53fac98a3675d3268d79c2607056203fc876c5"
+      ]
+    },
+    {
+      "date": "2026-04-02",
+      "version": "3.1.0",
+      "classification": "minor",
+      "commits": [
+        "28251b6997e5929ba5cde7581820a473568c02c4",
+        "60222f91d556b61645e98ebfbac1852dba23006a",
+        "0471c6a844c6b34df8f928daba4d91b358e435ed",
+        "c0f26fb51ab22521311dba89265661b3a442ed38",
+        "c85c6ac7efc5115a2023c0a9ad40f6c45269f126"
+      ]
+    },
+    {
+      "date": "2026-04-03",
+      "version": "3.1.1",
+      "classification": "patch",
+      "commits": [
+        "dcdc3a67db7b883ca4074331503fbb2316705d95",
+        "9c851a93ba9dcaa961c2cbade230e7d725abee57"
+      ]
+    },
+    {
+      "date": "2026-04-06",
+      "version": "3.2.0",
+      "classification": "minor",
+      "commits": [
+        "42d0d46da0067c553bf72340b69d9f9cd66b62dc",
+        "b74acf2fc134e885628ede0d280755705b22b328",
+        "aa9cf75588e179d822f5896893177daa30dc6a9d",
+        "bcfdb926c41cd02352de82f949bafd3f4fa0cc2d",
+        "9275e85c6b810bb3d04d4215aaeafc5cd796d185",
+        "ecd50716ff5fc6adc0806c7007405c8ec4cee074",
+        "aec32ba5a73bc5bcb582d221319d8145a6d4a064",
+        "fc39c02852bb1ce3b2c2347d1f9cf2f9d8051621",
+        "401d132964286ca21020944d408e3281f6f6f6b7",
+        "28342b6bc8e581697680f2bab30779c8748915c7",
+        "21e556fc5f720e3b846b4dc797dedbe0a67a93fc"
+      ]
+    },
+    {
+      "date": "2026-04-07",
+      "version": "3.3.0",
+      "classification": "minor",
+      "commits": [
+        "5401efb71429deee181dc691632f91a36d7f0eaf",
+        "5ef0460eab85fa57bf8c3a6620507ff21b7cb01d",
+        "9eb3a2048abf9b0d279c15b5b388402516be55f6",
+        "7c09f4bebc498126ac9d11de18450c600c56bf6e",
+        "71a86ab72299f8a37f3c04c62340b7e18ef0f82e",
+        "87fc25e2aedc3aa9a15eb66c4739c1afefe629ac",
+        "d06d9b63e563eda68e7bc21c9ec357040c356056",
+        "f53435175d8e7f6d30bf2a0767dbb795d420e5f4",
+        "8a0b768c07446922f006207620cee5fb98421366",
+        "6dd4bd7a455977d78a104e50d454efde4a5fb605"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "version": "3.4.0",
+      "classification": "minor",
+      "commits": [
+        "06ea6830755b62f0d4026d5c4d622aee78615e34",
+        "bd68b6223416208e249a3e9da7b416366d11b459",
+        "e637e31039dbc166dd63a3d50b21d5abf12bdae0",
+        "29b12f2e58e748459401adb909ee6b310c92131d",
+        "8e3ec3bd0bd88c6534f7ec5b77800e65b38eccb4",
+        "30693f56a667d92f25ce6ec5ceddeb110b9d95dd"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "version": "3.4.1",
+      "classification": "patch",
+      "commits": [
+        "99eaae0a64f54b4731a65414f48054b9b9da107f",
+        "b46b2db71fccd6d485537483cc885aa1d5689150",
+        "e97aeba2aa946cd432a0731d791373458b6d2209"
+      ]
+    },
+    {
+      "date": "2026-04-10",
+      "version": "3.5.0",
+      "classification": "minor",
+      "commits": [
+        "f782d2ca98f007ab63edeea023511359129904e7",
+        "68cabfaa347d4866db5f7b21fcbb0c9291f39c4b",
+        "a2f5e16867b337c564d2d4581c2ce6408757e136"
+      ]
+    },
+    {
+      "date": "2026-04-11",
+      "version": "3.5.1",
+      "classification": "patch",
+      "commits": [
+        "6533d8d9bc014660f66a0e879174c37e0d07fbf2"
+      ]
+    },
+    {
+      "date": "2026-04-15",
+      "version": "3.5.2",
+      "classification": "patch",
+      "commits": [
+        "9a736815f6ba059e150b8a5140f9ee61c055c177"
+      ]
+    },
+    {
+      "date": "2026-04-17",
+      "version": "3.6.0",
+      "classification": "minor",
+      "commits": [
+        "29ad83bee36b195985f974aa7a1b2b2ba0b0d5a8",
+        "0af687c8646a76ca01283c4981fa5319489f2f89",
+        "a9d5df2ab79f545c44ccbf86182c4a6f49115a68",
+        "6134dfbaff4ad095780d3290f45907b2fb44620b",
+        "6b60f6e74c7e4dd1f42053bf0cbbeccc2e8b3597",
+        "769d5213eb7a17683c06103103d062dc3c752204",
+        "24b8ae6350ee97d618eadcb2daeb48fc2614decf"
+      ]
+    },
+    {
+      "date": "2026-04-23",
+      "version": "3.7.0",
+      "classification": "minor",
+      "commits": [
+        "d4628ef29a9430d1ee8a8bf54938c0f959a437b8"
+      ]
+    },
+    {
+      "date": "2026-05-05",
+      "version": "3.8.0",
+      "classification": "minor",
+      "commits": [
+        "cb48f6a0d1053659706fd3fc7a634746ac6abf35",
+        "335902b197af989fb9740f402886d19c90914396",
+        "753aeee8dc78d8aa4d93845ccd9f654116fc4174",
+        "ee13fe029d18f84faefb882500e4edc7105639c8",
+        "232b9b5ee8910fa475a554c89f22a06b9ca7c3a3"
+      ]
+    },
+    {
+      "date": "2026-05-12",
+      "version": "3.9.0",
+      "classification": "minor",
+      "commits": [
+        "85ba97b490caabd1ed8eb36dd13d4712fe268750",
+        "e8204818a8c9db9347cd1e7d8a3281a1900f2f6d"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "version": "3.10.0",
+      "classification": "minor",
+      "commits": [
+        "22a883e8e9e93537672f021049502d00b574824f",
+        "5bdef3686fe51a91508873fe22c95294d5a96529",
+        "9d11be0561ca46345c55f0fee307ebd649b725f0",
+        "d7a3d1e8bc297e0f666f254f4d1dd489aef05306",
+        "ed85c9633011b2afcea0157d1caa42ddb17c6449",
+        "0fbde7c54d69679669715655c0115d1b9af2ad11"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "version": "3.10.1",
+      "classification": "patch",
+      "commits": [
+        "103ee1b7cd6e4cd048cc880554044cdbf7787ca8"
+      ]
+    },
+    {
+      "date": "2026-05-18",
+      "version": "3.10.2",
+      "classification": "patch",
+      "commits": [
+        "1ec62acb2436e191466b0e2dde251faf9e0a0beb",
+        "20c787543a83167eb0f7dc73bb29f4ad57883016",
+        "d4f354d15ffc40ce44725d513591a7f94ac934af",
+        "56e5e7bbb5aaeb78b710d6d43df9ddeb385daa7f"
+      ]
+    },
+    {
+      "date": "2026-05-20",
+      "version": "3.11.0",
+      "classification": "minor",
+      "commits": [
+        "284d1cf340fc17b2657bdfc7320a50b92f00a889",
+        "6a366fd66d40d572b12fd29cd9bf5176f89d09f5"
+      ]
+    },
+    {
+      "date": "2026-06-02",
+      "version": "3.11.1",
+      "classification": "patch",
+      "commits": [
+        "34349cba4c9657990e875952c98d58d7b7cf0ad9",
+        "4f5cac3b940b3f6b4bdc91396baaf95943ad29f1"
+      ]
+    },
+    {
+      "date": "2026-06-09",
+      "version": "3.11.2",
+      "classification": "patch",
+      "commits": [
+        "4c794e3b47f40590b08f66487c47bec3c568bfe7",
+        "20dd16d7a1e728a31cb39513d8224c85765e8c05",
+        "bf24e92474868f8391d9a07bf81336214850323b",
+        "58595e0b6462ecd1c251acf19d68fd8e70f0ed91"
+      ]
+    },
+    {
+      "date": "2026-06-12",
+      "version": "3.11.3",
+      "classification": "patch",
+      "commits": [
+        "e9c237dc7e810183866cc7f451b4efcc836ffcc6",
+        "93eebbb70054beabdd06f4481e227df1e9e265be",
+        "ac08ed858ecbb116d3b524525d8c0ef772ae7b2e"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "version": "3.11.4",
+      "classification": "patch",
+      "commits": [
+        "c177f7bdb40cf42ac93cec89fea4be8344371be9",
+        "c646d0e8db32ffb62a76a26168667e9e135da378",
+        "1789f736f93965e789e723626ca02f77fecf5373",
+        "26ad7b9b1dccc601620fe4644a51f231e6e8c801",
+        "b465f19cd3f329234af567ee90dd554c5d1c62cb",
+        "8aa9ba58e3b35486d61611efb1a7f5efe5e5c983"
+      ]
+    },
+    {
+      "date": "2026-06-18",
+      "version": "3.12.0",
+      "classification": "minor",
+      "commits": [
+        "3823921b251247cb31f81b551d5e3bb2c0b670ab",
+        "d43c425fdba624095cad12800bcf31c5013979a9",
+        "fab025ca5e1fc4e4d5f873690f54d30d2a003b7d"
+      ]
+    },
+    {
+      "date": "2026-06-19",
+      "version": "3.12.1",
+      "classification": "patch",
+      "commits": [
+        "5b277354d00b0c4b72ab7b428bbfb448dacd484f"
+      ]
+    },
+    {
+      "date": "2026-07-23",
+      "version": "3.13.0",
+      "classification": "minor",
+      "commits": [
+        "ea490b4c4df4762a3d552d2b73890cf66531fa3b",
+        "9987f9fb3a529bcfcbb33238befd1f165242cb89"
+      ]
+    },
+    {
+      "date": "2026-07-29",
+      "version": "3.13.1",
+      "classification": "patch",
+      "commits": [
+        "03e7eee98a6ff193a0000a1928f0d56d9e0916d9",
+        "50950a15e8f37975fccf0d5b33eb60403990f5f6"
+      ]
+    },
+    {
+      "date": "2026-08-07",
+      "version": "3.13.2",
+      "classification": "patch",
+      "commits": [
+        "0139301519a6a56ed1c4add37008e236fa554203",
+        "39cb60eedb17d3ab2dc0f79d308451fdecd691be"
+      ]
+    },
+    {
+      "date": "2026-09-07",
+      "version": "3.13.3",
+      "classification": "patch",
+      "commits": [
+        "5e299b3bf7b18e30cd995a160c7762b305a7ce69",
+        "31f7bd3b008b1c1217ad224a52c5e26e064294bf",
+        "6fe7e1853b013dc3d3f07cdb5b24131f0d9befa4"
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "version": "3.13.4",
+      "classification": "patch",
+      "commits": [
+        "915104d8644ad6ea1a8882f7dda62e6aea6e41d3"
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "version": "3.13.5",
+      "classification": "patch",
+      "commits": [
+        "e48bcb30489898e29fece9214eb54493d5ba4d0d"
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "version": "3.13.6",
+      "classification": "patch",
+      "commits": [
+        "d5d8cc56178222aee7981e936fcbef8145603003"
+      ]
+    },
+    {
+      "date": "2026-09-23",
+      "version": "3.14.0",
+      "classification": "minor",
+      "commits": [
+        "94df5e75f73d2ef2b88d29c81e4a50422eef2cf3",
+        "d6dc3460359da4136b91d7790b425bbbcea3d77a"
+      ]
+    },
+    {
+      "date": "2026-10-06",
+      "version": "3.14.1",
+      "classification": "patch",
+      "commits": [
+        "5ca6a2da4b52ecb8770287bf5a10c9b553786711",
+        "3dc037e18c2a81bfe6294ff038c2ae465ef78688",
+        "5cfbb508623e3f0b381ec9957ea8e109047dee56",
+        "dbcd73adb746cb5ee8fc37ad07bd54c65fcc2185"
+      ]
+    },
+    {
+      "date": "2026-10-07",
+      "version": "3.15.0",
+      "classification": "minor",
+      "commits": [
+        "f347547f41e5fb11faa4229192586773635dc058",
+        "94c8e1833c78f2094c901ae398d8511f142b60a3",
+        "5809783ea81ba674cb72a6db9b03fdd5e6d70fb6",
+        "d612ff3d0c9f993ceadd72f9b812faf5abff67b7",
+        "adb021f295084696fbd216e85b140ba515ccd2c3",
+        "77184e37b201fb7dfe7b2690922a28964c82d0c2",
+        "91d8c1799b1fdcde0f6595b9f6b8d8a4185ab137",
+        "42578173100a23fe3815ac96dcf2431f575075e8"
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "version": "3.16.0",
+      "classification": "minor",
+      "commits": []
+    }
+  ],
+  "commits": [
+    {
+      "repository": "reservation_frontend",
+      "hash": "4dcf39c4b7e216d2a060809fd130ccd986f3b2f0",
+      "date": "2026-03-10",
+      "subject": "initial commit",
+      "body": "",
+      "files": [
+        ".dockerignore",
+        ".gitignore",
+        ".prettierrc",
+        ".yarnrc.yml",
+        "Dockerfile",
+        "bun.lock",
+        "docker-compose.yml",
+        "env.d.ts",
+        "eslint.config.mjs",
+        "jest.config.ts",
+        "jest.setup.ts",
+        "next.config.ts",
+        "package.json",
+        "public/assets/fonts/Poppins-Bold.ttf",
+        "public/assets/fonts/Poppins-Medium.ttf",
+        "public/assets/fonts/Poppins-Regular.ttf",
+        "public/assets/fonts/Poppins-SemiBold.ttf",
+        "public/assets/ico/android-icon-144x144.png",
+        "public/assets/ico/android-icon-192x192.png",
+        "public/assets/ico/android-icon-36x36.png",
+        "public/assets/ico/android-icon-48x48.png",
+        "public/assets/ico/android-icon-72x72.png",
+        "public/assets/ico/android-icon-96x96.png",
+        "public/assets/ico/apple-icon-114x114.png",
+        "public/assets/ico/apple-icon-120x120.png",
+        "public/assets/ico/apple-icon-144x144.png",
+        "public/assets/ico/apple-icon-152x152.png",
+        "public/assets/ico/apple-icon-180x180.png",
+        "public/assets/ico/apple-icon-57x57.png",
+        "public/assets/ico/apple-icon-60x60.png",
+        "public/assets/ico/apple-icon-72x72.png",
+        "public/assets/ico/apple-icon-76x76.png",
+        "public/assets/ico/apple-icon-precomposed.png",
+        "public/assets/ico/apple-icon.png",
+        "public/assets/ico/browserconfig.xml",
+        "public/assets/ico/favicon-16x16.png",
+        "public/assets/ico/favicon-32x32.png",
+        "public/assets/ico/favicon-96x96.png",
+        "public/assets/ico/favicon.ico",
+        "public/assets/ico/manifest.json",
+        "public/assets/ico/ms-icon-144x144.png",
+        "public/assets/ico/ms-icon-150x150.png",
+        "public/assets/ico/ms-icon-310x310.png",
+        "public/assets/ico/ms-icon-70x70.png",
+        "public/assets/images/auth_illu/blueprint.svg",
+        "public/assets/images/auth_illu/building.svg",
+        "public/assets/images/auth_illu/calendar.svg",
+        "public/assets/images/auth_illu/handshake.svg",
+        "public/assets/images/auth_illu/key.svg",
+        "public/assets/images/auth_illu/luggage.svg",
+        "public/assets/images/auth_illu/signature.svg",
+        "public/assets/images/reservation-logo.png",
+        "public/assets/images/success-illu.svg",
+        "public/robots.txt",
+        "qodana.yaml",
+        "src/app/(auth)/login/page.test.tsx",
+        "src/app/(auth)/login/page.tsx",
+        "src/app/(auth)/reset-password/enter-code/page.test.tsx",
+        "src/app/(auth)/reset-password/enter-code/page.tsx",
+        "src/app/(auth)/reset-password/page.test.tsx",
+        "src/app/(auth)/reset-password/page.tsx",
+        "src/app/(auth)/reset-password/set-password-complete/clearCookiesClient.test.tsx",
+        "src/app/(auth)/reset-password/set-password-complete/clearCookiesClient.tsx",
+        "src/app/(auth)/reset-password/set-password-complete/page.test.tsx",
+        "src/app/(auth)/reset-password/set-password-complete/page.tsx",
+        "src/app/(auth)/reset-password/set-password/page.test.tsx",
+        "src/app/(auth)/reset-password/set-password/page.tsx",
+        "src/app/api/auth/[...nextauth]/route.test.ts",
+        "src/app/api/auth/[...nextauth]/route.ts",
+        "src/app/api/cookies/route.test.ts",
+        "src/app/api/cookies/route.ts",
+        "src/app/dashboard/layout.tsx",
+        "src/app/dashboard/page.test.tsx",
+        "src/app/dashboard/page.tsx",
+        "src/app/dashboard/settings/edit-profile/page.test.tsx",
+        "src/app/dashboard/settings/edit-profile/page.tsx",
+        "src/app/dashboard/settings/password/page.test.tsx",
+        "src/app/dashboard/settings/password/page.tsx",
+        "src/app/dashboard/users/[id]/edit/page.test.tsx",
+        "src/app/dashboard/users/[id]/edit/page.tsx",
+        "src/app/dashboard/users/[id]/page.test.tsx",
+        "src/app/dashboard/users/[id]/page.tsx",
+        "src/app/dashboard/users/new/page.test.tsx",
+        "src/app/dashboard/users/new/page.tsx",
+        "src/app/dashboard/users/page.test.tsx",
+        "src/app/dashboard/users/page.tsx",
+        "src/app/layout.test.tsx",
+        "src/app/layout.tsx",
+        "src/app/not-found.test.tsx",
+        "src/app/not-found.tsx",
+        "src/app/page.test.tsx",
+        "src/app/page.tsx",
+        "src/auth.test.ts",
+        "src/auth.ts",
+        "src/components/formikElements/apiLoading/apiAlert/apiAlert.test.tsx",
+        "src/components/formikElements/apiLoading/apiAlert/apiAlert.tsx",
+        "src/components/formikElements/apiLoading/apiProgress/apiProgress.test.tsx",
+        "src/components/formikElements/apiLoading/apiProgress/apiProgress.tsx",
+        "src/components/formikElements/customDropDownSelect/customDropDownSelect.module.sass",
+        "src/components/formikElements/customDropDownSelect/customDropDownSelect.test.tsx",
+        "src/components/formikElements/customDropDownSelect/customDropDownSelect.tsx",
+        "src/components/formikElements/customOutlinedText/customOutlinedText.test.tsx",
+        "src/components/formikElements/customOutlinedText/customOutlinedText.tsx",
+        "src/components/formikElements/customPasswordInput/customPasswordInput.test.tsx",
+        "src/components/formikElements/customPasswordInput/customPasswordInput.tsx",
+        "src/components/formikElements/customSquareImageUploading/customSquareImageUploading.module.sass",
+        "src/components/formikElements/customSquareImageUploading/customSquareImageUploading.test.tsx",
+        "src/components/formikElements/customSquareImageUploading/customSquareImageUploading.tsx",
+        "src/components/formikElements/customTextInput/customTextInput.test.tsx",
+        "src/components/formikElements/customTextInput/customTextInput.tsx",
+        "src/components/htmlElements/buttons/primaryAnchorButton/primaryAnchorButton.module.sass",
+        "src/components/htmlElements/buttons/primaryAnchorButton/primaryAnchorButton.test.tsx",
+        "src/components/htmlElements/buttons/primaryAnchorButton/primaryAnchorButton.tsx",
+        "src/components/htmlElements/buttons/primaryLoadingButton/primaryLoadingButton.module.sass",
+        "src/components/htmlElements/buttons/primaryLoadingButton/primaryLoadingButton.test.tsx",
+        "src/components/htmlElements/buttons/primaryLoadingButton/primaryLoadingButton.tsx",
+        "src/components/htmlElements/buttons/squareImageInputFile/squareImageInputFile.module.sass",
+        "src/components/htmlElements/buttons/squareImageInputFile/squareImageInputFile.test.tsx",
+        "src/components/htmlElements/buttons/squareImageInputFile/squareImageInputFile.tsx",
+        "src/components/htmlElements/buttons/textButton/textButton.module.sass",
+        "src/components/htmlElements/buttons/textButton/textButton.test.tsx",
+        "src/components/htmlElements/buttons/textButton/textButton.tsx",
+        "src/components/htmlElements/modals/actionModal/actionModals.test.tsx",
+        "src/components/htmlElements/modals/actionModal/actionModals.tsx",
+        "src/components/htmlElements/tooltip/darkTooltip/darkTooltip.test.tsx",
+        "src/components/htmlElements/tooltip/darkTooltip/darkTooltip.tsx",
+        "src/components/layouts/auth/authLayout.module.sass",
+        "src/components/layouts/auth/authLayout.test.tsx",
+        "src/components/layouts/auth/authLayout.tsx",
+        "src/components/layouts/navigationBar/navigationBar.test.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/layouts/protected/protected.test.tsx",
+        "src/components/layouts/protected/protected.tsx",
+        "src/components/pages/auth/login/login.test.tsx",
+        "src/components/pages/auth/login/login.tsx",
+        "src/components/pages/auth/reset-password/enterCode.test.tsx",
+        "src/components/pages/auth/reset-password/enterCode.tsx",
+        "src/components/pages/auth/reset-password/resetPassword.test.tsx",
+        "src/components/pages/auth/reset-password/resetPassword.tsx",
+        "src/components/pages/auth/reset-password/setPassword.test.tsx",
+        "src/components/pages/auth/reset-password/setPassword.tsx",
+        "src/components/pages/auth/reset-password/setPasswordComplete.test.tsx",
+        "src/components/pages/auth/reset-password/setPasswordComplete.tsx",
+        "src/components/pages/settings/edit-profile.test.tsx",
+        "src/components/pages/settings/edit-profile.tsx",
+        "src/components/pages/settings/password.test.tsx",
+        "src/components/pages/settings/password.tsx",
+        "src/components/pages/users/users-form.test.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-list.test.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/pages/users/users-view.test.tsx",
+        "src/components/pages/users/users-view.tsx",
+        "src/components/portals/customToast/customToast.module.sass",
+        "src/components/portals/customToast/customToast.test.tsx",
+        "src/components/portals/customToast/customToast.tsx",
+        "src/components/shared/dateRangeFilter/dateRangeFilterOperator.test.tsx",
+        "src/components/shared/dateRangeFilter/dateRangeFilterOperator.tsx",
+        "src/components/shared/dropdownFilter/dropdownFilter.test.tsx",
+        "src/components/shared/dropdownFilter/dropdownFilter.tsx",
+        "src/components/shared/errorBoundary/ErrorBoundary.test.tsx",
+        "src/components/shared/errorBoundary/errorBoundary.tsx",
+        "src/components/shared/errorBoundary/index.ts",
+        "src/components/shared/filterPanel/customFilterPanel.test.tsx",
+        "src/components/shared/filterPanel/customFilterPanel.tsx",
+        "src/components/shared/mobileActionsMenu/mobileActionsMenu.test.tsx",
+        "src/components/shared/mobileActionsMenu/mobileActionsMenu.tsx",
+        "src/components/shared/noPermission/noPermission.test.tsx",
+        "src/components/shared/noPermission/noPermission.tsx",
+        "src/components/shared/paginatedDataGrid/paginatedDataGrid.test.tsx",
+        "src/components/shared/paginatedDataGrid/paginatedDataGrid.tsx",
+        "src/components/shared/sessionExpiredListener/sessionExpiredListener.test.tsx",
+        "src/components/shared/sessionExpiredListener/sessionExpiredListener.tsx",
+        "src/contexts/InitContext.tsx",
+        "src/contexts/initContext.test.tsx",
+        "src/contexts/initEffects.test.tsx",
+        "src/contexts/initEffects.tsx",
+        "src/contexts/portal.tsx",
+        "src/contexts/toastContext.test.tsx",
+        "src/contexts/toastContext.tsx",
+        "src/models/classes.test.ts",
+        "src/models/classes.ts",
+        "src/providers/sessionProvider.tsx",
+        "src/providers/storeProvider.tsx",
+        "src/providers/themeProvider.tsx",
+        "src/proxy.test.ts",
+        "src/proxy.ts",
+        "src/store/actions/_initActions.test.ts",
+        "src/store/actions/_initActions.ts",
+        "src/store/actions/accountActions.test.ts",
+        "src/store/actions/accountActions.ts",
+        "src/store/actions/index.ts",
+        "src/store/sagas/_initSaga.test.ts",
+        "src/store/sagas/_initSaga.ts",
+        "src/store/sagas/accountSaga.test.ts",
+        "src/store/sagas/accountSaga.ts",
+        "src/store/sagas/index.test.ts",
+        "src/store/sagas/index.ts",
+        "src/store/selectors/index.test.ts",
+        "src/store/selectors/index.ts",
+        "src/store/services/account.test.ts",
+        "src/store/services/account.ts",
+        "src/store/session.test.ts",
+        "src/store/session.ts",
+        "src/store/setupApiStore.ts",
+        "src/store/slices/_initSlice.test.ts",
+        "src/store/slices/_initSlice.ts",
+        "src/store/slices/accountSlice.test.ts",
+        "src/store/slices/accountSlice.ts",
+        "src/store/store.test.ts",
+        "src/store/store.ts",
+        "src/styles/auth/auth.module.sass",
+        "src/styles/dashboard/dashboard.module.sass",
+        "src/styles/dashboard/settings/settings.module.sass",
+        "src/styles/globals.sass",
+        "src/styles/sass/_colors.sass",
+        "src/styles/sass/_mixins.sass",
+        "src/styles/sass/_typography.sass",
+        "src/styles/sass/_variables.sass",
+        "src/types/_initTypes.ts",
+        "src/types/accountTypes.ts",
+        "src/types/next-auth.d.ts",
+        "src/types/zod-formik-adapter.d.ts",
+        "src/utils/apiHelpers.test.ts",
+        "src/utils/apiHelpers.ts",
+        "src/utils/axiosBaseQuery.test.ts",
+        "src/utils/axiosBaseQuery.ts",
+        "src/utils/clientHelpers.test.tsx",
+        "src/utils/clientHelpers.tsx",
+        "src/utils/corsHeaders.test.ts",
+        "src/utils/corsHeaders.ts",
+        "src/utils/formValidationErrorMessages.ts",
+        "src/utils/formValidationSchemas.test.ts",
+        "src/utils/formValidationSchemas.ts",
+        "src/utils/helpers.test.ts",
+        "src/utils/helpers.ts",
+        "src/utils/hooks.test.tsx",
+        "src/utils/hooks.ts",
+        "src/utils/rawData.test.ts",
+        "src/utils/rawData.ts",
+        "src/utils/routes.test.ts",
+        "src/utils/routes.ts",
+        "src/utils/themes.test.ts",
+        "src/utils/themes.ts",
+        "tsconfig.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "cee8b864279b2e1369f29944619a587686bf7d39",
+      "date": "2026-03-11",
+      "subject": "initial commit",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "env.d.ts",
+        "package-lock.json",
+        "package.json",
+        "qodana.yaml",
+        "src/app/dashboard/balance/page.test.tsx",
+        "src/app/dashboard/balance/page.tsx",
+        "src/app/dashboard/gains/page.test.tsx",
+        "src/app/dashboard/gains/page.tsx",
+        "src/app/dashboard/occupancy/page.test.tsx",
+        "src/app/dashboard/occupancy/page.tsx",
+        "src/app/dashboard/page.test.tsx",
+        "src/app/dashboard/page.tsx",
+        "src/app/dashboard/planning/page.test.tsx",
+        "src/app/dashboard/planning/page.tsx",
+        "src/app/dashboard/reservations/[id]/edit/page.test.tsx",
+        "src/app/dashboard/reservations/[id]/edit/page.tsx",
+        "src/app/dashboard/reservations/[id]/page.test.tsx",
+        "src/app/dashboard/reservations/[id]/page.tsx",
+        "src/app/dashboard/reservations/new/page.test.tsx",
+        "src/app/dashboard/reservations/new/page.tsx",
+        "src/app/dashboard/reservations/page.test.tsx",
+        "src/app/dashboard/reservations/page.tsx",
+        "src/components/formikElements/customAutoCompleteSelect/customAutoCompleteSelect.test.tsx",
+        "src/components/formikElements/customAutoCompleteSelect/customAutoCompleteSelect.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.test.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.test.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.test.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.test.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-view.test.tsx",
+        "src/components/pages/users/users-view.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.test.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilter.test.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilter.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilterBar.test.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilterBar.tsx",
+        "src/components/shared/numericFilter/numericFilterOperator.test.tsx",
+        "src/components/shared/numericFilter/numericFilterOperator.tsx",
+        "src/contexts/portal.test.tsx",
+        "src/models/classes.test.ts",
+        "src/models/classes.ts",
+        "src/store/actions/accountActions.test.ts",
+        "src/store/sagas/accountSaga.test.ts",
+        "src/store/selectors/index.test.ts",
+        "src/store/services/reservation.test.ts",
+        "src/store/services/reservation.ts",
+        "src/store/slices/accountSlice.test.ts",
+        "src/store/store.ts",
+        "src/types/reservationTypes.ts",
+        "src/utils/formValidationSchemas.test.ts",
+        "src/utils/formValidationSchemas.ts",
+        "src/utils/hooks.test.tsx",
+        "src/utils/hooks.ts",
+        "src/utils/rawData.ts",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "28621af39fb2b504ba98c0241095313b41857a90",
+      "date": "2026-03-11",
+      "subject": "remove archived label from autocomplete options",
+      "body": "",
+      "files": [
+        "src/components/formikElements/customAutoCompleteSelect/customAutoCompleteSelect.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "2a0378a7f781ce86e40d42b8ccd76c78d131ad4b",
+      "date": "2026-03-11",
+      "subject": "Empty commit",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "199fb4c9104eba962bae2225ed051cd505c74221",
+      "date": "2026-03-14",
+      "subject": "refactor: update balance view to include total returned and not returned amounts",
+      "body": "",
+      "files": [
+        "env.d.ts",
+        "next.config.ts",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.test.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/models/classes.ts",
+        "src/store/services/reservation.ts",
+        "src/types/reservationTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "f69948947537a869225bbd0ca080e2a4a117f065",
+      "date": "2026-03-14",
+      "subject": "refactor: enhance Protected component to support specific permissions",
+      "body": "",
+      "files": [
+        "src/app/dashboard/page.test.tsx",
+        "src/auth.test.ts",
+        "src/auth.ts",
+        "src/components/layouts/protected/protected.test.tsx",
+        "src/components/layouts/protected/protected.tsx",
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.test.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.test.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "7af8b5232c47f07626a95b9c2a11c3c0f4dae6d8",
+      "date": "2026-03-14",
+      "subject": "feat: add reservation detail table with toggle for returned amounts",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/store/services/reservation.ts",
+        "src/types/reservationTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "48cd49d6f8d2975d8ca431558a27b82471887f8b",
+      "date": "2026-03-14",
+      "subject": "refactor: update chart rendering logic to check for positive values in data arrays",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "fc6711bc091809f5d0146489966b4257e50d1fcb",
+      "date": "2026-03-14",
+      "subject": "refactor: rename apartment properties from 'code' and 'name' to 'nom' for consistency",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/models/classes.ts",
+        "src/types/reservationTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "922f1427ca5527000f11bbfa8735455b15ac2a8c",
+      "date": "2026-03-14",
+      "subject": "refactor: update reservation view to use 'nom' for apartment properties",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/reservation-view.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "e26c9e814ddab380b14a204dd35f16ebe4f8d9e5",
+      "date": "2026-03-24",
+      "subject": "chore: update dependencies and enhance test cases for apartment properties",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/reservation-view.test.tsx",
+        "src/components/pages/reservations/reservations-list.test.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "a59d31e9ad087aa6f37baeb557ad8001974dadcb",
+      "date": "2026-03-24",
+      "subject": "feat: implement maintenance feature with websocket integration and UI",
+      "body": "",
+      "files": [
+        "public/assets/images/auth_illu/maintenance.svg",
+        "src/app/layout.test.tsx",
+        "src/app/layout.tsx",
+        "src/components/shared/maintenance/Maintenance.test.tsx",
+        "src/components/shared/maintenance/Maintenance.tsx",
+        "src/store/actions/index.ts",
+        "src/store/actions/wsActions.ts",
+        "src/store/sagas/index.test.ts",
+        "src/store/sagas/index.ts",
+        "src/store/sagas/wsSaga.test.ts",
+        "src/store/sagas/wsSaga.ts",
+        "src/store/selectors/index.ts",
+        "src/store/services/ws.ts",
+        "src/store/slices/wsSlice.test.ts",
+        "src/store/slices/wsSlice.ts",
+        "src/store/store.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "910eba30117965e0295cdc2aae2aab1d2943c275",
+      "date": "2026-03-24",
+      "subject": "feat: add document SVG and update maintenance component to use new image",
+      "body": "",
+      "files": [
+        "public/assets/images/auth_illu/document.svg",
+        "public/assets/images/auth_illu/maintenance.svg",
+        "src/components/shared/maintenance/Maintenance.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "b3214aaf7189d2ea4b4c23152be0764a383175cd",
+      "date": "2026-03-24",
+      "subject": "feat: add initApp action and refactor sagas for improved session management",
+      "body": "",
+      "files": [
+        "src/contexts/initEffects.test.tsx",
+        "src/contexts/initEffects.tsx",
+        "src/store/actions/_initActions.test.ts",
+        "src/store/actions/_initActions.ts",
+        "src/store/actions/index.ts",
+        "src/store/sagas/_initSaga.test.ts",
+        "src/store/sagas/_initSaga.ts",
+        "src/store/sagas/wsSaga.test.ts",
+        "src/types/wsTypes.ts",
+        "src/utils/apiHelpers.test.ts",
+        "src/utils/apiHelpers.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "0ee661cf9289a0dcbc843d7fdeb7adac3f4f7bc9",
+      "date": "2026-03-25",
+      "subject": "Empty commit",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "120c200e2aa7ea071bccfcd33e385a656da3d99e",
+      "date": "2026-03-25",
+      "subject": "feat: add initApp action and refactor sagas for improved session management",
+      "body": "",
+      "files": [
+        "public/assets/ico/android-icon-144x144.png",
+        "public/assets/ico/android-icon-192x192.png",
+        "public/assets/ico/android-icon-36x36.png",
+        "public/assets/ico/android-icon-48x48.png",
+        "public/assets/ico/android-icon-72x72.png",
+        "public/assets/ico/android-icon-96x96.png",
+        "public/assets/ico/apple-icon-114x114.png",
+        "public/assets/ico/apple-icon-120x120.png",
+        "public/assets/ico/apple-icon-144x144.png",
+        "public/assets/ico/apple-icon-152x152.png",
+        "public/assets/ico/apple-icon-180x180.png",
+        "public/assets/ico/apple-icon-57x57.png",
+        "public/assets/ico/apple-icon-60x60.png",
+        "public/assets/ico/apple-icon-72x72.png",
+        "public/assets/ico/apple-icon-76x76.png",
+        "public/assets/ico/apple-icon-precomposed.png",
+        "public/assets/ico/apple-icon.png",
+        "public/assets/ico/favicon-16x16.png",
+        "public/assets/ico/favicon-32x32.png",
+        "public/assets/ico/favicon-96x96.png",
+        "public/assets/ico/favicon.ico",
+        "public/assets/ico/ms-icon-144x144.png",
+        "public/assets/ico/ms-icon-150x150.png",
+        "public/assets/ico/ms-icon-310x310.png",
+        "public/assets/ico/ms-icon-70x70.png",
+        "public/assets/images/reservation-logo.png"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "381ab8a62a27d9cc38f0fb5e99ad2a29b4a02302",
+      "date": "2026-03-25",
+      "subject": "feat: added favicons & logo",
+      "body": "",
+      "files": [
+        "public/assets/ico/android-icon-144x144.png",
+        "public/assets/ico/android-icon-192x192.png",
+        "public/assets/ico/android-icon-36x36.png",
+        "public/assets/ico/android-icon-48x48.png",
+        "public/assets/ico/android-icon-72x72.png",
+        "public/assets/ico/android-icon-96x96.png",
+        "public/assets/ico/apple-icon-114x114.png",
+        "public/assets/ico/apple-icon-120x120.png",
+        "public/assets/ico/apple-icon-144x144.png",
+        "public/assets/ico/apple-icon-152x152.png",
+        "public/assets/ico/apple-icon-180x180.png",
+        "public/assets/ico/apple-icon-57x57.png",
+        "public/assets/ico/apple-icon-60x60.png",
+        "public/assets/ico/apple-icon-72x72.png",
+        "public/assets/ico/apple-icon-76x76.png",
+        "public/assets/ico/apple-icon-precomposed.png",
+        "public/assets/ico/apple-icon.png",
+        "public/assets/ico/favicon-16x16.png",
+        "public/assets/ico/favicon-32x32.png",
+        "public/assets/ico/favicon-96x96.png",
+        "public/assets/ico/favicon.ico",
+        "public/assets/ico/ms-icon-144x144.png",
+        "public/assets/ico/ms-icon-150x150.png",
+        "public/assets/ico/ms-icon-310x310.png",
+        "public/assets/ico/ms-icon-70x70.png",
+        "public/assets/images/reservation-logo.png"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "905bdd76a6ea0bb8ee0fa4689928c3da11f3a768",
+      "date": "2026-03-25",
+      "subject": "feat: corrected next.config.ts custom Cache-Control header and init types.",
+      "body": "",
+      "files": [
+        "next.config.ts",
+        "src/store/sagas/_initSaga.ts",
+        "src/types/_initTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "831c6d60996386d98a75ca225096f9686b36347e",
+      "date": "2026-03-26",
+      "subject": "feat: consumed initContext token in various places.",
+      "body": "",
+      "files": [
+        "src/components/pages/auth/login/login.test.tsx",
+        "src/components/pages/auth/reset-password/enterCode.test.tsx",
+        "src/components/pages/auth/reset-password/resetPassword.test.tsx",
+        "src/components/pages/auth/reset-password/setPassword.test.tsx",
+        "src/components/pages/auth/reset-password/setPasswordComplete.test.tsx",
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.test.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.test.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.test.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.test.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/settings/edit-profile.test.tsx",
+        "src/components/pages/settings/edit-profile.tsx",
+        "src/components/pages/settings/password.test.tsx",
+        "src/components/pages/users/users-form.test.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-list.test.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/pages/users/users-view.test.tsx",
+        "src/components/pages/users/users-view.tsx",
+        "src/contexts/InitContext.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "b58790993750467fe4c4f0da9836e1b593a4fe2b",
+      "date": "2026-03-26",
+      "subject": "feat: add accessToken prop to various list components for improved authentication handling",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/settings/edit-profile.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/pages/users/users-view.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "cd6891486735bdf618a97ad0581681f38c1fabbc",
+      "date": "2026-03-26",
+      "subject": "feat: enhance WebSocket handling with user avatar support and new environment variables",
+      "body": "",
+      "files": [
+        "env.d.ts",
+        "src/store/actions/index.ts",
+        "src/store/actions/wsActions.ts",
+        "src/store/services/ws.ts",
+        "src/types/wsTypes.ts",
+        "src/utils/hooks.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "6a7e1ba0aa79a942ab0f2b52f43187b38a93c79e",
+      "date": "2026-03-26",
+      "subject": "feat: refactor imports and improve code formatting in balance and gains views",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "dabfbd7960b5d460221b61d15701f1b8e586b307",
+      "date": "2026-03-27",
+      "subject": "feat: add costs management features including API integration and UI components",
+      "body": "",
+      "files": [
+        ".yarnrc.yml",
+        "env.d.ts",
+        "src/app/dashboard/calendar/page.test.tsx",
+        "src/app/dashboard/calendar/page.tsx",
+        "src/app/dashboard/costs/[id]/edit/page.test.tsx",
+        "src/app/dashboard/costs/[id]/edit/page.tsx",
+        "src/app/dashboard/costs/new/page.test.tsx",
+        "src/app/dashboard/costs/new/page.tsx",
+        "src/app/dashboard/costs/page.test.tsx",
+        "src/app/dashboard/costs/page.tsx",
+        "src/components/formikElements/apiLoading/apiAlert/apiAlert.test.tsx",
+        "src/components/formikElements/apiLoading/apiAlert/apiAlert.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/layouts/protected/protected.test.tsx",
+        "src/components/layouts/protected/protected.tsx",
+        "src/components/pages/costs/cost-form.test.tsx",
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/calendar-client.test.tsx",
+        "src/components/pages/reservations/calendar-client.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.test.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.test.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-dialog.test.tsx",
+        "src/components/pages/reservations/reservation-dialog.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/settings/edit-profile.test.tsx",
+        "src/components/pages/settings/edit-profile.tsx",
+        "src/components/pages/settings/password.test.tsx",
+        "src/components/pages/settings/password.tsx",
+        "src/components/pages/users/users-form.test.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/store/services/reservation.test.ts",
+        "src/store/services/reservation.ts",
+        "src/types/accountTypes.ts",
+        "src/types/reservationTypes.ts",
+        "src/utils/formValidationSchemas.ts",
+        "src/utils/helpers.ts",
+        "src/utils/rawData.ts",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "dce375fcfec8b6bda2959ee62a3f2b36fa5fd4c5",
+      "date": "2026-03-27",
+      "subject": "Empty commit",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "c82ba737f04549543bb2bed11b99e36ace379528",
+      "date": "2026-03-27",
+      "subject": "Force build",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "a08c88cde5fa2db72146d9a7e3298126be7d0352",
+      "date": "2026-03-27",
+      "subject": "feat: enhance session management with proactive token refresh and improved access token handling",
+      "body": "",
+      "files": [
+        "src/contexts/initEffects.tsx",
+        "src/providers/sessionProvider.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "044ccaae05ec168c75391d1a2f148659b5e55457",
+      "date": "2026-03-27",
+      "subject": "feat: add cost view functionality with navigation and delete confirmation",
+      "body": "",
+      "files": [
+        "src/app/dashboard/costs/[id]/page.test.tsx",
+        "src/app/dashboard/costs/[id]/page.tsx",
+        "src/components/pages/costs/cost-view.test.tsx",
+        "src/components/pages/costs/cost-view.tsx",
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "fee5f73d06afca27f25d91072a3336db79f61063",
+      "date": "2026-03-27",
+      "subject": "feat: implement client-side filtering and pagination in costs list with new chip filter bar",
+      "body": "",
+      "files": [
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "698b5536d84b1728bd915b0d8f22b19fb7930145",
+      "date": "2026-03-27",
+      "subject": "feat: add custom filtering options for costs list including numeric, date range, and created by filters",
+      "body": "",
+      "files": [
+        "src/components/pages/costs/costs-list.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "82f579951fbe230476fa68d98a886610b69e5a3d",
+      "date": "2026-03-27",
+      "subject": "feat: add cost years query and integrate into costs list for improved filtering",
+      "body": "",
+      "files": [
+        "env.d.ts",
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/reservations/calendar-client.tsx",
+        "src/store/services/reservation.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "0eabbab71f42f85d7a78b85f9c384e74d4f83739",
+      "date": "2026-03-27",
+      "subject": "Force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "164f8c9dac4f68a68f7313292a1d481e7e336d67",
+      "date": "2026-03-27",
+      "subject": "feat: enhance error handling for unauthorized requests with token refresh logic",
+      "body": "",
+      "files": [
+        "src/utils/helpers.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "d49400a9f031f768656b440e444bb245a4f2617f",
+      "date": "2026-03-27",
+      "subject": "feat: add dropdown filter for guest names and enhance numeric filter in reservations list",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/reservations-list.test.tsx",
+        "src/components/pages/reservations/reservations-list.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "3b041b7f129305a1abd157634a853e2218113055",
+      "date": "2026-03-27",
+      "subject": "feat: set default filter operator based on first filterable column in paginated data grid",
+      "body": "",
+      "files": [
+        "src/components/shared/paginatedDataGrid/paginatedDataGrid.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5dce28c9d2b1601078414138496ed050c19775c4",
+      "date": "2026-03-27",
+      "subject": "feat: simplify reservation dialog layout by consolidating dialog and error handling components",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/reservation-dialog.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "e0f4e964cc471acbd043ac47d0f90d47bda123f3",
+      "date": "2026-03-27",
+      "subject": "feat: enhance token refresh logic and improve error handling for unauthorized requests",
+      "body": "",
+      "files": [
+        "src/auth.test.ts",
+        "src/auth.ts",
+        "src/components/pages/reservations/reservation-dialog.test.tsx",
+        "src/contexts/initEffects.test.tsx",
+        "src/utils/helpers.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "0014168c90cfecc5590d089ec0c9f26919cdde9e",
+      "date": "2026-03-30",
+      "subject": "feat: refactor RootLayout to fetch session client-side and simplify session handling",
+      "body": "",
+      "files": [
+        "src/app/layout.test.tsx",
+        "src/app/layout.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "406fe6891c83731de35bdf0a7e1d9c508dc5f3c4",
+      "date": "2026-03-30",
+      "subject": "feat: update dependencies for @mui/x-data-grid, axios, baseline-browser-mapping, and npm-check-updates",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "b0ff0ddfcd01f1503a41b44d6cba50bea0d8b9c9",
+      "date": "2026-03-30",
+      "subject": "feat: add notification preferences management and websocket integration",
+      "body": "",
+      "files": [
+        "env.d.ts",
+        "src/app/dashboard/settings/notifications/page.tsx",
+        "src/components/layouts/navigationBar/navigationBar.test.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/reservations/calendar-client.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/settings/notifications.test.tsx",
+        "src/components/pages/settings/notifications.tsx",
+        "src/store/actions/index.ts",
+        "src/store/actions/wsActions.ts",
+        "src/store/sagas/wsSaga.test.ts",
+        "src/store/sagas/wsSaga.ts",
+        "src/store/selectors/index.test.ts",
+        "src/store/selectors/index.ts",
+        "src/store/services/reservation.test.ts",
+        "src/store/services/reservation.ts",
+        "src/store/services/ws.ts",
+        "src/store/slices/notificationSlice.test.ts",
+        "src/store/slices/notificationSlice.ts",
+        "src/store/store.test.ts",
+        "src/store/store.ts",
+        "src/types/reservationTypes.ts",
+        "src/types/wsTypes.ts",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5e8201fc5dea58d7e34b41d914e9cfd242a17a33",
+      "date": "2026-03-30",
+      "subject": "Force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "0c2dc2cbfa99f3e40334ec6feb87cc7a6fa2e626",
+      "date": "2026-03-30",
+      "subject": "feat: initialize month state in costs list and refactor delete confirmation dialog with ActionModals",
+      "body": "",
+      "files": [
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/reservations/reservation-form.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "1d3ae46e35c29e96fa08a95287454a656f17f7b8",
+      "date": "2026-03-30",
+      "subject": "feat: add Locaux management features including list, add, edit, view, and planning pages",
+      "body": "",
+      "files": [
+        "env.d.ts",
+        "src/app/dashboard/locaux/[id]/edit/page.test.tsx",
+        "src/app/dashboard/locaux/[id]/edit/page.tsx",
+        "src/app/dashboard/locaux/[id]/page.test.tsx",
+        "src/app/dashboard/locaux/[id]/page.tsx",
+        "src/app/dashboard/locaux/dashboard/page.test.tsx",
+        "src/app/dashboard/locaux/dashboard/page.tsx",
+        "src/app/dashboard/locaux/new/page.test.tsx",
+        "src/app/dashboard/locaux/new/page.tsx",
+        "src/app/dashboard/locaux/page.test.tsx",
+        "src/app/dashboard/locaux/page.tsx",
+        "src/app/dashboard/locaux/planning/page.test.tsx",
+        "src/app/dashboard/locaux/planning/page.tsx",
+        "src/components/layouts/navigationBar/navigationBar.test.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/local-view.test.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-dashboard.test.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-list.test.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/locaux/locaux-planning.test.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/models/classes.ts",
+        "src/store/services/reservation.ts",
+        "src/types/localTypes.ts",
+        "src/utils/formValidationSchemas.test.ts",
+        "src/utils/formValidationSchemas.ts",
+        "src/utils/rawData.test.ts",
+        "src/utils/rawData.ts",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "8eb4329033d44fcb4830dcf4f355d9ac7ef218db",
+      "date": "2026-03-30",
+      "subject": "feat: enhance Locaux management with year selection dropdown and validation error handling",
+      "body": "",
+      "files": [
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/local-view.test.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-dashboard.test.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-planning.test.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "90d50bde228c57cbad53cf03af1f289389ac1cbb",
+      "date": "2026-03-30",
+      "subject": "feat: add bulk delete functionality for costs with confirmation modal",
+      "body": "",
+      "files": [
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/locaux/locaux-planning.test.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/store/services/reservation.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "cd7bb01904a81e251c83780a4758a143fd29e04c",
+      "date": "2026-03-31",
+      "subject": "feat: implement building management features including list, add, edit, and view pages",
+      "body": "",
+      "files": [
+        "env.d.ts",
+        "src/app/dashboard/buildings/[id]/edit/page.tsx",
+        "src/app/dashboard/buildings/[id]/page.tsx",
+        "src/app/dashboard/buildings/new/page.tsx",
+        "src/app/dashboard/buildings/page.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/buildings/building-form.test.tsx",
+        "src/components/pages/buildings/building-form.tsx",
+        "src/components/pages/buildings/building-view.test.tsx",
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/pages/buildings/buildings-list.test.tsx",
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/local-view.test.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-dashboard.test.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-planning.test.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/components/pages/reservations/planning-month.test.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/models/classes.ts",
+        "src/store/services/reservation.ts",
+        "src/types/buildingTypes.ts",
+        "src/types/localTypes.ts",
+        "src/types/reservationTypes.ts",
+        "src/utils/formValidationSchemas.ts",
+        "src/utils/rawData.ts",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "39a6f4e273f8e3c34437db9a9736c4002270256c",
+      "date": "2026-03-31",
+      "subject": "test: remove unused imports in buildings list test file",
+      "body": "",
+      "files": [
+        "src/components/pages/buildings/buildings-list.test.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "a94f3a99296ddd4edf0926e5f1aa78391bea8a32",
+      "date": "2026-03-31",
+      "subject": "Force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "d4b3f37873091d201a21a8fd753c92118f39fcb9",
+      "date": "2026-03-31",
+      "subject": "feat: add building selection functionality to entity forms and views",
+      "body": "",
+      "files": [
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/reservation-dialog.test.tsx",
+        "src/components/pages/reservations/reservation-dialog.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx",
+        "src/store/services/reservation.ts",
+        "src/types/localTypes.ts",
+        "src/utils/formValidationSchemas.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "cf53ed66afb42f73b2b58ccc26f6bc45c602e930",
+      "date": "2026-03-31",
+      "subject": "feat: add building selection and display functionality in various components",
+      "body": "",
+      "files": [
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/buildings/building-view.test.tsx",
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/pages/locaux/local-view.test.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-list.test.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/reservations/calendar-client.test.tsx",
+        "src/components/pages/reservations/calendar-client.tsx",
+        "src/components/pages/reservations/occupancy-view.test.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/reservation-dialog.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.test.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx",
+        "src/models/classes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "f0b30bf99885260c497db991877624cc8034fcb7",
+      "date": "2026-03-31",
+      "subject": "fix: improve entity modal behavior and ensure valid building selection in view",
+      "body": "",
+      "files": [
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "986882614336f33d8f7958efbb6f36493b2a991f",
+      "date": "2026-03-31",
+      "subject": "feat: implement custom dropdown for building selection across multiple views",
+      "body": "",
+      "files": [
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/calendar-client.test.tsx",
+        "src/components/pages/reservations/calendar-client.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.test.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.test.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "0806c53963f5140c9d2f1091f90f523e5767ac78",
+      "date": "2026-03-31",
+      "subject": "chore: update @typescript-eslint packages to version 8.58.0",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "d7f52e0c6f4aabd312a384fe903fd4570859c410",
+      "date": "2026-03-31",
+      "subject": "feat: replace FormControl and Select with CustomDropDownSelect for year and building selection in multiple components",
+      "body": "",
+      "files": [
+        "src/app/dashboard/locaux/dashboard/page.tsx",
+        "src/app/dashboard/locaux/planning/page.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/locaux-dashboard.test.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/locaux/locaux-planning.test.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "ad6b132872768bd04a91cfc73ead8218e581b4d3",
+      "date": "2026-03-31",
+      "subject": "refactor: streamline year options handling in multiple components",
+      "body": "",
+      "files": [
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "d0077b3c13d7954c792e49fd1cd49d13901fc29e",
+      "date": "2026-03-31",
+      "subject": "feat: add building management functionality with create, update, and delete operations",
+      "body": "",
+      "files": [
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "28251b6997e5929ba5cde7581820a473568c02c4",
+      "date": "2026-04-02",
+      "subject": "feat: add translation support and improve metadata generation for various pages",
+      "body": "",
+      "files": [
+        ".gitignore",
+        "bun.lock",
+        "package.json",
+        "src/app/(auth)/login/page.tsx",
+        "src/app/(auth)/reset-password/enter-code/page.tsx",
+        "src/app/(auth)/reset-password/page.tsx",
+        "src/app/(auth)/reset-password/set-password-complete/page.tsx",
+        "src/app/(auth)/reset-password/set-password/page.tsx",
+        "src/app/dashboard/balance/page.tsx",
+        "src/app/dashboard/buildings/[id]/edit/page.tsx",
+        "src/app/dashboard/buildings/[id]/page.tsx",
+        "src/app/dashboard/buildings/new/page.tsx",
+        "src/app/dashboard/buildings/page.tsx",
+        "src/app/dashboard/calendar/page.tsx",
+        "src/app/dashboard/costs/[id]/edit/page.tsx",
+        "src/app/dashboard/costs/[id]/page.tsx",
+        "src/app/dashboard/costs/new/page.tsx",
+        "src/app/dashboard/costs/page.tsx",
+        "src/app/dashboard/gains/page.tsx",
+        "src/app/dashboard/locaux/[id]/edit/page.tsx",
+        "src/app/dashboard/locaux/[id]/page.tsx",
+        "src/app/dashboard/locaux/dashboard/page.tsx",
+        "src/app/dashboard/locaux/new/page.tsx",
+        "src/app/dashboard/locaux/page.tsx",
+        "src/app/dashboard/locaux/planning/page.tsx",
+        "src/app/dashboard/occupancy/page.tsx",
+        "src/app/dashboard/page.tsx",
+        "src/app/dashboard/planning/page.tsx",
+        "src/app/dashboard/reservations/[id]/edit/page.tsx",
+        "src/app/dashboard/reservations/[id]/page.tsx",
+        "src/app/dashboard/reservations/new/page.tsx",
+        "src/app/dashboard/reservations/page.tsx",
+        "src/app/dashboard/settings/edit-profile/page.tsx",
+        "src/app/dashboard/settings/notifications/page.tsx",
+        "src/app/dashboard/settings/password/page.tsx",
+        "src/app/dashboard/users/[id]/edit/page.tsx",
+        "src/app/dashboard/users/[id]/page.tsx",
+        "src/app/dashboard/users/new/page.tsx",
+        "src/app/dashboard/users/page.tsx",
+        "src/app/layout.test.tsx",
+        "src/app/layout.tsx",
+        "src/app/not-found.tsx",
+        "src/app/page.tsx",
+        "src/components/formikElements/apiLoading/apiAlert/apiAlert.test.tsx",
+        "src/components/formikElements/apiLoading/apiAlert/apiAlert.tsx",
+        "src/components/formikElements/customDropDownSelect/customDropDownSelect.tsx",
+        "src/components/formikElements/customPasswordInput/customPasswordInput.test.tsx",
+        "src/components/formikElements/customPasswordInput/customPasswordInput.tsx",
+        "src/components/formikElements/customSquareImageUploading/customSquareImageUploading.test.tsx",
+        "src/components/formikElements/customSquareImageUploading/customSquareImageUploading.tsx",
+        "src/components/htmlElements/buttons/squareImageInputFile/squareImageInputFile.tsx",
+        "src/components/layouts/auth/authLayout.tsx",
+        "src/components/layouts/navigationBar/navigationBar.test.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/layouts/protected/protected.test.tsx",
+        "src/components/pages/auth/login/login.test.tsx",
+        "src/components/pages/auth/login/login.tsx",
+        "src/components/pages/auth/reset-password/enterCode.test.tsx",
+        "src/components/pages/auth/reset-password/enterCode.tsx",
+        "src/components/pages/auth/reset-password/resetPassword.tsx",
+        "src/components/pages/auth/reset-password/setPassword.tsx",
+        "src/components/pages/auth/reset-password/setPasswordComplete.tsx",
+        "src/components/pages/buildings/building-form.test.tsx",
+        "src/components/pages/buildings/building-form.tsx",
+        "src/components/pages/buildings/building-view.test.tsx",
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/pages/buildings/buildings-list.test.tsx",
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/costs/cost-form.test.tsx",
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/costs/cost-view.test.tsx",
+        "src/components/pages/costs/cost-view.tsx",
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/local-view.test.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-list.test.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/calendar-client.test.tsx",
+        "src/components/pages/reservations/calendar-client.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-dialog.test.tsx",
+        "src/components/pages/reservations/reservation-dialog.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.test.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.test.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/settings/edit-profile.test.tsx",
+        "src/components/pages/settings/edit-profile.tsx",
+        "src/components/pages/settings/notifications.test.tsx",
+        "src/components/pages/settings/notifications.tsx",
+        "src/components/pages/settings/password.test.tsx",
+        "src/components/pages/settings/password.tsx",
+        "src/components/pages/users/users-form.test.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-list.test.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/pages/users/users-view.test.tsx",
+        "src/components/pages/users/users-view.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilter.tsx",
+        "src/components/shared/dateRangeFilter/dateRangeFilterOperator.test.tsx",
+        "src/components/shared/dateRangeFilter/dateRangeFilterOperator.tsx",
+        "src/components/shared/errorBoundary/errorBoundary.tsx",
+        "src/components/shared/filterPanel/customFilterPanel.tsx",
+        "src/components/shared/languageSwitcher/languageSwitcher.tsx",
+        "src/components/shared/maintenance/Maintenance.test.tsx",
+        "src/components/shared/maintenance/Maintenance.tsx",
+        "src/components/shared/mobileActionsMenu/mobileActionsMenu.test.tsx",
+        "src/components/shared/mobileActionsMenu/mobileActionsMenu.tsx",
+        "src/components/shared/noPermission/noPermission.tsx",
+        "src/components/shared/numericFilter/numericFilterOperator.tsx",
+        "src/components/shared/paginatedDataGrid/paginatedDataGrid.tsx",
+        "src/components/shared/sessionExpiredListener/sessionExpiredListener.tsx",
+        "src/components/shared/skipToContent/skipToContent.tsx",
+        "src/contexts/languageContext.tsx",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/translations/index.ts",
+        "src/types/accountTypes.ts",
+        "src/types/languageTypes.ts",
+        "src/utils/axiosBaseQuery.ts",
+        "src/utils/formValidationErrorMessages.ts",
+        "src/utils/formValidationSchemas.ts",
+        "src/utils/getServerTranslations.ts",
+        "src/utils/getTranslations.ts",
+        "src/utils/helpers.ts",
+        "src/utils/hooks.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "60222f91d556b61645e98ebfbac1852dba23006a",
+      "date": "2026-04-02",
+      "subject": "feat: enhance navigation bar with mobile menu and language switcher functionality",
+      "body": "",
+      "files": [
+        "src/components/layouts/navigationBar/navigationBar.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "0471c6a844c6b34df8f928daba4d91b358e435ed",
+      "date": "2026-04-02",
+      "subject": "feat: replace language icon with flag emojis in language switcher menu",
+      "body": "",
+      "files": [
+        "src/components/layouts/navigationBar/navigationBar.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "c0f26fb51ab22521311dba89265661b3a442ed38",
+      "date": "2026-04-02",
+      "subject": "feat: update filter options and labels to use translations in various components",
+      "body": "",
+      "files": [
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/local-view.test.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-dashboard.test.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-list.test.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/shared/dateRangeFilter/dateRangeFilterOperator.tsx",
+        "src/components/shared/dropdownFilter/dropdownFilter.tsx",
+        "src/components/shared/filterPanel/customFilterPanel.tsx",
+        "src/store/actions/index.ts",
+        "src/store/actions/wsActions.test.ts",
+        "src/store/actions/wsActions.ts",
+        "src/store/sagas/wsSaga.test.ts",
+        "src/store/sagas/wsSaga.ts",
+        "src/store/services/ws.test.ts",
+        "src/store/services/ws.ts",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts",
+        "src/types/wsTypes.ts",
+        "src/utils/rawData.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "dcdc3a67db7b883ca4074331503fbb2316705d95",
+      "date": "2026-04-03",
+      "subject": "feat: update sass dependency to version 1.99.0",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "42d0d46da0067c553bf72340b69d9f9cd66b62dc",
+      "date": "2026-04-06",
+      "subject": "feat: update @types/node and baseline-browser-mapping dependencies to latest versions",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "b74acf2fc134e885628ede0d280755705b22b328",
+      "date": "2026-04-06",
+      "subject": "feat: upgrade TypeScript to version 6.0.2 and change module resolution to bundler",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json",
+        "src/store/services/ws.test.ts",
+        "tsconfig.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "aa9cf75588e179d822f5896893177daa30dc6a9d",
+      "date": "2026-04-06",
+      "subject": "feat: update CORS configuration to allow specific production domain",
+      "body": "",
+      "files": [
+        "src/utils/corsHeaders.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "bcfdb926c41cd02352de82f949bafd3f4fa0cc2d",
+      "date": "2026-04-06",
+      "subject": "feat: enhance language context to support initial language from cookies",
+      "body": "",
+      "files": [
+        "src/app/layout.tsx",
+        "src/contexts/languageContext.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "9275e85c6b810bb3d04d4215aaeafc5cd796d185",
+      "date": "2026-04-06",
+      "subject": "feat: refactor websocket initialization to use async token retrieval and add LanguageContext tests",
+      "body": "",
+      "files": [
+        "src/app/layout.test.tsx",
+        "src/contexts/languageContext.test.tsx",
+        "src/store/sagas/wsSaga.test.ts",
+        "src/store/sagas/wsSaga.ts",
+        "src/store/services/ws.test.ts",
+        "src/store/services/ws.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "ecd50716ff5fc6adc0806c7007405c8ec4cee074",
+      "date": "2026-04-06",
+      "subject": "feat: update mock implementation of cookies to use async function",
+      "body": "",
+      "files": [
+        "src/app/layout.test.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "aec32ba5a73bc5bcb582d221319d8145a6d4a064",
+      "date": "2026-04-06",
+      "subject": "feat: implement exponential backoff for WebSocket reconnection on token retrieval failure",
+      "body": "",
+      "files": [
+        "src/store/services/ws.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "fc39c02852bb1ce3b2c2347d1f9cf2f9d8051621",
+      "date": "2026-04-06",
+      "subject": "feat: add example environment configuration for API and WebSocket settings",
+      "body": "",
+      "files": [
+        ".env.example"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "401d132964286ca21020944d408e3281f6f6f6b7",
+      "date": "2026-04-06",
+      "subject": "feat: update example environment configuration for unread notification count",
+      "body": "",
+      "files": [
+        ".env.example"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "28342b6bc8e581697680f2bab30779c8748915c7",
+      "date": "2026-04-06",
+      "subject": "feat: remove unused auth illu",
+      "body": "",
+      "files": [
+        "public/assets/images/auth_illu/blueprint.svg",
+        "public/assets/images/auth_illu/document.svg",
+        "public/assets/images/auth_illu/handshake.svg",
+        "public/assets/images/auth_illu/signature.svg"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "21e556fc5f720e3b846b4dc797dedbe0a67a93fc",
+      "date": "2026-04-06",
+      "subject": "feat: add SVG document representation",
+      "body": "",
+      "files": [
+        "public/assets/images/auth_illu/document.svg"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5401efb71429deee181dc691632f91a36d7f0eaf",
+      "date": "2026-04-07",
+      "subject": "feat: update maintenance message for improved clarity",
+      "body": "",
+      "files": [
+        "src/translations/en.ts",
+        "src/translations/fr.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5ef0460eab85fa57bf8c3a6620507ff21b7cb01d",
+      "date": "2026-04-07",
+      "subject": "feat: add \"load more\" functionality to notifications",
+      "body": "",
+      "files": [
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "9eb3a2048abf9b0d279c15b5b388402516be55f6",
+      "date": "2026-04-07",
+      "subject": "feat: implement lazy loading for notifications with \"load more\" functionality",
+      "body": "",
+      "files": [
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/store/services/reservation.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "7c09f4bebc498126ac9d11de18450c600c56bf6e",
+      "date": "2026-04-07",
+      "subject": "feat: request notification permission on user authentication and update notification icon",
+      "body": "",
+      "files": [
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/reservations/reservations-list.test.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/store/sagas/wsSaga.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "06ea6830755b62f0d4026d5c4d622aee78615e34",
+      "date": "2026-04-08",
+      "subject": "feat: update notification environment variables for improved structure",
+      "body": "",
+      "files": [
+        ".env.example",
+        "env.d.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "bd68b6223416208e249a3e9da7b416366d11b459",
+      "date": "2026-04-08",
+      "subject": "feat: enhance reservation form with custom dropdown and text input components",
+      "body": "",
+      "files": [
+        "src/components/formikElements/customTextInput/customTextInput.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "e637e31039dbc166dd63a3d50b21d5abf12bdae0",
+      "date": "2026-04-08",
+      "subject": "feat: update notification API paths in environment configuration",
+      "body": "",
+      "files": [
+        ".env.example",
+        "src/store/services/reservation.test.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "29b12f2e58e748459401adb909ee6b310c92131d",
+      "date": "2026-04-08",
+      "subject": "feat: clean up environment configuration by removing unnecessary newlines",
+      "body": "",
+      "files": [
+        ".env.example"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "99eaae0a64f54b4731a65414f48054b9b9da107f",
+      "date": "2026-04-09",
+      "subject": "chore: update dependencies to latest versions for improved performance and security",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "b46b2db71fccd6d485537483cc885aa1d5689150",
+      "date": "2026-04-09",
+      "subject": "feat: update @mui from v7 to v9",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json",
+        "src/app/not-found.test.tsx",
+        "src/app/not-found.tsx",
+        "src/components/formikElements/customAutoCompleteSelect/customAutoCompleteSelect.tsx",
+        "src/components/formikElements/customDropDownSelect/customDropDownSelect.tsx",
+        "src/components/formikElements/customSquareImageUploading/customSquareImageUploading.tsx",
+        "src/components/htmlElements/buttons/squareImageInputFile/squareImageInputFile.tsx",
+        "src/components/htmlElements/modals/actionModal/actionModals.tsx",
+        "src/components/layouts/navigationBar/navigationBar.test.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/layouts/protected/protected.tsx",
+        "src/components/pages/auth/login/login.tsx",
+        "src/components/pages/auth/reset-password/enterCode.tsx",
+        "src/components/pages/auth/reset-password/resetPassword.tsx",
+        "src/components/pages/auth/reset-password/setPassword.tsx",
+        "src/components/pages/buildings/building-form.tsx",
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/costs/cost-view.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/calendar-client.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-dialog.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/settings/edit-profile.tsx",
+        "src/components/pages/settings/notifications.tsx",
+        "src/components/pages/settings/password.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/pages/users/users-view.tsx",
+        "src/components/portals/customToast/customToast.test.tsx",
+        "src/components/portals/customToast/customToast.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilter.tsx",
+        "src/components/shared/errorBoundary/errorBoundary.tsx",
+        "src/components/shared/filterPanel/customFilterPanel.tsx",
+        "src/components/shared/maintenance/Maintenance.tsx",
+        "src/components/shared/noPermission/noPermission.tsx",
+        "src/components/shared/paginatedDataGrid/paginatedDataGrid.tsx",
+        "src/contexts/initEffects.test.tsx",
+        "src/contexts/initEffects.tsx",
+        "src/store/sagas/_initSaga.test.ts",
+        "src/store/sagas/wsSaga.test.ts",
+        "src/store/sagas/wsSaga.ts",
+        "src/store/services/reservation.test.ts",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts",
+        "src/utils/apiHelpers.test.ts",
+        "src/utils/rawData.test.ts",
+        "src/utils/rawData.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "f782d2ca98f007ab63edeea023511359129904e7",
+      "date": "2026-04-10",
+      "subject": "feat: add payment source and cost category management with CRUD operations",
+      "body": "",
+      "files": [
+        ".env.example",
+        "env.d.ts",
+        "src/components/pages/costs/cost-form.test.tsx",
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/shared/entityCrudControls/entityCrudControls.test.tsx",
+        "src/components/shared/entityCrudControls/entityCrudControls.tsx",
+        "src/store/services/reservation.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "68cabfaa347d4866db5f7b21fcbb0c9291f39c4b",
+      "date": "2026-04-10",
+      "subject": "chore: update dependencies to latest versions for improved performance and security",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "6533d8d9bc014660f66a0e879174c37e0d07fbf2",
+      "date": "2026-04-11",
+      "subject": "fix: update payment source field value assignment to use code instead of value",
+      "body": "",
+      "files": [
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/reservations/reservation-form.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "9a736815f6ba059e150b8a5140f9ee61c055c177",
+      "date": "2026-04-15",
+      "subject": "chore: update @typescript-eslint and related packages to latest versions",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "29ad83bee36b195985f974aa7a1b2b2ba0b0d5a8",
+      "date": "2026-04-17",
+      "subject": "feat: add apartment management with modal and update balance and gains views for better clarity",
+      "body": "",
+      "files": [
+        "src/components/htmlElements/buttons/primaryLoadingButton/primaryLoadingButton.module.sass",
+        "src/components/pages/buildings/building-view.test.tsx",
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/reservation-dialog.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/settings/notifications.test.tsx",
+        "src/components/pages/settings/notifications.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.test.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx",
+        "src/store/services/reservation.test.ts",
+        "src/store/services/reservation.ts",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts",
+        "src/types/localTypes.ts",
+        "src/types/reservationTypes.ts",
+        "src/utils/helpers.test.ts",
+        "src/utils/helpers.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "0af687c8646a76ca01283c4981fa5319489f2f89",
+      "date": "2026-04-17",
+      "subject": "feat: enhance local form with managed type items and improve autocomplete display",
+      "body": "",
+      "files": [
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "a9d5df2ab79f545c44ccbf86182c4a6f49115a68",
+      "date": "2026-04-17",
+      "subject": "feat: add building management to cost forms and views with autocomplete support",
+      "body": "",
+      "files": [
+        "src/components/pages/costs/cost-form.test.tsx",
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/costs/cost-view.test.tsx",
+        "src/components/pages/costs/cost-view.tsx",
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/locaux-dashboard.test.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/store/services/reservation.test.ts",
+        "src/store/services/reservation.ts",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/reservationTypes.ts",
+        "src/utils/formValidationSchemas.ts",
+        "src/utils/rawData.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "6134dfbaff4ad095780d3290f45907b2fb44620b",
+      "date": "2026-04-17",
+      "subject": "Force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "d4628ef29a9430d1ee8a8bf54938c0f959a437b8",
+      "date": "2026-04-23",
+      "subject": "feat: add notes to reservations-list.tsx",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/reservations-list.test.tsx",
+        "src/components/pages/reservations/reservations-list.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "cb48f6a0d1053659706fd3fc7a634746ac6abf35",
+      "date": "2026-05-05",
+      "subject": "Add Hilton residence reports",
+      "body": "",
+      "files": [
+        ".env.example",
+        ".gitignore",
+        "bun.lock",
+        "env.d.ts",
+        "eslint.config.mjs",
+        "package.json",
+        "src/app/dashboard/hilton-reports/page.tsx",
+        "src/components/layouts/navigationBar/navigationBar.test.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/layouts/protected/protected.test.tsx",
+        "src/components/layouts/protected/protected.tsx",
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-view.tsx",
+        "src/models/classes.test.ts",
+        "src/models/classes.ts",
+        "src/store/actions/accountActions.test.ts",
+        "src/store/sagas/accountSaga.test.ts",
+        "src/store/selectors/index.test.ts",
+        "src/store/services/reservation.ts",
+        "src/store/slices/accountSlice.test.ts",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/accountTypes.ts",
+        "src/types/languageTypes.ts",
+        "src/types/reservationTypes.ts",
+        "src/utils/formValidationSchemas.ts",
+        "src/utils/hooks.test.tsx",
+        "src/utils/hooks.ts",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "335902b197af989fb9740f402886d19c90914396",
+      "date": "2026-05-05",
+      "subject": "Polish Hilton report UI",
+      "body": "",
+      "files": [
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "753aeee8dc78d8aa4d93845ccd9f654116fc4174",
+      "date": "2026-05-05",
+      "subject": "Show Hilton source totals",
+      "body": "",
+      "files": [
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts",
+        "src/types/reservationTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "85ba97b490caabd1ed8eb36dd13d4712fe268750",
+      "date": "2026-05-12",
+      "subject": "feat: add Hilton cash report PDF flow",
+      "body": "",
+      "files": [
+        "src/app/dashboard/settings/hilton-report/page.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/components/pages/settings/hilton-report-settings.tsx",
+        "src/store/services/reservation.ts",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts",
+        "src/types/reservationTypes.ts",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "22a883e8e9e93537672f021049502d00b574824f",
+      "date": "2026-05-13",
+      "subject": "feat: add SSO entry and report settings",
+      "body": "",
+      "files": [
+        ".env.example",
+        "public/assets/flags/en.svg",
+        "public/assets/flags/fr.svg",
+        "src/app/dashboard/settings/hilton-report/page.tsx",
+        "src/app/sso/callback/page.tsx",
+        "src/app/sso/start/page.tsx",
+        "src/auth.ts",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/components/pages/settings/hilton-report-settings.tsx",
+        "src/components/shared/languageSwitcher/languageSwitcher.tsx",
+        "src/proxy.ts",
+        "src/store/services/reservation.ts",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts",
+        "src/types/reservationTypes.ts",
+        "src/utils/routes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5bdef3686fe51a91508873fe22c95294d5a96529",
+      "date": "2026-05-13",
+      "subject": "test: add missing page smoke coverage",
+      "body": "",
+      "files": [
+        "src/app/dashboard/buildings/[id]/edit/page.test.tsx",
+        "src/app/dashboard/buildings/[id]/page.test.tsx",
+        "src/app/dashboard/buildings/new/page.test.tsx",
+        "src/app/dashboard/buildings/page.test.tsx",
+        "src/app/dashboard/hilton-reports/page.test.tsx",
+        "src/app/dashboard/settings/hilton-report/page.test.tsx",
+        "src/app/dashboard/settings/notifications/page.test.tsx",
+        "src/app/sso/callback/page.test.tsx",
+        "src/app/sso/start/page.test.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "9d11be0561ca46345c55f0fee307ebd649b725f0",
+      "date": "2026-05-13",
+      "subject": "Merge remote-tracking branch 'company/main' into HEAD",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "d7a3d1e8bc297e0f666f254f4d1dd489aef05306",
+      "date": "2026-05-13",
+      "subject": "fix(auth): use absolute login route",
+      "body": "",
+      "files": [
+        "src/auth.test.ts",
+        "src/auth.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "103ee1b7cd6e4cd048cc880554044cdbf7787ca8",
+      "date": "2026-05-14",
+      "subject": "fix: stabilize Hilton report preview",
+      "body": "",
+      "files": [
+        "src/components/pages/reports/hilton-reports.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "1ec62acb2436e191466b0e2dde251faf9e0a0beb",
+      "date": "2026-05-18",
+      "subject": "chore(deploy): test new production server",
+      "body": "Repo: reservation_frontend\nTarget: 148.251.138.48\nBase: remote main",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "20c787543a83167eb0f7dc73bb29f4ad57883016",
+      "date": "2026-05-18",
+      "subject": "chore: enforce LF line endings",
+      "body": "",
+      "files": [
+        ".gitattributes"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "4c794e3b47f40590b08f66487c47bec3c568bfe7",
+      "date": "2026-06-09",
+      "subject": "upgrade packages",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "20dd16d7a1e728a31cb39513d8224c85765e8c05",
+      "date": "2026-06-09",
+      "subject": "force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "bf24e92474868f8391d9a07bf81336214850323b",
+      "date": "2026-06-09",
+      "subject": "chore: update app logo assets",
+      "body": "",
+      "files": [
+        "public/assets/ico/android-icon-144x144.png",
+        "public/assets/ico/android-icon-192x192.png",
+        "public/assets/ico/android-icon-36x36.png",
+        "public/assets/ico/android-icon-48x48.png",
+        "public/assets/ico/android-icon-72x72.png",
+        "public/assets/ico/android-icon-96x96.png",
+        "public/assets/ico/apple-icon-114x114.png",
+        "public/assets/ico/apple-icon-120x120.png",
+        "public/assets/ico/apple-icon-144x144.png",
+        "public/assets/ico/apple-icon-152x152.png",
+        "public/assets/ico/apple-icon-180x180.png",
+        "public/assets/ico/apple-icon-57x57.png",
+        "public/assets/ico/apple-icon-60x60.png",
+        "public/assets/ico/apple-icon-72x72.png",
+        "public/assets/ico/apple-icon-76x76.png",
+        "public/assets/ico/apple-icon-precomposed.png",
+        "public/assets/ico/apple-icon.png",
+        "public/assets/ico/browserconfig.xml",
+        "public/assets/ico/favicon-16x16.png",
+        "public/assets/ico/favicon-32x32.png",
+        "public/assets/ico/favicon-96x96.png",
+        "public/assets/ico/favicon.ico",
+        "public/assets/ico/manifest.json",
+        "public/assets/ico/ms-icon-144x144.png",
+        "public/assets/ico/ms-icon-150x150.png",
+        "public/assets/ico/ms-icon-310x310.png",
+        "public/assets/ico/ms-icon-70x70.png",
+        "public/assets/images/reservation-logo.png"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "e9c237dc7e810183866cc7f451b4efcc836ffcc6",
+      "date": "2026-06-12",
+      "subject": "fix infinite test loop in store.test.ts",
+      "body": "",
+      "files": [
+        "src/store/store.test.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "93eebbb70054beabdd06f4481e227df1e9e265be",
+      "date": "2026-06-12",
+      "subject": "upgraded packages",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json",
+        "src/components/shared/entityCrudControls/entityCrudControls.test.tsx"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "ac08ed858ecbb116d3b524525d8c0ef772ae7b2e",
+      "date": "2026-06-12",
+      "subject": "fix failing tests",
+      "body": "",
+      "files": [
+        "src/utils/formValidationSchemas.test.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "c177f7bdb40cf42ac93cec89fea4be8344371be9",
+      "date": "2026-06-13",
+      "subject": "docs: add project README",
+      "body": "",
+      "files": [
+        "README.md",
+        "docs/screenshots/reservation-login.png"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "c646d0e8db32ffb62a76a26168667e9e135da378",
+      "date": "2026-06-13",
+      "subject": "docs: improve README screenshots",
+      "body": "",
+      "files": [
+        "README.md",
+        "docs/screenshots/reservation-showcase.png"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "1789f736f93965e789e723626ca02f77fecf5373",
+      "date": "2026-06-13",
+      "subject": "Improve portfolio README",
+      "body": "",
+      "files": [
+        "README.md",
+        "docs/screenshots/reservation-dashboard.png",
+        "docs/screenshots/reservation-login.png",
+        "docs/screenshots/reservation-planning.png",
+        "docs/screenshots/reservation-showcase.png"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "3823921b251247cb31f81b551d5e3bb2c0b670ab",
+      "date": "2026-06-18",
+      "subject": "feat: expand reservation note fields",
+      "body": "",
+      "files": [
+        "src/components/formikElements/customTextInput/customTextInput.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/components/pages/reservations/reservation-dialog.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/utils/formValidationSchemas.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5b277354d00b0c4b72ab7b428bbfb448dacd484f",
+      "date": "2026-06-19",
+      "subject": "upgraded packages",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "ea490b4c4df4762a3d552d2b73890cf66531fa3b",
+      "date": "2026-07-23",
+      "subject": "feat(locaux): add rent dashboard charts",
+      "body": "",
+      "files": [
+        "src/components/pages/locaux/locaux-dashboard.test.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/languageTypes.ts",
+        "src/types/localTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "03e7eee98a6ff193a0000a1928f0d56d9e0916d9",
+      "date": "2026-07-29",
+      "subject": "chore: upgraded packages",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "50950a15e8f37975fccf0d5b33eb60403990f5f6",
+      "date": "2026-07-29",
+      "subject": "force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "0139301519a6a56ed1c4add37008e236fa554203",
+      "date": "2026-08-07",
+      "subject": "fix(planning): use synchronized metrics",
+      "body": "",
+      "files": [
+        "src/components/pages/reservations/planning-month.test.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/types/reservationTypes.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5e299b3bf7b18e30cd995a160c7762b305a7ce69",
+      "date": "2026-09-07",
+      "subject": "upgraded packages",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "eslint.config.mjs",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "e48bcb30489898e29fece9214eb54493d5ba4d0d",
+      "date": "2026-09-17",
+      "subject": "feat: upgaraded packages",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "94df5e75f73d2ef2b88d29c81e4a50422eef2cf3",
+      "date": "2026-09-23",
+      "subject": "feat(grid): restore pagination on back",
+      "body": "",
+      "files": [
+        "src/components/pages/buildings/building-form.tsx",
+        "src/components/pages/buildings/building-view.test.tsx",
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/costs/cost-view.test.tsx",
+        "src/components/pages/costs/cost-view.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/local-view.test.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.test.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/pages/users/users-view.tsx",
+        "src/components/shared/paginatedDataGrid/useDataGridPagination.test.ts",
+        "src/components/shared/paginatedDataGrid/useDataGridPagination.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "d6dc3460359da4136b91d7790b425bbbcea3d77a",
+      "date": "2026-09-23",
+      "subject": "chore: migrate to React 19 and Next.js 16",
+      "body": "Align App Router APIs, component refs, effects, static data, and\nproduction build checks with the installed framework versions.",
+      "files": [
+        "Dockerfile",
+        "next.config.ts",
+        "src/app/(auth)/login/page.test.tsx",
+        "src/app/(auth)/reset-password/enter-code/page.test.tsx",
+        "src/app/(auth)/reset-password/page.test.tsx",
+        "src/app/(auth)/reset-password/set-password-complete/clearCookiesClient.test.tsx",
+        "src/app/(auth)/reset-password/set-password-complete/page.test.tsx",
+        "src/app/(auth)/reset-password/set-password/page.test.tsx",
+        "src/app/dashboard/balance/page.test.tsx",
+        "src/app/dashboard/buildings/[id]/edit/page.test.tsx",
+        "src/app/dashboard/buildings/[id]/edit/page.tsx",
+        "src/app/dashboard/buildings/[id]/page.test.tsx",
+        "src/app/dashboard/buildings/[id]/page.tsx",
+        "src/app/dashboard/buildings/new/page.test.tsx",
+        "src/app/dashboard/buildings/page.test.tsx",
+        "src/app/dashboard/calendar/page.test.tsx",
+        "src/app/dashboard/costs/[id]/edit/page.test.tsx",
+        "src/app/dashboard/costs/[id]/edit/page.tsx",
+        "src/app/dashboard/costs/[id]/page.test.tsx",
+        "src/app/dashboard/costs/[id]/page.tsx",
+        "src/app/dashboard/costs/new/page.test.tsx",
+        "src/app/dashboard/costs/page.test.tsx",
+        "src/app/dashboard/gains/page.test.tsx",
+        "src/app/dashboard/hilton-reports/page.test.tsx",
+        "src/app/dashboard/layout.tsx",
+        "src/app/dashboard/locaux/[id]/edit/page.test.tsx",
+        "src/app/dashboard/locaux/[id]/edit/page.tsx",
+        "src/app/dashboard/locaux/[id]/page.test.tsx",
+        "src/app/dashboard/locaux/[id]/page.tsx",
+        "src/app/dashboard/locaux/dashboard/page.test.tsx",
+        "src/app/dashboard/locaux/new/page.test.tsx",
+        "src/app/dashboard/locaux/page.test.tsx",
+        "src/app/dashboard/locaux/planning/page.test.tsx",
+        "src/app/dashboard/occupancy/page.test.tsx",
+        "src/app/dashboard/page.test.tsx",
+        "src/app/dashboard/planning/page.test.tsx",
+        "src/app/dashboard/reservations/[id]/edit/page.test.tsx",
+        "src/app/dashboard/reservations/[id]/edit/page.tsx",
+        "src/app/dashboard/reservations/[id]/page.test.tsx",
+        "src/app/dashboard/reservations/[id]/page.tsx",
+        "src/app/dashboard/reservations/new/page.test.tsx",
+        "src/app/dashboard/reservations/page.test.tsx",
+        "src/app/dashboard/settings/edit-profile/page.test.tsx",
+        "src/app/dashboard/settings/hilton-report/page.test.tsx",
+        "src/app/dashboard/settings/notifications/page.test.tsx",
+        "src/app/dashboard/settings/password/page.test.tsx",
+        "src/app/dashboard/users/[id]/edit/page.test.tsx",
+        "src/app/dashboard/users/[id]/edit/page.tsx",
+        "src/app/dashboard/users/[id]/page.test.tsx",
+        "src/app/dashboard/users/[id]/page.tsx",
+        "src/app/dashboard/users/new/page.test.tsx",
+        "src/app/dashboard/users/page.test.tsx",
+        "src/app/layout.test.tsx",
+        "src/app/layout.tsx",
+        "src/app/not-found.test.tsx",
+        "src/app/not-found.tsx",
+        "src/app/sso/callback/page.test.tsx",
+        "src/components/formikElements/apiLoading/apiAlert/apiAlert.test.tsx",
+        "src/components/formikElements/apiLoading/apiAlert/apiAlert.tsx",
+        "src/components/formikElements/apiLoading/apiProgress/apiProgress.test.tsx",
+        "src/components/formikElements/apiLoading/apiProgress/apiProgress.tsx",
+        "src/components/formikElements/customAutoCompleteSelect/customAutoCompleteSelect.test.tsx",
+        "src/components/formikElements/customAutoCompleteSelect/customAutoCompleteSelect.tsx",
+        "src/components/formikElements/customDropDownSelect/customDropDownSelect.test.tsx",
+        "src/components/formikElements/customDropDownSelect/customDropDownSelect.tsx",
+        "src/components/formikElements/customOutlinedText/customOutlinedText.tsx",
+        "src/components/formikElements/customPasswordInput/customPasswordInput.tsx",
+        "src/components/formikElements/customSquareImageUploading/customSquareImageUploading.test.tsx",
+        "src/components/formikElements/customSquareImageUploading/customSquareImageUploading.tsx",
+        "src/components/formikElements/customTextInput/customTextInput.tsx",
+        "src/components/htmlElements/buttons/primaryAnchorButton/primaryAnchorButton.tsx",
+        "src/components/htmlElements/buttons/primaryLoadingButton/primaryLoadingButton.tsx",
+        "src/components/htmlElements/buttons/squareImageInputFile/squareImageInputFile.test.tsx",
+        "src/components/htmlElements/buttons/squareImageInputFile/squareImageInputFile.tsx",
+        "src/components/htmlElements/buttons/textButton/textButton.tsx",
+        "src/components/htmlElements/modals/actionModal/actionModals.tsx",
+        "src/components/htmlElements/tooltip/darkTooltip/darkTooltip.test.tsx",
+        "src/components/htmlElements/tooltip/darkTooltip/darkTooltip.tsx",
+        "src/components/layouts/auth/authLayout.tsx",
+        "src/components/layouts/navigationBar/navigationBar.test.tsx",
+        "src/components/layouts/navigationBar/navigationBar.tsx",
+        "src/components/layouts/protected/protected.test.tsx",
+        "src/components/pages/auth/login/login.test.tsx",
+        "src/components/pages/auth/login/login.tsx",
+        "src/components/pages/auth/reset-password/enterCode.test.tsx",
+        "src/components/pages/auth/reset-password/enterCode.tsx",
+        "src/components/pages/auth/reset-password/resetPassword.test.tsx",
+        "src/components/pages/auth/reset-password/resetPassword.tsx",
+        "src/components/pages/auth/reset-password/setPassword.test.tsx",
+        "src/components/pages/auth/reset-password/setPassword.tsx",
+        "src/components/pages/auth/reset-password/setPasswordComplete.test.tsx",
+        "src/components/pages/auth/reset-password/setPasswordComplete.tsx",
+        "src/components/pages/buildings/building-form.test.tsx",
+        "src/components/pages/buildings/building-form.tsx",
+        "src/components/pages/buildings/building-view.test.tsx",
+        "src/components/pages/buildings/building-view.tsx",
+        "src/components/pages/buildings/buildings-list.test.tsx",
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/costs/cost-form.test.tsx",
+        "src/components/pages/costs/cost-form.tsx",
+        "src/components/pages/costs/cost-view.test.tsx",
+        "src/components/pages/costs/cost-view.tsx",
+        "src/components/pages/costs/costs-list.test.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/local-form.test.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/locaux/local-view.test.tsx",
+        "src/components/pages/locaux/local-view.tsx",
+        "src/components/pages/locaux/locaux-dashboard.test.tsx",
+        "src/components/pages/locaux/locaux-dashboard.tsx",
+        "src/components/pages/locaux/locaux-list.test.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/locaux/locaux-planning.test.tsx",
+        "src/components/pages/locaux/locaux-planning.tsx",
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/components/pages/reservations/balance-view.test.tsx",
+        "src/components/pages/reservations/balance-view.tsx",
+        "src/components/pages/reservations/calendar-client.test.tsx",
+        "src/components/pages/reservations/calendar-client.tsx",
+        "src/components/pages/reservations/gains-view.test.tsx",
+        "src/components/pages/reservations/gains-view.tsx",
+        "src/components/pages/reservations/occupancy-view.test.tsx",
+        "src/components/pages/reservations/occupancy-view.tsx",
+        "src/components/pages/reservations/planning-month.test.tsx",
+        "src/components/pages/reservations/planning-month.tsx",
+        "src/components/pages/reservations/reservation-dashboard.test.tsx",
+        "src/components/pages/reservations/reservation-dashboard.tsx",
+        "src/components/pages/reservations/reservation-dialog.test.tsx",
+        "src/components/pages/reservations/reservation-dialog.tsx",
+        "src/components/pages/reservations/reservation-form.test.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/pages/reservations/reservation-view.test.tsx",
+        "src/components/pages/reservations/reservation-view.tsx",
+        "src/components/pages/reservations/reservations-list.test.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/settings/edit-profile.test.tsx",
+        "src/components/pages/settings/edit-profile.tsx",
+        "src/components/pages/settings/hilton-report-settings.tsx",
+        "src/components/pages/settings/notifications.test.tsx",
+        "src/components/pages/settings/notifications.tsx",
+        "src/components/pages/settings/password.test.tsx",
+        "src/components/pages/settings/password.tsx",
+        "src/components/pages/users/users-form.test.tsx",
+        "src/components/pages/users/users-form.tsx",
+        "src/components/pages/users/users-list.test.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/pages/users/users-view.test.tsx",
+        "src/components/pages/users/users-view.tsx",
+        "src/components/portals/customToast/customToast.test.tsx",
+        "src/components/portals/customToast/customToast.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.test.tsx",
+        "src/components/shared/addEntityModal/addEntityModal.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilter.test.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilter.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilterBar.test.tsx",
+        "src/components/shared/chipSelectFilter/chipSelectFilterBar.tsx",
+        "src/components/shared/dateRangeFilter/dateRangeFilterOperator.test.tsx",
+        "src/components/shared/dateRangeFilter/dateRangeFilterOperator.tsx",
+        "src/components/shared/dropdownFilter/dropdownFilter.test.tsx",
+        "src/components/shared/dropdownFilter/dropdownFilter.tsx",
+        "src/components/shared/entityCrudControls/entityCrudControls.test.tsx",
+        "src/components/shared/entityCrudControls/entityCrudControls.tsx",
+        "src/components/shared/errorBoundary/ErrorBoundary.test.tsx",
+        "src/components/shared/errorBoundary/errorBoundary.tsx",
+        "src/components/shared/filterPanel/customFilterPanel.test.tsx",
+        "src/components/shared/filterPanel/customFilterPanel.tsx",
+        "src/components/shared/languageSwitcher/languageSwitcher.tsx",
+        "src/components/shared/maintenance/Maintenance.test.tsx",
+        "src/components/shared/maintenance/Maintenance.tsx",
+        "src/components/shared/mobileActionsMenu/mobileActionsMenu.tsx",
+        "src/components/shared/noPermission/noPermission.test.tsx",
+        "src/components/shared/numericFilter/numericFilterOperator.test.tsx",
+        "src/components/shared/numericFilter/numericFilterOperator.tsx",
+        "src/components/shared/paginatedDataGrid/paginatedDataGrid.test.tsx",
+        "src/components/shared/paginatedDataGrid/paginatedDataGrid.tsx",
+        "src/components/shared/paginatedDataGrid/useDataGridPagination.ts",
+        "src/components/shared/sessionExpiredListener/sessionExpiredListener.test.tsx",
+        "src/components/shared/sessionExpiredListener/sessionExpiredListener.tsx",
+        "src/components/shared/skipToContent/skipToContent.tsx",
+        "src/contexts/InitContext.tsx",
+        "src/contexts/initContext.test.tsx",
+        "src/contexts/initEffects.test.tsx",
+        "src/contexts/initEffects.tsx",
+        "src/contexts/languageContext.test.tsx",
+        "src/contexts/languageContext.tsx",
+        "src/contexts/portal.test.tsx",
+        "src/contexts/portal.tsx",
+        "src/contexts/toastContext.test.tsx",
+        "src/contexts/toastContext.tsx",
+        "src/providers/storeProvider.tsx",
+        "src/providers/themeProvider.tsx",
+        "src/types/accountTypes.ts",
+        "src/types/authTypes.ts",
+        "src/types/filterTypes.ts",
+        "src/types/routeTypes.ts",
+        "src/utils/clientHelpers.test.tsx",
+        "src/utils/hooks.test.tsx",
+        "src/utils/rawData.test.ts",
+        "src/utils/rawData.ts",
+        "src/utils/runWithCleanup.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5ca6a2da4b52ecb8770287bf5a10c9b553786711",
+      "date": "2026-10-06",
+      "subject": "feat: upgraded packages",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "3dc037e18c2a81bfe6294ff038c2ae465ef78688",
+      "date": "2026-10-06",
+      "subject": "fix(lists): use server-side column sorting",
+      "body": "",
+      "files": [
+        "src/components/pages/buildings/buildings-list.tsx",
+        "src/components/pages/costs/costs-list.tsx",
+        "src/components/pages/locaux/locaux-list.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/users/users-list.tsx",
+        "src/components/shared/paginatedDataGrid/paginatedDataGrid.tsx",
+        "src/components/shared/paginatedDataGrid/useDataGridPagination.test.ts",
+        "src/components/shared/paginatedDataGrid/useDataGridPagination.ts",
+        "src/store/services/ordering.test.ts",
+        "src/store/services/reservation.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "f347547f41e5fb11faa4229192586773635dc058",
+      "date": "2026-10-07",
+      "subject": "feat: add private AI text and PDF assistance",
+      "body": "",
+      "files": [
+        "bun.lock",
+        "package.json",
+        "src/components/formikElements/customTextInput/customTextInput.tsx",
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/components/pages/reservations/reservations-list.tsx",
+        "src/components/pages/settings/hilton-report-settings.tsx",
+        "src/components/shared/aiAssistantControl/aiAssistantControl.test.tsx",
+        "src/components/shared/aiAssistantControl/aiAssistantControl.tsx",
+        "src/components/shared/aiTextField/aiTextField.tsx",
+        "src/store/services/aiAssistant.ts",
+        "src/store/store.ts",
+        "src/translations/en.ts",
+        "src/translations/fr.ts",
+        "src/types/aiTypes.ts",
+        "src/types/languageTypes.ts",
+        "src/utils/aiTextFields.test.ts",
+        "src/utils/aiTextFields.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "94c8e1833c78f2094c901ae398d8511f142b60a3",
+      "date": "2026-10-07",
+      "subject": "fix(forms): widen local name and align AI actions",
+      "body": "",
+      "files": [
+        "src/components/formikElements/customTextInput/customTextInput.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/shared/aiAssistantControl/aiAssistantControl.tsx",
+        "src/components/shared/aiTextField/aiTextField.tsx",
+        "src/utils/aiTextFields.test.ts",
+        "src/utils/aiTextFields.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "5809783ea81ba674cb72a6db9b03fdd5e6d70fb6",
+      "date": "2026-10-07",
+      "subject": "fix(ai): restrict buttons to writing fields",
+      "body": "",
+      "files": [
+        "src/components/formikElements/customTextInput/customTextInput.tsx",
+        "src/components/pages/locaux/local-form.tsx",
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/components/pages/reservations/reservation-form.tsx",
+        "src/components/shared/aiTextField/aiTextField.test.tsx",
+        "src/components/shared/aiTextField/aiTextField.tsx",
+        "src/utils/aiTextFields.test.ts",
+        "src/utils/aiTextFields.ts"
+      ]
+    },
+    {
+      "repository": "reservation_frontend",
+      "hash": "d612ff3d0c9f993ceadd72f9b812faf5abff67b7",
+      "date": "2026-10-07",
+      "subject": "fix(reports): exclude periods from AI controls",
+      "body": "",
+      "files": [
+        "src/components/pages/reports/hilton-reports.tsx",
+        "src/utils/aiTextFields.test.ts",
+        "src/utils/aiTextFields.ts"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "019874675e5395e8f1b7d74d142329741ecd8b65",
+      "date": "2026-03-10",
+      "subject": "initial commit",
+      "body": "",
+      "files": [
+        ".env.example",
+        ".gitignore",
+        "Dockerfile",
+        "account/__init__.py",
+        "account/admin.py",
+        "account/apps.py",
+        "account/filters.py",
+        "account/forms.py",
+        "account/managers.py",
+        "account/migrations/__init__.py",
+        "account/models.py",
+        "account/permissions.py",
+        "account/serializers.py",
+        "account/tasks.py",
+        "account/templates/new_account.html",
+        "account/templates/new_password.html",
+        "account/templates/password_reset.html",
+        "account/tests.py",
+        "account/urls.py",
+        "account/views.py",
+        "docker-compose.yml",
+        "manage.py",
+        "pyproject.toml",
+        "pytest.ini",
+        "requirements.txt",
+        "reservation_backend/__init__.py",
+        "reservation_backend/asgi.py",
+        "reservation_backend/celery_conf.py",
+        "reservation_backend/settings.py",
+        "reservation_backend/settings_test.py",
+        "reservation_backend/tests.py",
+        "reservation_backend/urls.py",
+        "reservation_backend/utils.py",
+        "reservation_backend/wsgi.py",
+        "static/admin/css/autocomplete.css",
+        "static/admin/css/base.css",
+        "static/admin/css/changelists.css",
+        "static/admin/css/dark_mode.css",
+        "static/admin/css/dashboard.css",
+        "static/admin/css/forms.css",
+        "static/admin/css/login.css",
+        "static/admin/css/nav_sidebar.css",
+        "static/admin/css/responsive.css",
+        "static/admin/css/responsive_rtl.css",
+        "static/admin/css/rtl.css",
+        "static/admin/css/unusable_password_field.css",
+        "static/admin/css/vendor/select2/LICENSE-SELECT2.md",
+        "static/admin/css/vendor/select2/select2.css",
+        "static/admin/css/vendor/select2/select2.min.css",
+        "static/admin/css/widgets.css",
+        "static/admin/img/README.md",
+        "static/admin/img/calendar-icons.svg",
+        "static/admin/img/icon-addlink.svg",
+        "static/admin/img/icon-alert-dark.svg",
+        "static/admin/img/icon-alert.svg",
+        "static/admin/img/icon-calendar.svg",
+        "static/admin/img/icon-changelink.svg",
+        "static/admin/img/icon-clock.svg",
+        "static/admin/img/icon-debug-dark.svg",
+        "static/admin/img/icon-debug.svg",
+        "static/admin/img/icon-deletelink.svg",
+        "static/admin/img/icon-hidelink.svg",
+        "static/admin/img/icon-info-dark.svg",
+        "static/admin/img/icon-info.svg",
+        "static/admin/img/icon-no-dark.svg",
+        "static/admin/img/icon-no.svg",
+        "static/admin/img/icon-unknown-alt.svg",
+        "static/admin/img/icon-unknown.svg",
+        "static/admin/img/icon-viewlink.svg",
+        "static/admin/img/icon-yes-dark.svg",
+        "static/admin/img/icon-yes.svg",
+        "static/admin/img/inline-delete.svg",
+        "static/admin/img/search.svg",
+        "static/admin/img/selector-icons.svg",
+        "static/admin/img/sorting-icons.svg",
+        "static/admin/img/tooltag-add.svg",
+        "static/admin/img/tooltag-arrowright.svg",
+        "static/admin/js/SelectBox.js",
+        "static/admin/js/SelectFilter2.js",
+        "static/admin/js/actions.js",
+        "static/admin/js/admin/DateTimeShortcuts.js",
+        "static/admin/js/admin/RelatedObjectLookups.js",
+        "static/admin/js/autocomplete.js",
+        "static/admin/js/calendar.js",
+        "static/admin/js/cancel.js",
+        "static/admin/js/change_form.js",
+        "static/admin/js/core.js",
+        "static/admin/js/filters.js",
+        "static/admin/js/inlines.js",
+        "static/admin/js/jquery.init.js",
+        "static/admin/js/nav_sidebar.js",
+        "static/admin/js/popup_response.js",
+        "static/admin/js/prepopulate.js",
+        "static/admin/js/prepopulate_init.js",
+        "static/admin/js/theme.js",
+        "static/admin/js/urlify.js",
+        "static/admin/js/vendor/jquery/LICENSE.txt",
+        "static/admin/js/vendor/jquery/jquery.js",
+        "static/admin/js/vendor/jquery/jquery.min.js",
+        "static/admin/js/vendor/select2/LICENSE.md",
+        "static/admin/js/vendor/select2/i18n/af.js",
+        "static/admin/js/vendor/select2/i18n/ar.js",
+        "static/admin/js/vendor/select2/i18n/az.js",
+        "static/admin/js/vendor/select2/i18n/bg.js",
+        "static/admin/js/vendor/select2/i18n/bn.js",
+        "static/admin/js/vendor/select2/i18n/bs.js",
+        "static/admin/js/vendor/select2/i18n/ca.js",
+        "static/admin/js/vendor/select2/i18n/cs.js",
+        "static/admin/js/vendor/select2/i18n/da.js",
+        "static/admin/js/vendor/select2/i18n/de.js",
+        "static/admin/js/vendor/select2/i18n/dsb.js",
+        "static/admin/js/vendor/select2/i18n/el.js",
+        "static/admin/js/vendor/select2/i18n/en.js",
+        "static/admin/js/vendor/select2/i18n/es.js",
+        "static/admin/js/vendor/select2/i18n/et.js",
+        "static/admin/js/vendor/select2/i18n/eu.js",
+        "static/admin/js/vendor/select2/i18n/fa.js",
+        "static/admin/js/vendor/select2/i18n/fi.js",
+        "static/admin/js/vendor/select2/i18n/fr.js",
+        "static/admin/js/vendor/select2/i18n/gl.js",
+        "static/admin/js/vendor/select2/i18n/he.js",
+        "static/admin/js/vendor/select2/i18n/hi.js",
+        "static/admin/js/vendor/select2/i18n/hr.js",
+        "static/admin/js/vendor/select2/i18n/hsb.js",
+        "static/admin/js/vendor/select2/i18n/hu.js",
+        "static/admin/js/vendor/select2/i18n/hy.js",
+        "static/admin/js/vendor/select2/i18n/id.js",
+        "static/admin/js/vendor/select2/i18n/is.js",
+        "static/admin/js/vendor/select2/i18n/it.js",
+        "static/admin/js/vendor/select2/i18n/ja.js",
+        "static/admin/js/vendor/select2/i18n/ka.js",
+        "static/admin/js/vendor/select2/i18n/km.js",
+        "static/admin/js/vendor/select2/i18n/ko.js",
+        "static/admin/js/vendor/select2/i18n/lt.js",
+        "static/admin/js/vendor/select2/i18n/lv.js",
+        "static/admin/js/vendor/select2/i18n/mk.js",
+        "static/admin/js/vendor/select2/i18n/ms.js",
+        "static/admin/js/vendor/select2/i18n/nb.js",
+        "static/admin/js/vendor/select2/i18n/ne.js",
+        "static/admin/js/vendor/select2/i18n/nl.js",
+        "static/admin/js/vendor/select2/i18n/pl.js",
+        "static/admin/js/vendor/select2/i18n/ps.js",
+        "static/admin/js/vendor/select2/i18n/pt-BR.js",
+        "static/admin/js/vendor/select2/i18n/pt.js",
+        "static/admin/js/vendor/select2/i18n/ro.js",
+        "static/admin/js/vendor/select2/i18n/ru.js",
+        "static/admin/js/vendor/select2/i18n/sk.js",
+        "static/admin/js/vendor/select2/i18n/sl.js",
+        "static/admin/js/vendor/select2/i18n/sq.js",
+        "static/admin/js/vendor/select2/i18n/sr-Cyrl.js",
+        "static/admin/js/vendor/select2/i18n/sr.js",
+        "static/admin/js/vendor/select2/i18n/sv.js",
+        "static/admin/js/vendor/select2/i18n/th.js",
+        "static/admin/js/vendor/select2/i18n/tk.js",
+        "static/admin/js/vendor/select2/i18n/tr.js",
+        "static/admin/js/vendor/select2/i18n/uk.js",
+        "static/admin/js/vendor/select2/i18n/vi.js",
+        "static/admin/js/vendor/select2/i18n/zh-CN.js",
+        "static/admin/js/vendor/select2/i18n/zh-TW.js",
+        "static/admin/js/vendor/select2/select2.full.js",
+        "static/admin/js/vendor/select2/select2.full.min.js",
+        "static/admin/js/vendor/xregexp/LICENSE.txt",
+        "static/admin/js/vendor/xregexp/xregexp.js",
+        "static/admin/js/vendor/xregexp/xregexp.min.js",
+        "static/fonts/Poppins-Bold.ttf",
+        "static/rest_framework/css/bootstrap-theme.min.css",
+        "static/rest_framework/css/bootstrap-theme.min.css.map",
+        "static/rest_framework/css/bootstrap-tweaks.css",
+        "static/rest_framework/css/bootstrap.min.css",
+        "static/rest_framework/css/bootstrap.min.css.map",
+        "static/rest_framework/css/default.css",
+        "static/rest_framework/css/font-awesome-4.0.3.css",
+        "static/rest_framework/css/prettify.css",
+        "static/rest_framework/docs/css/base.css",
+        "static/rest_framework/docs/css/highlight.css",
+        "static/rest_framework/docs/css/jquery.json-view.min.css",
+        "static/rest_framework/docs/img/favicon.ico",
+        "static/rest_framework/docs/img/grid.png",
+        "static/rest_framework/docs/js/api.js",
+        "static/rest_framework/docs/js/highlight.pack.js",
+        "static/rest_framework/docs/js/jquery.json-view.min.js",
+        "static/rest_framework/fonts/fontawesome-webfont.eot",
+        "static/rest_framework/fonts/fontawesome-webfont.svg",
+        "static/rest_framework/fonts/fontawesome-webfont.ttf",
+        "static/rest_framework/fonts/fontawesome-webfont.woff",
+        "static/rest_framework/fonts/glyphicons-halflings-regular.eot",
+        "static/rest_framework/fonts/glyphicons-halflings-regular.svg",
+        "static/rest_framework/fonts/glyphicons-halflings-regular.ttf",
+        "static/rest_framework/fonts/glyphicons-halflings-regular.woff",
+        "static/rest_framework/fonts/glyphicons-halflings-regular.woff2",
+        "static/rest_framework/img/glyphicons-halflings-white.png",
+        "static/rest_framework/img/glyphicons-halflings.png",
+        "static/rest_framework/img/grid.png",
+        "static/rest_framework/js/ajax-form.js",
+        "static/rest_framework/js/bootstrap.min.js",
+        "static/rest_framework/js/coreapi-0.1.1.js",
+        "static/rest_framework/js/csrf.js",
+        "static/rest_framework/js/default.js",
+        "static/rest_framework/js/jquery-3.7.1.min.js",
+        "static/rest_framework/js/load-ajax-form.js",
+        "static/rest_framework/js/prettify-min.js",
+        "templates/admin/base_site.html",
+        "ws/__init__.py",
+        "ws/admin.py",
+        "ws/apps.py",
+        "ws/consumers.py",
+        "ws/jwt_middleware.py",
+        "ws/migrations/__init__.py",
+        "ws/models.py",
+        "ws/routing.py",
+        "ws/tests.py",
+        "ws/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "14f066513eb5324a317ee7dc54d65b1efb0716db",
+      "date": "2026-03-11",
+      "subject": "Add reservation app with models, views, serializers, and permissions",
+      "body": "",
+      "files": [
+        "account/admin.py",
+        "account/migrations/0001_initial.py",
+        "account/migrations/0002_customuser_permissions.py",
+        "account/migrations/0003_remove_can_print.py",
+        "account/migrations/0004_fix_historical_permission_columns.py",
+        "account/models.py",
+        "account/serializers.py",
+        "account/views.py",
+        "core/__init__.py",
+        "core/pagination.py",
+        "core/permissions.py",
+        "docker-compose.yml",
+        "hilton_planning_2025_v2.html",
+        "planning_HILTON  2026.xlsm",
+        "reservation/__init__.py",
+        "reservation/admin.py",
+        "reservation/apps.py",
+        "reservation/filters.py",
+        "reservation/migrations/0001_initial.py",
+        "reservation/migrations/0002_alter_historicalreservation_payment_source_and_more.py",
+        "reservation/migrations/0003_add_apartment_monthly_cost.py",
+        "reservation/migrations/__init__.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/tests.py",
+        "reservation/urls.py",
+        "reservation/views.py",
+        "reservation_backend/settings.py",
+        "reservation_backend/urls.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "c85bec7cad9e3fcb8a025cdff64c8a569b18bb67",
+      "date": "2026-03-11",
+      "subject": "Empty commit",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "cfae1f890a12f97c9260fdbdb68bee1e3c01e374",
+      "date": "2026-03-12",
+      "subject": "Empty commit",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "146003ae96b5848fe7e0b677db38aa99e463474d",
+      "date": "2026-03-13",
+      "subject": "fix : fixed dockerfile & celery redis db in settings.py",
+      "body": "",
+      "files": [
+        "Dockerfile",
+        "entrypoint.sh",
+        "reservation_backend/settings.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "9f389a0738ac5a5ee59c1fcefaf302cfdfd8d69e",
+      "date": "2026-03-14",
+      "subject": "feat: add frontend URL support and amount returned field in reservations",
+      "body": "",
+      "files": [
+        ".env.example",
+        "account/admin.py",
+        "account/templates/new_account.html",
+        "account/templates/new_password.html",
+        "account/templates/password_reset.html",
+        "account/views.py",
+        "reservation/migrations/0004_add_amount_returned.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/tests.py",
+        "reservation/urls.py",
+        "reservation/views.py",
+        "reservation_backend/settings.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "ad0a6ca9f7fb9a2853e6c0a2127158effc425556",
+      "date": "2026-03-14",
+      "subject": "fix: disable throttling in tests to avoid rate-limit flakiness",
+      "body": "",
+      "files": [
+        "reservation_backend/settings_test.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "911efe7d93c4ac1d58b75a6f5d18c9d4f2a3ec78",
+      "date": "2026-03-14",
+      "subject": "feat: add reservations list retrieval and toggle amount returned functionality",
+      "body": "",
+      "files": [
+        "reservation/tests.py",
+        "reservation/urls.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "ed0ef1443cdc55d5a759d6b7448337cfd28432c8",
+      "date": "2026-03-14",
+      "subject": "feat: rename apartment fields and update related serializers and views",
+      "body": "",
+      "files": [
+        "reservation/admin.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "573e2eeaf2ba420a0387d85aaba9427000753191",
+      "date": "2026-03-14",
+      "subject": "feat: simplify apartment model by renaming fields and migrating data",
+      "body": "",
+      "files": [
+        "reservation/migrations/0005_simplify_apartment.py",
+        "reservation/tests.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "a09bb55204057fbfb7ce8ce815daa6797d3f562b",
+      "date": "2026-03-24",
+      "subject": "chore: update package versions in requirements.txt",
+      "body": "",
+      "files": [
+        "requirements.txt"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "246b78f0f1a56e2769b1b055eed5c7d9c3bb7d1c",
+      "date": "2026-03-24",
+      "subject": "feat: add WsMaintenanceState model and integrate with WebSocket consumers",
+      "body": "",
+      "files": [
+        "ws/admin.py",
+        "ws/consumers.py",
+        "ws/migrations/0001_initial.py",
+        "ws/models.py",
+        "ws/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "f9f6b016bb0ade046cb4adf84a813c6fe69e341c",
+      "date": "2026-03-24",
+      "subject": "feat: add GetMaintenanceView to retrieve current maintenance state",
+      "body": "",
+      "files": [
+        "reservation_backend/urls.py",
+        "ws/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "878c576f45d42b5c7d28f482bb437329948a3ef1",
+      "date": "2026-03-25",
+      "subject": "feat: update verbose names for WS Maintenance State model to simplify terminology",
+      "body": "",
+      "files": [
+        "ws/models.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "c487ab55ce62b6a61b57469706ea85be7082904d",
+      "date": "2026-03-27",
+      "subject": "feat: add Cost model and related views, serializers, and admin integration",
+      "body": "",
+      "files": [
+        "account/serializers.py",
+        "reservation/admin.py",
+        "reservation/migrations/0006_historicalcost_cost.py",
+        "reservation/migrations/0007_remove_cost_reservation_apartme_20eda4_idx_and_more.py",
+        "reservation/migrations/0008_add_cost_model.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/urls.py",
+        "reservation/views.py",
+        "ws/migrations/0002_alter_wsmaintenancestate_options.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "404bcf68ad7ffaee9a8402b0666aaafca4f335f9",
+      "date": "2026-03-27",
+      "subject": "feat: add CostYearsView to retrieve distinct years with costs",
+      "body": "",
+      "files": [
+        "reservation/tests.py",
+        "reservation/urls.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "4f7ecc7b3e8200c7bbc2ade9cd21f5a8c2f09029",
+      "date": "2026-03-27",
+      "subject": "feat: add additional filters for Reservation model including amount and nights",
+      "body": "",
+      "files": [
+        "reservation/filters.py",
+        "reservation/tests.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "2d8efdb71079bdf76dd64a7d7e05dc0e3b12e0c5",
+      "date": "2026-03-27",
+      "subject": "feat: implement custom token refresh view to include rotated refresh token and expiration",
+      "body": "",
+      "files": [
+        "account/urls.py",
+        "account/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "a501882ff8654460a90a002c0cb1b5a694bba35b",
+      "date": "2026-03-30",
+      "subject": "chore: update package versions in requirements.txt",
+      "body": "",
+      "files": [
+        "requirements.txt"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "987ed03a7a6d87026e6d0153d28e2b4e73995f2b",
+      "date": "2026-03-30",
+      "subject": "feat: add notification and notification preference models, views, and serializers",
+      "body": "",
+      "files": [
+        "account/admin.py",
+        "account/views.py",
+        "reservation/admin.py",
+        "reservation/migrations/0009_notification_notificationpreference.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/tasks.py",
+        "reservation/tests.py",
+        "reservation/urls.py",
+        "reservation/views.py",
+        "reservation_backend/celery_conf.py",
+        "reservation_backend/urls.py",
+        "ws/migrations/0001_initial.py",
+        "ws/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "bfc06c1643f7b81ea8f075aad41a4266078dfe39",
+      "date": "2026-03-30",
+      "subject": "Force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "fd362396710c0bf3be33b9d9c412cf72ec2f8bb0",
+      "date": "2026-03-30",
+      "subject": "feat: add Local and Loyer models, views, serializers, and admin integration",
+      "body": "",
+      "files": [
+        "local/__init__.py",
+        "local/admin.py",
+        "local/apps.py",
+        "local/filters.py",
+        "local/migrations/0001_initial.py",
+        "local/migrations/__init__.py",
+        "local/models.py",
+        "local/serializers.py",
+        "local/tests.py",
+        "local/urls.py",
+        "local/views.py",
+        "reservation_backend/settings.py",
+        "reservation_backend/urls.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "79226500ba21d745bc44d119efd65329438e706f",
+      "date": "2026-03-30",
+      "subject": "Force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "d9f77202626b993528842866479c7bf086b8fc1c",
+      "date": "2026-03-30",
+      "subject": "feat: add BulkDeleteCostView for deleting multiple costs by ID",
+      "body": "",
+      "files": [
+        "reservation/urls.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "5b379307939e1f0083cf8ae1d3c4d5d43a7f751e",
+      "date": "2026-03-31",
+      "subject": "feat: add Building model, views, serializers, and admin integration",
+      "body": "",
+      "files": [
+        "building/__init__.py",
+        "building/admin.py",
+        "building/apps.py",
+        "building/migrations/0001_initial.py",
+        "building/migrations/__init__.py",
+        "building/models.py",
+        "building/serializers.py",
+        "building/tests.py",
+        "building/urls.py",
+        "building/views.py",
+        "local/admin.py",
+        "local/filters.py",
+        "local/migrations/0002_historicallocal_building_local_building.py",
+        "local/models.py",
+        "local/serializers.py",
+        "local/views.py",
+        "reservation/admin.py",
+        "reservation/filters.py",
+        "reservation/migrations/0010_apartment_building.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/views.py",
+        "reservation_backend/settings.py",
+        "reservation_backend/urls.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "eb98ed68640a34685fd0197d093bb1832fb1cf54",
+      "date": "2026-03-31",
+      "subject": "feat: filter apartments by building ID in views and update notification preference methods to static",
+      "body": "",
+      "files": [
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "6b53fac98a3675d3268d79c2607056203fc876c5",
+      "date": "2026-03-31",
+      "subject": "feat: update apartment view to handle building ID assignment",
+      "body": "",
+      "files": [
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "c85c6ac7efc5115a2023c0a9ad40f6c45269f126",
+      "date": "2026-04-02",
+      "subject": "feat: add internationalization support for various models, views, and templates",
+      "body": "",
+      "files": [
+        ".gitignore",
+        "account/admin.py",
+        "account/apps.py",
+        "account/filters.py",
+        "account/models.py",
+        "account/serializers.py",
+        "account/templates/new_account.html",
+        "account/templates/new_password.html",
+        "account/templates/password_reset.html",
+        "account/tests.py",
+        "account/views.py",
+        "building/views.py",
+        "local/apps.py",
+        "local/serializers.py",
+        "local/views.py",
+        "locale/en/LC_MESSAGES/django.po",
+        "locale/fr/LC_MESSAGES/django.po",
+        "reservation/apps.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/tasks.py",
+        "reservation_backend/settings.py",
+        "reservation_backend/tests.py",
+        "reservation_backend/urls.py",
+        "reservation_backend/utils.py",
+        "ws/jwt_middleware.py",
+        "ws/models.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "9c851a93ba9dcaa961c2cbade230e7d725abee57",
+      "date": "2026-04-03",
+      "subject": "fix: update Pillow version to 12.2.0 in requirements",
+      "body": "",
+      "files": [
+        "requirements.txt"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "71a86ab72299f8a37f3c04c62340b7e18ef0f82e",
+      "date": "2026-04-07",
+      "subject": "feat: unregister Group and Site models from admin if registered",
+      "body": "",
+      "files": [
+        "account/admin.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "87fc25e2aedc3aa9a15eb66c4739c1afefe629ac",
+      "date": "2026-04-07",
+      "subject": "refactor: simplify notification message structure in task processing",
+      "body": "",
+      "files": [
+        "reservation/tasks.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "d06d9b63e563eda68e7bc21c9ec357040c356056",
+      "date": "2026-04-07",
+      "subject": "feat: add historical admin views for Loyer, Apartment, Cost, Notification, and NotificationPreference models",
+      "body": "",
+      "files": [
+        "building/admin.py",
+        "local/admin.py",
+        "local/migrations/0003_historicalloyer.py",
+        "local/models.py",
+        "reservation/admin.py",
+        "reservation/migrations/0011_historicalapartment_historicalcost_and_more.py",
+        "reservation/models.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "f53435175d8e7f6d30bf2a0767dbb795d420e5f4",
+      "date": "2026-04-07",
+      "subject": "feat: enhance reservation reminder notifications with event time handling and max lookahead",
+      "body": "",
+      "files": [
+        "reservation/tasks.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "8a0b768c07446922f006207620cee5fb98421366",
+      "date": "2026-04-07",
+      "subject": "feat: add celery-beat service to docker-compose and implement user notification preference signal",
+      "body": "",
+      "files": [
+        "docker-compose.yml",
+        "reservation/apps.py",
+        "reservation/signals.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "6dd4bd7a455977d78a104e50d454efde4a5fb605",
+      "date": "2026-04-07",
+      "subject": "feat: implement pagination for user notifications in the Notification view",
+      "body": "",
+      "files": [
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "8e3ec3bd0bd88c6534f7ec5b77800e65b38eccb4",
+      "date": "2026-04-08",
+      "subject": "feat: migrate Notification and NotificationPreference models to a new app and update related references",
+      "body": "",
+      "files": [
+        "notification/__init__.py",
+        "notification/admin.py",
+        "notification/apps.py",
+        "notification/migrations/0001_initial.py",
+        "notification/migrations/0002_historicalnotification_and_more.py",
+        "notification/migrations/__init__.py",
+        "notification/models.py",
+        "notification/serializers.py",
+        "notification/signals.py",
+        "notification/tasks.py",
+        "notification/urls.py",
+        "notification/views.py",
+        "reservation/admin.py",
+        "reservation/apps.py",
+        "reservation/migrations/0012_remove_notification_models.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/signals.py",
+        "reservation/tasks.py",
+        "reservation/urls.py",
+        "reservation/views.py",
+        "reservation_backend/celery_conf.py",
+        "reservation_backend/settings.py",
+        "reservation_backend/urls.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "30693f56a667d92f25ce6ec5ceddeb110b9d95dd",
+      "date": "2026-04-08",
+      "subject": "chore: update .env.example by removing unnecessary blank lines",
+      "body": "",
+      "files": [
+        ".env.example"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "e97aeba2aa946cd432a0731d791373458b6d2209",
+      "date": "2026-04-09",
+      "subject": "chore: update Django, gevent, and pytest versions in requirements.txt",
+      "body": "",
+      "files": [
+        "requirements.txt"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "a2f5e16867b337c564d2d4581c2ce6408757e136",
+      "date": "2026-04-10",
+      "subject": "feat: add LocalTypeOption, PaymentSourceOption, and CostCategoryOption models with serializers and views",
+      "body": "",
+      "files": [
+        "local/migrations/0004_localtypeoption.py",
+        "local/models.py",
+        "local/serializers.py",
+        "local/urls.py",
+        "local/views.py",
+        "reservation/migrations/0013_costcategoryoption_paymentsourceoption.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/urls.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "6b60f6e74c7e4dd1f42053bf0cbbeccc2e8b3597",
+      "date": "2026-04-17",
+      "subject": "feat: add notify_unpaid_rents field to NotificationPreference model and update related serializers and views",
+      "body": "",
+      "files": [
+        "local/tests.py",
+        "local/views.py",
+        "notification/migrations/0003_notificationpreference_channels_and_unpaid_rents.py",
+        "notification/migrations/0004_remove_notificationpreference_channel_sms.py",
+        "notification/migrations/0005_remove_notificationpreference_email_push.py",
+        "notification/models.py",
+        "notification/serializers.py",
+        "reservation/tests.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "769d5213eb7a17683c06103103d062dc3c752204",
+      "date": "2026-04-17",
+      "subject": "feat: add building field to Cost model and update related serializers, views, and tests",
+      "body": "",
+      "files": [
+        "building/tests.py",
+        "building/views.py",
+        "local/tests.py",
+        "local/views.py",
+        "reservation/admin.py",
+        "reservation/migrations/0014_cost_building.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/tests.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "24b8ae6350ee97d618eadcb2daeb48fc2614decf",
+      "date": "2026-04-17",
+      "subject": "Force rebuild",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "ee13fe029d18f84faefb882500e4edc7105639c8",
+      "date": "2026-05-05",
+      "subject": "Add Hilton residence reports",
+      "body": "",
+      "files": [
+        "account/admin.py",
+        "account/migrations/0005_customuser_can_access_hilton_reports.py",
+        "account/models.py",
+        "account/serializers.py",
+        "core/permissions.py",
+        "reservation/admin.py",
+        "reservation/migrations/0015_hilton_reports.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/urls.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "232b9b5ee8910fa475a554c89f22a06b9ca7c3a3",
+      "date": "2026-05-05",
+      "subject": "Add Hilton report source totals",
+      "body": "",
+      "files": [
+        "reservation/admin.py",
+        "reservation/migrations/0016_hiltonreport_airbnb_total_hiltonreport_bank_total_and_more.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "e8204818a8c9db9347cd1e7d8a3281a1900f2f6d",
+      "date": "2026-05-12",
+      "subject": "feat: add Hilton report balance settings",
+      "body": "",
+      "files": [
+        "reservation/admin.py",
+        "reservation/migrations/0017_hilton_report_cash_settings.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/tests.py",
+        "reservation/urls.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "ed85c9633011b2afcea0157d1caa42ddb17c6449",
+      "date": "2026-05-13",
+      "subject": "feat: add SSO and Hilton report settings",
+      "body": "",
+      "files": [
+        ".env.example",
+        "account/migrations/0006_customuser_sso_subject.py",
+        "account/models.py",
+        "account/sso.py",
+        "account/urls.py",
+        "reservation/admin.py",
+        "reservation/migrations/0017_hilton_report_cash_settings.py",
+        "reservation/models.py",
+        "reservation/serializers.py",
+        "reservation/tests.py",
+        "reservation/urls.py",
+        "reservation/views.py",
+        "reservation_backend/settings.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "0fbde7c54d69679669715655c0115d1b9af2ad11",
+      "date": "2026-05-13",
+      "subject": "Merge remote-tracking branch 'company/main' into HEAD",
+      "body": "",
+      "files": []
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "d4f354d15ffc40ce44725d513591a7f94ac934af",
+      "date": "2026-05-18",
+      "subject": "chore(deploy): test new production server",
+      "body": "Repo: reservation_backend\nTarget: 148.251.138.48\nBase: remote main",
+      "files": []
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "56e5e7bbb5aaeb78b710d6d43df9ddeb385daa7f",
+      "date": "2026-05-18",
+      "subject": "chore: enforce LF line endings",
+      "body": "",
+      "files": [
+        ".gitattributes"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "284d1cf340fc17b2657bdfc7320a50b92f00a889",
+      "date": "2026-05-20",
+      "subject": "fix(users): queue default avatar",
+      "body": "",
+      "files": [
+        ".env.example",
+        "account/tests.py",
+        "account/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "6a366fd66d40d572b12fd29cd9bf5176f89d09f5",
+      "date": "2026-05-20",
+      "subject": "feat(sso): add credential check endpoint",
+      "body": "",
+      "files": [
+        "account/sso.py",
+        "account/urls.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "34349cba4c9657990e875952c98d58d7b7cf0ad9",
+      "date": "2026-06-02",
+      "subject": "fix: scope login lockouts by user",
+      "body": "",
+      "files": [
+        "reservation_backend/settings.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "4f5cac3b940b3f6b4bdc91396baaf95943ad29f1",
+      "date": "2026-06-02",
+      "subject": "fix: use sync-safe reservation worker pool",
+      "body": "",
+      "files": [
+        "docker-compose.yml",
+        "reservation_backend/tests.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "58595e0b6462ecd1c251acf19d68fd8e70f0ed91",
+      "date": "2026-06-09",
+      "subject": "fix: support upgraded backend deps",
+      "body": "",
+      "files": [
+        "account/tests.py",
+        "requirements.txt"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "26ad7b9b1dccc601620fe4644a51f231e6e8c801",
+      "date": "2026-06-13",
+      "subject": "docs: add project README",
+      "body": "",
+      "files": [
+        "README.md",
+        "docs/screenshots/reservation-login.png"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "b465f19cd3f329234af567ee90dd554c5d1c62cb",
+      "date": "2026-06-13",
+      "subject": "docs: improve README screenshots",
+      "body": "",
+      "files": [
+        "README.md",
+        "docs/screenshots/reservation-showcase.png"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "8aa9ba58e3b35486d61611efb1a7f5efe5e5c983",
+      "date": "2026-06-13",
+      "subject": "Improve portfolio README",
+      "body": "",
+      "files": [
+        "README.md",
+        "docs/screenshots/reservation-dashboard.png",
+        "docs/screenshots/reservation-login.png",
+        "docs/screenshots/reservation-planning.png",
+        "docs/screenshots/reservation-showcase.png"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "d43c425fdba624095cad12800bcf31c5013979a9",
+      "date": "2026-06-18",
+      "subject": "feat: cap reservation notes length",
+      "body": "",
+      "files": [
+        "reservation/serializers.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "fab025ca5e1fc4e4d5f873690f54d30d2a003b7d",
+      "date": "2026-06-18",
+      "subject": "feat(history): audit reservation options",
+      "body": "",
+      "files": [
+        "local/admin.py",
+        "local/migrations/0005_historicallocaltypeoption.py",
+        "local/models.py",
+        "reservation/admin.py",
+        "reservation/migrations/0018_historicalcostcategoryoption_historicalhiltonreport_and_more.py",
+        "reservation/models.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "9987f9fb3a529bcfcbb33238befd1f165242cb89",
+      "date": "2026-07-23",
+      "subject": "fix(dashboard): restore residence filtering",
+      "body": "Legacy apartments predate residence links, leaving filtered dashboards empty.\n\nAssign known Hilton and Nectar units during migration, scope costs\nconsistently, and expose monthly rent aggregates for locaux charts.",
+      "files": [
+        "building/tests.py",
+        "local/tests.py",
+        "local/views.py",
+        "reservation/migrations/0019_assign_legacy_apartment_buildings.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "39cb60eedb17d3ab2dc0f79d308451fdecd691be",
+      "date": "2026-08-07",
+      "subject": "fix(dashboard): synchronize monthly metrics",
+      "body": "Overlapping reservations remain visible in the planning without attributing their full revenue or nights to multiple periods.",
+      "files": [
+        "building/tests.py",
+        "reservation/tests.py",
+        "reservation/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "31f7bd3b008b1c1217ad224a52c5e26e064294bf",
+      "date": "2026-09-07",
+      "subject": "upgrade packages",
+      "body": "",
+      "files": [
+        "requirements.txt"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "6fe7e1853b013dc3d3f07cdb5b24131f0d9befa4",
+      "date": "2026-09-07",
+      "subject": "fix(email): migrate settings to MAILERS",
+      "body": "",
+      "files": [
+        "account/tasks.py",
+        "account/tests.py",
+        "reservation_backend/settings.py",
+        "reservation_backend/settings_test.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "915104d8644ad6ea1a8882f7dda62e6aea6e41d3",
+      "date": "2026-09-11",
+      "subject": "fix(costs): allow dynamic categories",
+      "body": "Remove the stale hard-coded choices so categories created through the API can be used on costs. Widen current and historical values to match the category option model.",
+      "files": [
+        "reservation/migrations/0020_alter_cost_category_and_historicalcost_category.py",
+        "reservation/models.py",
+        "reservation/tests.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "d5d8cc56178222aee7981e936fcbef8145603003",
+      "date": "2026-09-18",
+      "subject": "feat: upgraded packages & fix celery_conf",
+      "body": "",
+      "files": [
+        "requirements.txt",
+        "reservation_backend/celery_conf.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "5cfbb508623e3f0b381ec9957ea8e109047dee56",
+      "date": "2026-10-06",
+      "subject": "fix(lists): sort results before pagination",
+      "body": "",
+      "files": [
+        "building/views.py",
+        "core/pagination.py",
+        "local/views.py",
+        "reservation/views.py",
+        "reservation_backend/ordering.py",
+        "reservation_backend/test_ordering.py",
+        "reservation_backend/utils.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "dbcd73adb746cb5ee8fc37ad07bd54c65fcc2185",
+      "date": "2026-10-06",
+      "subject": "fix(admin): serve current versioned static assets",
+      "body": "Generate hashed assets outside stale host mounts and exclude runtime uploads from builds. Preserve source fonts and media storage.",
+      "files": [
+        ".dockerignore",
+        ".gitignore",
+        "docker-compose.yml",
+        "reservation_backend/settings.py",
+        "reservation_backend/test_static_assets.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "adb021f295084696fbd216e85b140ba515ccd2c3",
+      "date": "2026-10-07",
+      "subject": "feat: add private AI text and PDF assistance",
+      "body": "",
+      "files": [
+        "ai_assistant/__init__.py",
+        "ai_assistant/apps.py",
+        "ai_assistant/client.py",
+        "ai_assistant/exceptions.py",
+        "ai_assistant/management/__init__.py",
+        "ai_assistant/management/commands/__init__.py",
+        "ai_assistant/management/commands/ai_correct_texts.py",
+        "ai_assistant/serializers.py",
+        "ai_assistant/tests.py",
+        "ai_assistant/urls.py",
+        "ai_assistant/views.py",
+        "docker-compose.yml",
+        "reservation_backend/settings.py",
+        "reservation_backend/urls.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "77184e37b201fb7dfe7b2690922a28964c82d0c2",
+      "date": "2026-10-07",
+      "subject": "fix(ai): isolate assistant request quota",
+      "body": "",
+      "files": [
+        "ai_assistant/tests.py",
+        "ai_assistant/views.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "91d8c1799b1fdcde0f6595b9f6b8d8a4185ab137",
+      "date": "2026-10-07",
+      "subject": "fix(ai): use each application service identity",
+      "body": "",
+      "files": [
+        "ai_assistant/tests.py",
+        "reservation_backend/settings.py"
+      ]
+    },
+    {
+      "repository": "reservation_backend",
+      "hash": "42578173100a23fe3815ac96dcf2431f575075e8",
+      "date": "2026-10-07",
+      "subject": "fix(ai): stop failed jobs and preserve recovery",
+      "body": "",
+      "files": [
+        "ai_assistant/client.py",
+        "ai_assistant/management/commands/ai_correct_texts.py",
+        "ai_assistant/test_correction_command.py"
+      ]
+    }
+  ]
+}

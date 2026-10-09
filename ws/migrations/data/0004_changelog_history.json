@@ -1,0 +1,558 @@
+[
+  {
+    "date": "2026-03-10",
+    "version": "0.1.0",
+    "title_fr": "Premières fondations",
+    "title_en": "Initial foundations",
+    "changes_fr": [
+      "Mise en place du socle de l’application, des comptes et de la connexion."
+    ],
+    "changes_en": [
+      "Established the application foundation, accounts and sign-in."
+    ]
+  },
+  {
+    "date": "2026-03-11",
+    "version": "1.0.0",
+    "title_fr": "Gestion des réservations",
+    "title_en": "Reservation management",
+    "changes_fr": [
+      "Création et suivi des réservations et des appartements, planning, occupation, soldes et revenus."
+    ],
+    "changes_en": [
+      "Create and track reservations and apartments, with planning, occupancy, balances and revenue views."
+    ]
+  },
+  {
+    "date": "2026-03-12",
+    "version": "1.0.1",
+    "title_fr": "Préparation technique",
+    "title_en": "Technical preparation",
+    "changes_fr": [
+      "Point de contrôle du dépôt sans modification du code ni nouvelle fonctionnalité."
+    ],
+    "changes_en": [
+      "Repository checkpoint without code changes or new functionality."
+    ]
+  },
+  {
+    "date": "2026-03-13",
+    "version": "1.0.2",
+    "title_fr": "Fiabilité des services",
+    "title_en": "Service reliability",
+    "changes_fr": [
+      "Correction de la configuration de démarrage et des tâches en arrière-plan."
+    ],
+    "changes_en": [
+      "Corrected startup configuration and background task settings."
+    ]
+  },
+  {
+    "date": "2026-03-14",
+    "version": "1.1.0",
+    "title_fr": "Suivi des montants reversés",
+    "title_en": "Returned amount tracking",
+    "changes_fr": [
+      "Suivi des montants reversés et restant à reverser, détail des réservations et accès selon les permissions.",
+      "Harmonisation des noms d’appartements et des graphiques sans données positives."
+    ],
+    "changes_en": [
+      "Track returned and outstanding amounts, reservation details and permission-based access.",
+      "Aligned apartment names and charts without positive data."
+    ]
+  },
+  {
+    "date": "2026-03-24",
+    "version": "1.2.0",
+    "title_fr": "État de maintenance",
+    "title_en": "Maintenance status",
+    "changes_fr": [
+      "Affichage de la maintenance en temps réel et vérification de cet état au démarrage."
+    ],
+    "changes_en": [
+      "Display maintenance status in real time and check it when opening the application."
+    ]
+  },
+  {
+    "date": "2026-03-25",
+    "version": "1.3.0",
+    "title_fr": "Identité et initialisation",
+    "title_en": "Identity and initialization",
+    "changes_fr": [
+      "Ajout du logo et des icônes de l’application ; ajustements de l’initialisation et du cache."
+    ],
+    "changes_en": [
+      "Added the application logo and icons; adjusted initialization and caching."
+    ]
+  },
+  {
+    "date": "2026-03-26",
+    "version": "1.4.0",
+    "title_fr": "Connexion et avatar",
+    "title_en": "Sign-in and avatar",
+    "changes_fr": [
+      "Amélioration de l’accès authentifié aux listes et prise en compte des changements d’avatar en temps réel."
+    ],
+    "changes_en": [
+      "Improved authenticated list access and real-time avatar updates."
+    ]
+  },
+  {
+    "date": "2026-03-27",
+    "version": "1.5.0",
+    "title_fr": "Coûts et filtres",
+    "title_en": "Costs and filters",
+    "changes_fr": [
+      "Ajout, consultation et suppression des coûts avec filtres par année, date, montant et auteur.",
+      "Filtres supplémentaires sur les réservations et amélioration du renouvellement de session."
+    ],
+    "changes_en": [
+      "Create, view and delete costs with year, date, amount and author filters.",
+      "Additional reservation filters and improved session renewal."
+    ]
+  },
+  {
+    "date": "2026-03-30",
+    "version": "2.0.0",
+    "title_fr": "Locaux et loyers",
+    "title_en": "Premises and rents",
+    "changes_fr": [
+      "Nouveau module de gestion des locaux et loyers : formulaires, fiches et planning annuel.",
+      "Préférences de notifications et suppression groupée des coûts avec confirmation."
+    ],
+    "changes_en": [
+      "New premises and rent management module with forms, detail views and annual planning.",
+      "Notification preferences and confirmed bulk cost deletion."
+    ]
+  },
+  {
+    "date": "2026-03-31",
+    "version": "3.0.0",
+    "title_fr": "Gestion des résidences",
+    "title_en": "Residence management",
+    "changes_fr": [
+      "Création et suivi des résidences, rattachement des appartements et locaux, et sélection de résidence dans les vues."
+    ],
+    "changes_en": [
+      "Create and manage residences, associate apartments and premises, and select residences across views."
+    ]
+  },
+  {
+    "date": "2026-04-02",
+    "version": "3.1.0",
+    "title_fr": "Français, anglais et navigation mobile",
+    "title_en": "French, English and mobile navigation",
+    "changes_fr": [
+      "Traduction des pages, filtres et messages ; sélection de langue et menu adapté au mobile."
+    ],
+    "changes_en": [
+      "Translated pages, filters and messages; language selection and a mobile navigation menu."
+    ]
+  },
+  {
+    "date": "2026-04-03",
+    "version": "3.1.1",
+    "title_fr": "Maintenance des dépendances",
+    "title_en": "Dependency maintenance",
+    "changes_fr": [
+      "Mise à jour des outils de styles et de traitement d’images."
+    ],
+    "changes_en": [
+      "Updated styling and image-processing dependencies."
+    ]
+  },
+  {
+    "date": "2026-04-06",
+    "version": "3.2.0",
+    "title_fr": "Langue mémorisée et reconnexion",
+    "title_en": "Remembered language and reconnection",
+    "changes_fr": [
+      "La langue choisie est reprise dès l’ouverture ; amélioration de la reconnexion en temps réel et de la configuration des accès."
+    ],
+    "changes_en": [
+      "Restore the selected language on opening; improve real-time reconnection and access configuration."
+    ]
+  },
+  {
+    "date": "2026-04-07",
+    "version": "3.3.0",
+    "title_fr": "Notifications et historique",
+    "title_en": "Notifications and history",
+    "changes_fr": [
+      "Chargement progressif des notifications et amélioration des rappels de réservation.",
+      "Consultation de l’historique des loyers, appartements, coûts et préférences dans l’administration."
+    ],
+    "changes_en": [
+      "Load more notifications progressively and improve reservation reminders.",
+      "View rent, apartment, cost and preference history in administration."
+    ]
+  },
+  {
+    "date": "2026-04-08",
+    "version": "3.4.0",
+    "title_fr": "Formulaires et notifications",
+    "title_en": "Forms and notifications",
+    "changes_fr": [
+      "Harmonisation des champs du formulaire de réservation et réorganisation du service de notifications."
+    ],
+    "changes_en": [
+      "Aligned reservation form controls and reorganized the notification service."
+    ]
+  },
+  {
+    "date": "2026-04-09",
+    "version": "3.4.1",
+    "title_fr": "Compatibilité des composants",
+    "title_en": "Component compatibility",
+    "changes_fr": [
+      "Mise à jour des composants d’interface et des dépendances serveur."
+    ],
+    "changes_en": [
+      "Updated interface components and server dependencies."
+    ]
+  },
+  {
+    "date": "2026-04-10",
+    "version": "3.5.0",
+    "title_fr": "Options personnalisables",
+    "title_en": "Customizable options",
+    "changes_fr": [
+      "Gestion des sources de paiement, catégories de coûts et types de locaux depuis l’application."
+    ],
+    "changes_en": [
+      "Manage payment sources, cost categories and premises types in the application."
+    ]
+  },
+  {
+    "date": "2026-04-11",
+    "version": "3.5.1",
+    "title_fr": "Sources de paiement",
+    "title_en": "Payment sources",
+    "changes_fr": [
+      "Correction de la valeur enregistrée lors du choix d’une source de paiement."
+    ],
+    "changes_en": [
+      "Corrected the saved value when selecting a payment source."
+    ]
+  },
+  {
+    "date": "2026-04-15",
+    "version": "3.5.2",
+    "title_fr": "Maintenance des outils",
+    "title_en": "Tooling maintenance",
+    "changes_fr": [
+      "Mise à jour des outils de contrôle du code, sans nouveau parcours métier."
+    ],
+    "changes_en": [
+      "Updated code-checking tools without adding a business workflow."
+    ]
+  },
+  {
+    "date": "2026-04-17",
+    "version": "3.6.0",
+    "title_fr": "Appartements, coûts et loyers impayés",
+    "title_en": "Apartments, costs and unpaid rents",
+    "changes_fr": [
+      "Gestion des appartements depuis les formulaires et rattachement des coûts à une résidence.",
+      "Options de types de locaux et préférence de rappel des loyers impayés."
+    ],
+    "changes_en": [
+      "Manage apartments from forms and associate costs with a residence.",
+      "Premises type options and a reminder preference for unpaid rents."
+    ]
+  },
+  {
+    "date": "2026-04-23",
+    "version": "3.7.0",
+    "title_fr": "Notes dans les réservations",
+    "title_en": "Notes in reservation lists",
+    "changes_fr": [
+      "Consultation des notes directement dans la liste des réservations."
+    ],
+    "changes_en": [
+      "View notes directly in the reservation list."
+    ]
+  },
+  {
+    "date": "2026-05-05",
+    "version": "3.8.0",
+    "title_fr": "Rapports de la résidence Hilton",
+    "title_en": "Hilton residence reports",
+    "changes_fr": [
+      "Rapports Hilton avec récapitulatifs et totaux par source de paiement, soumis aux droits d’accès."
+    ],
+    "changes_en": [
+      "Hilton reports with summaries and payment-source totals, subject to access permissions."
+    ]
+  },
+  {
+    "date": "2026-05-12",
+    "version": "3.9.0",
+    "title_fr": "Rapport de caisse en PDF",
+    "title_en": "Cash report PDF",
+    "changes_fr": [
+      "Prévisualisation et export du rapport de caisse Hilton en PDF, avec paramétrage du solde."
+    ],
+    "changes_en": [
+      "Preview and export the Hilton cash report as a PDF, with balance settings."
+    ]
+  },
+  {
+    "date": "2026-05-13",
+    "version": "3.10.0",
+    "title_fr": "Connexion centralisée et paramètres",
+    "title_en": "Central sign-in and settings",
+    "changes_fr": [
+      "Entrée par connexion centralisée et paramètres dédiés aux rapports Hilton."
+    ],
+    "changes_en": [
+      "Central sign-in entry and dedicated Hilton report settings."
+    ]
+  },
+  {
+    "date": "2026-05-14",
+    "version": "3.10.1",
+    "title_fr": "Prévisualisation des rapports",
+    "title_en": "Report preview",
+    "changes_fr": [
+      "Stabilisation de la prévisualisation des rapports Hilton."
+    ],
+    "changes_en": [
+      "Stabilized the Hilton report preview."
+    ]
+  },
+  {
+    "date": "2026-05-18",
+    "version": "3.10.2",
+    "title_fr": "Préparation de l’hébergement",
+    "title_en": "Hosting preparation",
+    "changes_fr": [
+      "Préparation de la configuration du serveur et harmonisation des fichiers ; ces commits ne prouvent pas une date de mise en production."
+    ],
+    "changes_en": [
+      "Prepared server configuration and standardized files; these commits do not establish a production deployment date."
+    ]
+  },
+  {
+    "date": "2026-05-20",
+    "version": "3.11.0",
+    "title_fr": "Vérification de connexion",
+    "title_en": "Sign-in verification",
+    "changes_fr": [
+      "Vérification des identifiants pour la connexion centralisée et traitement de l’avatar par défaut en arrière-plan."
+    ],
+    "changes_en": [
+      "Credential verification for central sign-in and background handling of default avatars."
+    ]
+  },
+  {
+    "date": "2026-06-02",
+    "version": "3.11.1",
+    "title_fr": "Connexion et tâches fiables",
+    "title_en": "Reliable sign-in and tasks",
+    "changes_fr": [
+      "Isolation des blocages de connexion par utilisateur et correction de l’exécution des tâches de réservation."
+    ],
+    "changes_en": [
+      "Isolated sign-in lockouts by user and corrected reservation task execution."
+    ]
+  },
+  {
+    "date": "2026-06-09",
+    "version": "3.11.2",
+    "title_fr": "Compatibilité et identité visuelle",
+    "title_en": "Compatibility and visual identity",
+    "changes_fr": [
+      "Mise à jour des dépendances, ajustements de compatibilité serveur et actualisation des logos."
+    ],
+    "changes_en": [
+      "Updated dependencies, server compatibility and logo assets."
+    ]
+  },
+  {
+    "date": "2026-06-12",
+    "version": "3.11.3",
+    "title_fr": "Vérifications automatisées",
+    "title_en": "Automated checks",
+    "changes_fr": [
+      "Correction de tests et d’une boucle dans les vérifications du store ; mise à jour des outils."
+    ],
+    "changes_en": [
+      "Fixed tests and a loop in store checks; updated tooling."
+    ]
+  },
+  {
+    "date": "2026-06-13",
+    "version": "3.11.4",
+    "title_fr": "Documentation du projet",
+    "title_en": "Project documentation",
+    "changes_fr": [
+      "Ajout et amélioration de la documentation et des captures de présentation du projet."
+    ],
+    "changes_en": [
+      "Added and improved project documentation and presentation screenshots."
+    ]
+  },
+  {
+    "date": "2026-06-18",
+    "version": "3.12.0",
+    "title_fr": "Notes et traçabilité des options",
+    "title_en": "Notes and option history",
+    "changes_fr": [
+      "Champs de notes de réservation plus larges avec longueur contrôlée ; historique des changements d’options."
+    ],
+    "changes_en": [
+      "Larger reservation note fields with length limits, and option change history."
+    ]
+  },
+  {
+    "date": "2026-06-19",
+    "version": "3.12.1",
+    "title_fr": "Maintenance des dépendances",
+    "title_en": "Dependency maintenance",
+    "changes_fr": [
+      "Actualisation des dépendances de l’interface."
+    ],
+    "changes_en": [
+      "Updated frontend dependencies."
+    ]
+  },
+  {
+    "date": "2026-07-23",
+    "version": "3.13.0",
+    "title_fr": "Tableau de bord des loyers",
+    "title_en": "Rent dashboard",
+    "changes_fr": [
+      "Graphiques de suivi des loyers et correction du filtrage par résidence dans les tableaux de bord."
+    ],
+    "changes_en": [
+      "Rent tracking charts and corrected residence filtering in dashboards."
+    ]
+  },
+  {
+    "date": "2026-07-29",
+    "version": "3.13.1",
+    "title_fr": "Maintenance de l’interface",
+    "title_en": "Interface maintenance",
+    "changes_fr": [
+      "Mise à jour des dépendances et préparation d’une nouvelle compilation."
+    ],
+    "changes_en": [
+      "Updated dependencies and prepared a new build."
+    ]
+  },
+  {
+    "date": "2026-08-07",
+    "version": "3.13.2",
+    "title_fr": "Indicateurs mensuels cohérents",
+    "title_en": "Consistent monthly metrics",
+    "changes_fr": [
+      "Synchronisation des indicateurs mensuels entre planning et tableaux de bord."
+    ],
+    "changes_en": [
+      "Synchronized monthly metrics between planning and dashboards."
+    ]
+  },
+  {
+    "date": "2026-09-07",
+    "version": "3.13.3",
+    "title_fr": "Compatibilité des courriels",
+    "title_en": "Email compatibility",
+    "changes_fr": [
+      "Adaptation de la configuration d’envoi des courriels et mise à jour des dépendances."
+    ],
+    "changes_en": [
+      "Adapted email delivery settings and updated dependencies."
+    ]
+  },
+  {
+    "date": "2026-09-11",
+    "version": "3.13.4",
+    "title_fr": "Catégories de coûts dynamiques",
+    "title_en": "Dynamic cost categories",
+    "changes_fr": [
+      "Les coûts acceptent les catégories créées dans l’application, y compris les nouvelles catégories personnalisées."
+    ],
+    "changes_en": [
+      "Costs accept categories created in the application, including new custom categories."
+    ]
+  },
+  {
+    "date": "2026-09-17",
+    "version": "3.13.5",
+    "title_fr": "Maintenance des dépendances",
+    "title_en": "Dependency maintenance",
+    "changes_fr": [
+      "Mise à jour des bibliothèques de l’interface."
+    ],
+    "changes_en": [
+      "Updated frontend libraries."
+    ]
+  },
+  {
+    "date": "2026-09-18",
+    "version": "3.13.6",
+    "title_fr": "Configuration des tâches",
+    "title_en": "Task configuration",
+    "changes_fr": [
+      "Actualisation des dépendances serveur et correction de la configuration des tâches."
+    ],
+    "changes_en": [
+      "Updated server dependencies and corrected task configuration."
+    ]
+  },
+  {
+    "date": "2026-09-23",
+    "version": "3.14.0",
+    "title_fr": "Retour aux listes",
+    "title_en": "Returning to lists",
+    "changes_fr": [
+      "La pagination est restaurée au retour sur une liste ; mise à jour du socle React et Next.js."
+    ],
+    "changes_en": [
+      "Restore pagination when returning to a list; updated the React and Next.js foundation."
+    ]
+  },
+  {
+    "date": "2026-10-06",
+    "version": "3.14.1",
+    "title_fr": "Tri et administration",
+    "title_en": "Sorting and administration",
+    "changes_fr": [
+      "Tri des colonnes côté serveur avec pagination cohérente et correction du chargement des styles de l’administration."
+    ],
+    "changes_en": [
+      "Server-side column sorting with consistent pagination, and corrected administration styling assets."
+    ]
+  },
+  {
+    "date": "2026-10-07",
+    "version": "3.15.0",
+    "title_fr": "Assistance de rédaction privée",
+    "title_en": "Private writing assistance",
+    "changes_fr": [
+      "Traduction et amélioration des textes avec prévisualisation avant application, ainsi qu’une assistance pour les PDF.",
+      "Contrôles limités aux champs de rédaction, quotas isolés et meilleure récupération des traitements en échec."
+    ],
+    "changes_en": [
+      "Translate and improve text with a preview before applying it, plus PDF assistance.",
+      "Controls limited to writing fields, isolated quotas and improved recovery for failed processing."
+    ]
+  },
+  {
+    "date": "2026-10-09",
+    "version": "3.16.0",
+    "title_fr": "Historique, mises à jour et mode sombre",
+    "title_en": "History, updates and dark mode",
+    "changes_fr": [
+      "Historique bilingue et versionné accessible après Paramètres.",
+      "Notification des nouvelles versions avec report possible et vérification avant rechargement.",
+      "Mode sombre mémorisé, disponible sur ordinateur et mobile, y compris à la connexion."
+    ],
+    "changes_en": [
+      "Bilingual, versioned history accessible after Settings.",
+      "New version notifications with a Later option and availability checks before reloading.",
+      "Remembered dark mode on desktop and mobile, including sign-in."
+    ]
+  }
+]

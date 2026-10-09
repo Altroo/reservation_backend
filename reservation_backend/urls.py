@@ -21,7 +21,7 @@ from django.urls import path, include, re_path
 from django.utils.translation import gettext
 from django.views.static import serve
 from django.http import JsonResponse
-from ws.views import GetMaintenanceView
+from ws.views import ChangelogView, GetMaintenanceView
 
 
 def health_check(request):
@@ -76,6 +76,7 @@ urlpatterns = [
         "api/building/",
         include(("building.urls", "building"), namespace="building"),
     ),
+    path("api/ws/changelog/", ChangelogView.as_view()),
     # WS maintenance bootstrap
     path("api/ws/maintenance/", GetMaintenanceView.as_view()),
     # Admin panel (obscured path for security)
