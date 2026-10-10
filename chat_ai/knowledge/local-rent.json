@@ -1,0 +1,27 @@
+{
+  "document_id": "local-rent",
+  "application_id": "reservation",
+  "approved": true,
+  "title": "Locaux et loyers / Premises and rents",
+  "content": "Les locaux ont un loyer mensuel, un locataire et un état de location. /loyers recherche uniquement les loyers déjà enregistrés. Le planning natif peut aussi afficher des loyers dus qui n’ont pas encore de ligne enregistrée ; une recherche vide ne prouve donc pas l’absence d’impayés. Ouvrez le planning des locaux pour ces échéances. Un loyer enregistré ouvre la fiche de son local.\nPremises have a monthly rent, tenant and rental status. /rents searches recorded rent entries only. Native planning can also display due rents with no stored entry, so an empty search does not prove there are no unpaid rents. Open premises planning for those dues. A recorded rent opens its premises detail page.",
+  "localized_content": {
+    "fr": "Les locaux ont un loyer mensuel, un locataire et un état de location. /loyers recherche uniquement les loyers déjà enregistrés. Le planning natif peut aussi afficher des loyers dus qui n’ont pas encore de ligne enregistrée ; une recherche vide ne prouve donc pas l’absence d’impayés. Ouvrez le planning des locaux pour ces échéances. Un loyer enregistré ouvre la fiche de son local.",
+    "en": "Premises have a monthly rent, tenant and rental status. /rents searches recorded rent entries only. Native planning can also display due rents with no stored entry, so an empty search does not prove there are no unpaid rents. Open premises planning for those dues. A recorded rent opens its premises detail page."
+  },
+  "keywords": [
+    "local",
+    "premises",
+    "loyer",
+    "rent",
+    "impaye",
+    "unpaid",
+    "planning"
+  ],
+  "category": "workflow",
+  "sensitivity": "member",
+  "required_capabilities": [
+    "read_local",
+    "read_rent"
+  ],
+  "tenant_scope_id": null
+}

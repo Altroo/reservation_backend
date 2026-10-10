@@ -1,0 +1,25 @@
+{
+  "document_id": "assistant-delete",
+  "application_id": "reservation",
+  "approved": true,
+  "title": "Suppressions assistées / Assisted deletion",
+  "content": "Décrivez le document avec /supprimer puis sélectionnez le résultat. Vérifiez la cible avant confirmation ; vos droits sont recontrôlés. Les résidences, appartements et locaux ayant des dépendances sont refusés par l’assistant. Les suppressions de rapports Hilton et d’utilisateurs ne sont pas proposées. L’historique natif et le journal identifient la personne ayant confirmé.\nDescribe the record with /delete and select the result. Review the exact target before confirming; permissions are checked again. The assistant rejects residences, apartments and premises with dependent records. Hilton report and user deletion are not offered. Native history and audit identify the confirming user.",
+  "localized_content": {
+    "fr": "Décrivez le document avec /supprimer puis sélectionnez le résultat. Vérifiez la cible avant confirmation ; vos droits sont recontrôlés. Les résidences, appartements et locaux ayant des dépendances sont refusés par l’assistant. Les suppressions de rapports Hilton et d’utilisateurs ne sont pas proposées. L’historique natif et le journal identifient la personne ayant confirmé.",
+    "en": "Describe the record with /delete and select the result. Review the exact target before confirming; permissions are checked again. The assistant rejects residences, apartments and premises with dependent records. Hilton report and user deletion are not offered. Native history and audit identify the confirming user."
+  },
+  "keywords": [
+    "supprimer",
+    "delete",
+    "remove",
+    "confirmation",
+    "historique",
+    "history"
+  ],
+  "category": "workflow",
+  "sensitivity": "member",
+  "required_capabilities": [
+    "delete"
+  ],
+  "tenant_scope_id": null
+}

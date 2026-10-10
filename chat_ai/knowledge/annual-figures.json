@@ -1,0 +1,27 @@
+{
+  "document_id": "annual-figures",
+  "application_id": "reservation",
+  "approved": true,
+  "title": "Indicateurs annuels / Annual figures",
+  "content": "Les montants des réservations sont affectés à l’année d’arrivée. Le solde du tableau de bord soustrait les coûts datés de cette année. La balance retournée/non retournée ne couvre que les sources Airbnb et Bank. Les loyers payés sont les loyers enregistrés et marqués payés pour l’année de location ; ils ne représentent pas un bénéfice comptable. /bilan exige un indicateur précis et une année.\nReservation amounts are assigned to the arrival year. Dashboard balance subtracts costs dated in that year. Returned/unreturned balance includes only Airbnb and Bank sources. Paid rents are recorded rents marked paid for the rental year; they are not accounting profit. /summary requires an explicit metric and year.",
+  "localized_content": {
+    "fr": "Les montants des réservations sont affectés à l’année d’arrivée. Le solde du tableau de bord soustrait les coûts datés de cette année. La balance retournée/non retournée ne couvre que les sources Airbnb et Bank. Les loyers payés sont les loyers enregistrés et marqués payés pour l’année de location ; ils ne représentent pas un bénéfice comptable. /bilan exige un indicateur précis et une année.",
+    "en": "Reservation amounts are assigned to the arrival year. Dashboard balance subtracts costs dated in that year. Returned/unreturned balance includes only Airbnb and Bank sources. Paid rents are recorded rents marked paid for the rental year; they are not accounting profit. /summary requires an explicit metric and year."
+  },
+  "keywords": [
+    "bilan",
+    "summary",
+    "revenu",
+    "revenue",
+    "solde",
+    "balance",
+    "loyer",
+    "rent"
+  ],
+  "category": "workflow",
+  "sensitivity": "member",
+  "required_capabilities": [
+    "financial"
+  ],
+  "tenant_scope_id": null
+}

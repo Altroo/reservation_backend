@@ -1,0 +1,24 @@
+{
+  "document_id": "assistant-edit",
+  "application_id": "reservation",
+  "approved": true,
+  "title": "Modifications assistées / Assisted edits",
+  "content": "Décrivez le document avec /modifier, puis sélectionnez le bon résultat et indiquez le texte à corriger. L’assistant propose uniquement les champs descriptifs pris en charge et demande confirmation. Les montants, dates, liens entre documents et états de paiement se modifient dans les formulaires natifs autorisés. L’historique conserve l’utilisateur qui a confirmé.\nDescribe the record with /edit, select the correct result and specify the text to change. The assistant proposes supported descriptive fields only and asks for confirmation. Amounts, dates, relationships and payment states use authorized native forms. History retains the confirming user.",
+  "localized_content": {
+    "fr": "Décrivez le document avec /modifier, puis sélectionnez le bon résultat et indiquez le texte à corriger. L’assistant propose uniquement les champs descriptifs pris en charge et demande confirmation. Les montants, dates, liens entre documents et états de paiement se modifient dans les formulaires natifs autorisés. L’historique conserve l’utilisateur qui a confirmé.",
+    "en": "Describe the record with /edit, select the correct result and specify the text to change. The assistant proposes supported descriptive fields only and asks for confirmation. Amounts, dates, relationships and payment states use authorized native forms. History retains the confirming user."
+  },
+  "keywords": [
+    "modifier",
+    "edit",
+    "update",
+    "confirmation",
+    "notes"
+  ],
+  "category": "workflow",
+  "sensitivity": "member",
+  "required_capabilities": [
+    "update"
+  ],
+  "tenant_scope_id": null
+}

@@ -1,0 +1,25 @@
+{
+  "document_id": "cost-find",
+  "application_id": "reservation",
+  "approved": true,
+  "title": "Retrouver des coûts / Find costs",
+  "content": "Utilisez /couts avec une description, une résidence ou une période. Les dates correspondent aux dates des coûts. Les montants affichés sont les valeurs enregistrées ; une suppression ou modification exige les droits natifs et une confirmation exacte.\nUse /costs with a description, residence or period. Dates refer to cost dates. Displayed amounts are the recorded values; deletion or editing requires native permissions and exact confirmation.",
+  "localized_content": {
+    "fr": "Utilisez /couts avec une description, une résidence ou une période. Les dates correspondent aux dates des coûts. Les montants affichés sont les valeurs enregistrées ; une suppression ou modification exige les droits natifs et une confirmation exacte.",
+    "en": "Use /costs with a description, residence or period. Dates refer to cost dates. Displayed amounts are the recorded values; deletion or editing requires native permissions and exact confirmation."
+  },
+  "keywords": [
+    "cout",
+    "cost",
+    "depense",
+    "expense",
+    "categorie",
+    "category"
+  ],
+  "category": "workflow",
+  "sensitivity": "member",
+  "required_capabilities": [
+    "read_cost"
+  ],
+  "tenant_scope_id": null
+}

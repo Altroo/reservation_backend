@@ -182,3 +182,11 @@ cython_debug/
 .docs/*
 .github
 .github/*
+
+# Private assistant evidence and credentials
+.env*
+*.dump
+*.sql.gz
+test-artifacts/
+.auth/
+playwright-report/

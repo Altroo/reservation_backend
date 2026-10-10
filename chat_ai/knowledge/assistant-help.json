@@ -1,0 +1,26 @@
+{
+  "document_id": "assistant-help",
+  "application_id": "reservation",
+  "approved": true,
+  "title": "Utiliser l’assistant / Use the assistant",
+  "content": "L’assistant répond en français ou en anglais selon votre message. /aide affiche les commandes permises et une commande seule donne une aide ou une liste autorisée. Vous pouvez décrire les documents sans connaître leur identifiant. Les conversations sont personnelles. Réservation n’a pas de sélection de société dans l’assistant.\nThe assistant responds in French or English according to your message. /help shows permitted commands; a bare command gives usage help or an authorized list. Describe records without remembering IDs. Conversations are private to each user. Réservation has no company selector in the assistant.",
+  "localized_content": {
+    "fr": "L’assistant répond en français ou en anglais selon votre message. /aide affiche les commandes permises et une commande seule donne une aide ou une liste autorisée. Vous pouvez décrire les documents sans connaître leur identifiant. Les conversations sont personnelles. Réservation n’a pas de sélection de société dans l’assistant.",
+    "en": "The assistant responds in French or English according to your message. /help shows permitted commands; a bare command gives usage help or an authorized list. Describe records without remembering IDs. Conversations are private to each user. Réservation has no company selector in the assistant."
+  },
+  "keywords": [
+    "aide",
+    "help",
+    "assistant",
+    "raccourcis",
+    "shortcuts",
+    "bonjour",
+    "hello"
+  ],
+  "category": "workflow",
+  "sensitivity": "member",
+  "required_capabilities": [
+    "read"
+  ],
+  "tenant_scope_id": null
+}

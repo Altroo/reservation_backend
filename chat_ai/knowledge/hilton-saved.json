@@ -1,0 +1,29 @@
+{
+  "document_id": "hilton-saved",
+  "application_id": "reservation",
+  "approved": true,
+  "title": "Rapports Hilton enregistrés / Saved Hilton reports",
+  "content": "Les rapports Hilton demandent l’autorisation dédiée. /hilton retrouve les rapports enregistrés et leurs valeurs enregistrées ; il ne crée pas d’aperçu et ne recalcule pas les montants. Le solde net enregistré tient compte de la balance à reporter, des espèces, des ajustements et des coûts manuels. La page Rapports Hilton fournit l’impression native. Les modifications de rapports utilisent cette page, pas un changement générique de l’assistant.\nHilton reports require their dedicated permission. /hilton finds saved reports and saved values; it does not create a preview or recalculate amounts. Saved net balance includes opening balance, cash, manual adjustments and costs. The Hilton reports screen provides native printing. Report changes use that screen, not a generic assistant change.",
+  "localized_content": {
+    "fr": "Les rapports Hilton demandent l’autorisation dédiée. /hilton retrouve les rapports enregistrés et leurs valeurs enregistrées ; il ne crée pas d’aperçu et ne recalcule pas les montants. Le solde net enregistré tient compte de la balance à reporter, des espèces, des ajustements et des coûts manuels. La page Rapports Hilton fournit l’impression native. Les modifications de rapports utilisent cette page, pas un changement générique de l’assistant.",
+    "en": "Hilton reports require their dedicated permission. /hilton finds saved reports and saved values; it does not create a preview or recalculate amounts. Saved net balance includes opening balance, cash, manual adjustments and costs. The Hilton reports screen provides native printing. Report changes use that screen, not a generic assistant change."
+  },
+  "keywords": [
+    "hilton",
+    "rapport",
+    "report",
+    "net",
+    "balance",
+    "saved",
+    "enregistre",
+    "imprimer",
+    "print",
+    "pdf"
+  ],
+  "category": "workflow",
+  "sensitivity": "member",
+  "required_capabilities": [
+    "read_hilton_report"
+  ],
+  "tenant_scope_id": null
+}
