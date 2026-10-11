@@ -245,11 +245,13 @@ class ChatAIToolExecutor:
     def previous_results(self,operation,index=None):
         if self.state.get('expires_at','')<=timezone.now().isoformat() or not self.state.get('ids'):raise ChatAIError('CONTEXT_EXPIRED')
         resource=self.state['resource'];ids=self.state['ids']
+        items=self.read_records(resource,ids)
+        if len(items)!=len(ids):raise ChatAIError('CONTEXT_EXPIRED')
         if operation=='open':
             if index is None or index>len(ids):raise ChatAIError('INVALID_ARGUMENTS')
             return self.navigate(resource,ids[index-1])
         if index is not None:raise ChatAIError('INVALID_ARGUMENTS')
-        return {'type':'record_list','language':self.context.get('interface_language','fr'),'resource':resource,'items':self.read_records(resource,ids)}
+        return {'type':'record_list','language':self.context.get('interface_language','fr'),'resource':resource,'items':items}
 
     def prepare_change(self,resource,identifier,operation,changes=None):
         from .actions import prepare
