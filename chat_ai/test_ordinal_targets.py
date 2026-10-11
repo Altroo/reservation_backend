@@ -21,3 +21,31 @@ class OrdinalTargetTests(SimpleTestCase):
         resource,noun = ('reservation', 'booking')
         self.assertTrue(trusted_target(resource,311,instruction=f'Update {noun} ID 311: name "The third {noun}".',
                                        state={},context={},now=timezone.now()))
+
+    def test_explicit_target_precedes_unrelated_current_and_saved_record(self):
+        now=timezone.now()
+        kwargs=dict(instruction="Delete building ID 72.",now=now,
+                    context={"resource":"reservation","identifier":311},
+                    state={"resource":"reservation","ids":[311],"expires_at":(now+timedelta(minutes=5)).isoformat()})
+        self.assertFalse(trusted_target("reservation",311,**kwargs))
+        self.assertTrue(trusted_target("building",72,**kwargs))
+
+    def test_replacement_text_does_not_authorize_another_record(self):
+        now=timezone.now()
+        for instruction in ['Update booking ID 311 notes to "building ID 72 is the reference".',
+                            'Update booking ID 311 notes to building ID 72.',
+                            'Update booking ID 311: description building ID 72.',
+                            'Update booking ID 311 name: building ID 72.']:
+            kwargs=dict(instruction=instruction,now=now,state={},
+                        context={"resource":"building","identifier":72})
+            with self.subTest(instruction=instruction):
+                self.assertTrue(trusted_target("reservation",311,**kwargs))
+                self.assertFalse(trusted_target("building",72,**kwargs))
+
+    def test_explicit_target_cannot_bypass_invalid_ordinal(self):
+        now=timezone.now()
+        kwargs=dict(instruction="Delete the third booking, booking ID 311.",now=now,
+                    context={"resource":"reservation","identifier":311},
+                    state={"resource":"reservation","ids":[311,8092,1456],"expires_at":(now+timedelta(minutes=5)).isoformat()})
+        self.assertFalse(trusted_target("reservation",311,**kwargs))
+        self.assertFalse(trusted_target("reservation",1456,**kwargs))
